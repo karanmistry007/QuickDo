@@ -5,3 +5,8 @@
 tags
 node_modules
 __pycache__
+
+
+/quickdo/public/frontend
+/quickdo/public/node_modules
+/quickdo/www/quickdo.html

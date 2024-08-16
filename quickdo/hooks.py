@@ -243,9 +243,9 @@ app_license = "agpl-3.0"
 # }
 
 
-website_route_rules = [{'from_route': '/frontend/<path:app_path>', 'to_route': 'frontend'},]
+website_route_rules = [{'from_route': '/quickdo/<path:app_path>', 'to_route': 'quickdo'},]
 
-fixtures = [
-    {"dt":"QuickDo Category","filters":[]},
-    {"dt":"Navbar Settings"},
-]
+# fixtures = [
+#     {"dt":"QuickDo Category","filters":[]},
+#     {"dt":"Navbar Settings"},
+# ]

@@ -1,14 +1,14 @@
 {
-  "name": "quickdo",
+  "name": "quickdo-ui",
   "private": true,
-  "version": "0.0.0",
+  "license": "AGPL-3.0-only",
+  "version": "1.6.7",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/react_todo/quickdo/ && yarn copy-html-entry",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "build": "vite build --base=/assets/quickdo/frontend/ && yarn copy-html-entry",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../react_todo/public/frontend/index.html ../react_todo/www/quickdo.html"
+    "copy-html-entry": "cp ../quickdo/public/frontend/index.html ../quickdo/www/quickdo.html"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

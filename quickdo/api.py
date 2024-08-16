@@ -1,7 +1,7 @@
 import frappe
 
 
-#! api/method/react_todo.api.get_todo_with_categories
+#! api/method/quickdo.api.get_todo_with_categories
 # ? TODO LIST API WITH CATEGORIES
 @frappe.whitelist(allow_guest=1)
 def get_quickdo_with_categories(
