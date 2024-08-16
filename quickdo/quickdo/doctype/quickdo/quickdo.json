@@ -1,0 +1,222 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-08-16 18:31:20.507607",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "description_and_status",
+  "naming_series",
+  "status",
+  "date",
+  "is_important",
+  "column_break_2",
+  "allocated_to",
+  "color",
+  "send_reminder",
+  "column_break_ozee",
+  "categories",
+  "description_section",
+  "description",
+  "section_break_6",
+  "reference_type",
+  "reference_name",
+  "column_break_10",
+  "role",
+  "assigned_by",
+  "assigned_by_full_name",
+  "sender",
+  "assignment_rule"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "ToDo-.DD.-.MM.-.YY.-"
+  },
+  {
+   "fieldname": "description_and_status",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "Open",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Open\nClosed\nCancelled"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Color"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Due Date",
+   "oldfieldname": "date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "fieldname": "allocated_to",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "in_global_search": 1,
+   "label": "Allocated To",
+   "options": "User"
+  },
+  {
+   "fieldname": "description_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Description",
+   "oldfieldname": "description",
+   "oldfieldtype": "Text",
+   "print_width": "300px",
+   "reqd": 1,
+   "width": "300px"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Reference Type",
+   "oldfieldname": "reference_type",
+   "oldfieldtype": "Data",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Name",
+   "oldfieldname": "reference_name",
+   "oldfieldtype": "Data",
+   "options": "reference_type"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "role",
+   "fieldtype": "Link",
+   "label": "Role",
+   "oldfieldname": "role",
+   "oldfieldtype": "Link",
+   "options": "Role"
+  },
+  {
+   "fieldname": "assigned_by",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Assigned By",
+   "options": "User"
+  },
+  {
+   "fetch_from": "assigned_by.full_name",
+   "fieldname": "assigned_by_full_name",
+   "fieldtype": "Read Only",
+   "label": "Assigned By Full Name"
+  },
+  {
+   "fieldname": "sender",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Sender",
+   "options": "Email"
+  },
+  {
+   "fieldname": "assignment_rule",
+   "fieldtype": "Link",
+   "label": "Assignment Rule",
+   "options": "Assignment Rule",
+   "read_only": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "Medium",
+   "fieldname": "is_important",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Is Important",
+   "oldfieldname": "priority",
+   "oldfieldtype": "Data"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "0",
+   "description": "Send Reminder Before 1 Hour",
+   "fieldname": "send_reminder",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Send Reminder"
+  },
+  {
+   "fieldname": "column_break_ozee",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "categories",
+   "fieldtype": "Table MultiSelect",
+   "label": "Categories",
+   "options": "QuickDo Categories"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-16 18:52:34.733016",
+ "modified_by": "Administrator",
+ "module": "QuickDo",
+ "name": "QuickDo",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "search_fields": "description",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "description"
+}

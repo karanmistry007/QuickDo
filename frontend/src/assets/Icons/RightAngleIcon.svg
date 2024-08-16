@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+	<title>New Project</title>
+	<defs>
+		<image width="720" height="720" id="img1" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPkFydGJvYXJkLTY1PC90aXRsZT48ZyBpZD0iUmlnaHQiPjxwYXRoIGQ9Ik0xNC43MDcsMTIuNzA3bC00LDRhMSwxLDAsMCwxLTEuNDE0LTEuNDE0TDEyLjU4NiwxMiw5LjI5Myw4LjcwN2ExLDEsMCwxLDEsMS40MTQtMS40MTRsNCw0QTEsMSwwLDAsMSwxNC43MDcsMTIuNzA3WiIgc3R5bGU9ImZpbGw6IzFjMWIxZSIvPjwvZz48L3N2Zz4="/>
+	</defs>
+	<style>
+	</style>
+	<use id="RightAngleIcon" href="#img1" transform="matrix(.99,0,0,.99,-207,-207)"/>
+</svg>
