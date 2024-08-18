@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 
+/* ! SHARED CSS */
+
 .sidebar-active {
     background-color: #e5e7eb;
     position: relative;
@@ -26,7 +28,7 @@
 .categories-items::-webkit-scrollbar-thumb {
     background-color: #f6f6f6;
     border-radius: 8px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25) inset;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25) inset;
 }
 
 .categories-items::-webkit-scrollbar-thumb:hover {
@@ -51,7 +53,7 @@
 .dashboard-container::-webkit-scrollbar-thumb {
     background-color: #d3d3d3;
     border-radius: 8px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25) inset;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25) inset;
 }
 
 .dashboard-container::-webkit-scrollbar-thumb:hover {
@@ -66,3 +68,5 @@
     border-radius: 10px;
     /* Rounding the corners */
 }
+
+/* ! END SHARED CSS */

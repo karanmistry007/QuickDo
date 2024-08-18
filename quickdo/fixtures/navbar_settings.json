@@ -63,7 +63,7 @@
     "is_standard": 0,
     "item_label": "QuickDo",
     "item_type": "Route",
-    "route": "/quickdo/my-day/list"
+    "route": "/quickdo/my-day"
    },
    {
     "action": null,
