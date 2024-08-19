@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import ToDoLogo from '../../assets/Images/ToDoBlack.svg';
-import UserProfileImage from '../../assets/Images/UserProfile.png';
+import ToDoLogo from '../../assets/Images/Logo.png';
+import UserProfileImage from '../../assets/Images/UserProfile.jpeg';
 import { UserProfileItem } from '../../types/Common';
 
 
@@ -42,7 +42,7 @@ const Navbar = () => {
                     {/* LOGO */}
                     <div className='logo nav-item'>
                         <a href="../../todo/my-day" className="logo-link">
-                            <img src={ToDoLogo} className='w-full max-w-[115px] mix-blend-darken' alt="ToDo Logo" />
+                            <img src={ToDoLogo} className='w-full max-w-[140px] mix-blend-darken' alt="ToDo Logo" />
                         </a>
                     </div>
                     {/* END LOGO */}
@@ -65,7 +65,7 @@ const Navbar = () => {
 
                         {/* USER PROFILE DROPDOWN */}
                         <div className="user-profile-dropdown cursor-pointer w-10 h-10" title='User Profile' onClick={() => setUserProfileDropdownActive(!userProfileDropdownActive)}>
-                            <img className='w-10 h-10 object-cover rounded-full shadow-sm select-none' src={UserProfileImage} alt="User" />
+                            <img className='w-10 h-10 object-cover border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full select-none' src={UserProfileImage} alt="User" />
                         </div>
                         {/* END USER PROFILE DROPDOWN */}
 

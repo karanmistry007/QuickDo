@@ -81,13 +81,13 @@ const Drawer = (props: DrawerProps) => {
             >
 
                 {/* DRAWER */}
-                <div className="drawer bg-[#00000046]  backdrop-blur-[2px] py-5 px-10 w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto sm:rounded-s-3xl">
+                <div className="drawer bg-[#ffffff] border border-[#e2e2e2] py-5 px-10 w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto sm:rounded-s-3xl">
                     
                     {/* DRAWER COLLAPSE */}
-                    <div className="drawer-navbar w-[calc(100%_-_80px)] pb-5 absolute">
+                    <div className="drawer-navbar w-[calc(100dvw_-_80px)] sm:w-[calc(70dvw_-_80px)] md:w-[calc(50dvw_-_80px)] lg:w-[calc(40dvw_-_80px)] xl:w-[calc(30dvw_-_80px)] pb-5 absolute">
                         <div className="nav-container flex justify-between  ">
                             <div
-                                className="drawer-collapse w-fit p-1.5 bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full text-xl cursor-pointer"
+                                className="drawer-collapse border border-[#e2e2e2] w-fit p-1.5 bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full text-xl cursor-pointer"
                                 onClick={() => {
                                     handleSaveToDo(), props.handleDrawerDisplay(false);
                                 }}
@@ -109,7 +109,7 @@ const Drawer = (props: DrawerProps) => {
                     <div className="drawer-content h-full flex flex-col justify-center gap-5 sm:mt-5">
                         
                         {/* TODO DESCRIPTION */}
-                        <div className="todo-description bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md">
+                        <div className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md">
                             <input
                                 type="text"
                                 className="outline-0 placeholder:text-gray-700 py-1.5 px-2 sm:py-2 sm:px-3 w-full rounded-md"
@@ -125,7 +125,7 @@ const Drawer = (props: DrawerProps) => {
 
                         {/* COMPLETE TODO */}
                         <div
-                            className="todo-complete flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md"
+                            className="todo-complete flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md"
                             onClick={() => {
                                 setCompleteTodo(!completeTodo);
                             }}
@@ -146,7 +146,7 @@ const Drawer = (props: DrawerProps) => {
 
                         {/* TODO IMPORTANCE */}
                         <div
-                            className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none"
+                            className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none"
                             onClick={() => {
                                 setImportantTodo(!importantTodo);
                             }}
@@ -165,7 +165,7 @@ const Drawer = (props: DrawerProps) => {
 
                         {/* TODO REMINDER */}
                         <div
-                            className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none"
+                            className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none"
                             onClick={() => {
                                 setIsSendReminder(!isSendReminder);
                             }}
@@ -184,7 +184,7 @@ const Drawer = (props: DrawerProps) => {
                         {/* END TODO REMINDER */}
 
                         {/* TODO DUE DATE */}
-                        <div className="todo-due-data flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none">
+                        <div className="todo-due-data flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none">
                             <div className="due-data cursor-pointer">
                                 <PiCalendarDotsLight
                                     className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
@@ -207,7 +207,7 @@ const Drawer = (props: DrawerProps) => {
                         {/* END TODO DUE DATE */}
 
                         {/* TODO CATEGORIES */}
-                        <div className="todo-categories bg-white py-1.5 px-2 sm:py-2 sm:px-3 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none relative">
+                        <div className="todo-categories bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none relative">
                             <div
                                 className="todo-categories flex item-center gap-2 border-b border-gray-200 pb-2"
                                 onClick={() => {

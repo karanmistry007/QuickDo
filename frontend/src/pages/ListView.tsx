@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useFrappeGetCall } from "frappe-react-sdk";
+import { useFrappeGetCall, useSWRConfig } from "frappe-react-sdk";
 import axios from "axios";
 import CreateTodo from "../components/ui/CreateTodo";
 import ListItem from "../components/ui/ListItem";
@@ -29,6 +29,7 @@ const useSortData: useSortDataItems[] = [
 const ListView = (props: DashboardProps) => {
 
     //? HOOKS
+    const { mutate } = useSWRConfig()
     const [currentSort, setCurrentSort] = useState<string>("creation");
     const [currentSortDirection, setCurrentSortDirection] = useState<string>("asc");
     const [sortDropdownActive, setSortDropdownActive] = useState<boolean>(false);
@@ -141,46 +142,87 @@ const ListView = (props: DashboardProps) => {
         fetchAPI(data);
     };
 
-    // const CallMyHook = () => {
-    //     const { data, error, isLoading, isValidating, mutate } = useFrappeGetCall(
-    //         /** method **/
-    //         `quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]${currentSort && currentSortDirection
-    //             ? "&order_by=" + currentSort + " " + currentSortDirection
-    //             : ""
-    //         }`,
-    //         /** params **/
-    //         // {
-    //         //     doctype: 'User',
-    //         //     fieldname: 'interest',
-    //         //     filters: {
-    //         //         name: 'Administrator',
-    //         //     },
-    //         // }
-    //         /** SWR Key - Optional **/
-    //         /** SWR Configuration Options - Optional **/
-    //     );
 
-    //     if (isLoading) {
-    //         // clg
-    //         return <>Loading</>;
-    //     }
-    //     if (error) {
-    //         console.log(JSON.stringify(error))
-    //         return <>{JSON.stringify(error)}</>;
+    // ! -------------------------------------------------------
+    //? GET TODO LIST WITH CATEGORIES DRIVER API FUNCTION
+    const getTodoWithCaregories = () => {
+        const response = useFrappeGetCall<{ message: any }>(`quickdo.api.get_quickdo_with_categories`,
+            {
+                doctype: "QuickDo",
+                fields: ["*"],
+                order_by: currentSort && currentSortDirection ? currentSort + " " + currentSortDirection : "asc creation",
+            },
+            'todo_with_categories',
+            {
+                dedupingInterval: 1000 * 60 * 5, // 5 minutes - do not refetch if the data is fresh
+            }
+        )
 
-    //     }
-    //     if (data) {
-    //         console.log("datattttt", data)
-    //         return data.message;
+        const finalData: useAllTodoData[] = [];
+        if (response.data?.message) {
+            // console.log("Init", response.data?.message);
 
-    //     }
-    // }
+            response.data.message.map(
+                (todo: useAPITodoListData, index: number) => {
+                    //? PARSE THE TODO HTML
+                    const parser = new DOMParser();
+                    const description_doc = parser.parseFromString(
+                        todo.description,
+                        "text/html"
+                    );
+                    const description: any = description_doc.querySelector(
+                        ".ql-editor.read-mode p"
+                    )?.textContent
+                        ? description_doc.querySelector(".ql-editor.read-mode p")
+                            ?.textContent
+                        : todo.description;
 
-    // CallMyHook();
+                    //? UPDATE THE FINAL DATA
+                    finalData.push({
+                        name: todo.name,
+                        owner: todo.owner,
+                        creation: todo.creation,
+                        modified: todo.modified,
+                        modified_by: todo.modified_by,
+                        completeTodo: todo.status == "Closed" ? true : false,
+                        importantTodo: todo.is_important,
+                        isSendReminder: todo.send_reminder,
+                        descriptionTodo: description || "",
+                        selectDueDate: todo.date || "",
+                        selectedCategories: todo.categories || [],
+                    });
+
+                    //? REFRESH STATE
+                    // handleRefreshState(false);
+                }
+            );
+
+            //? SET THE FINAL DATA TO STATE
+            // setAllTodoData(finalData);
+            // console.log(finalData)
+
+        }
+
+        return finalData
+    }
+
+    // const driverDataList = getTodoWithCaregories();
+    // console.log("test",driverDataList)
+
+    // ! -------------------------------------------------------
+
+
 
     //? TODO LIST API
     useEffect(() => {
 
+        // mutate('todo_with_categories', (res?: { message: any }) => {
+        //     if (res) {
+        //         console.log("ressss", res);
+        //     } else {
+        //         return undefined
+        //     }
+        // });
 
         //? FETCH TODO LIST API MAIN DATA LOADER API FUNCTION
         const fetchAPI = async () => {
