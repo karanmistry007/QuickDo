@@ -46,7 +46,7 @@ const CreateTodo = (props: CreateTodoProps) => {
             setSaveNewTodo(true);
 
             //? SAVE TODO DATA
-            props.haldleNewToDo({
+            props.handleNewToDo({
                 name: "",
                 completeTodo: completeTodo,
                 importantTodo: importantTodo,

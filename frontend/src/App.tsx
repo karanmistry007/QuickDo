@@ -9,7 +9,7 @@ import Navbar from "./components/shared/Navbar";
 import Sidebar from "./components/shared/Sidebar";
 import ListView from "./pages/ListView";
 import PrivateRoutes from "./routes/PrivateRoutes";
-import Logout from './auth/Logout';
+import Logout from './pages/auth/Logout';
 
 
 const App = () => {

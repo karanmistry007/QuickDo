@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useFrappeGetCall, useSWRConfig } from "frappe-react-sdk";
+import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from "frappe-react-sdk";
 import axios from "axios";
 import CreateTodo from "../components/ui/CreateTodo";
 import ListItem from "../components/ui/ListItem";
@@ -58,14 +58,10 @@ const ListView = (props: DashboardProps) => {
         setRefreshState(state);
     };
 
-    //? CATEGORY API DATA
-    const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
+    // ? SAVE TODO HANDLER
+    const { call: saveToDo } = useFrappePostCall('frappe.desk.form.save.savedocs')
 
-    //? ALL TODO API DATA
-    const [allTodoData, setAllTodoData] = useState<useAllTodoData[]>([]);
-
-    //? SAVE TODO HANDLER
-    const handleSaveToDo = (data: useAllTodoData) => {
+    const handleSaveToDo = async (data: useAllTodoData) => {
         //? MAP THE OBJECT TO FRAPPE'S DATA
         const finalData: useAPISaveTodoData = {
             name: data?.name,
@@ -82,85 +78,50 @@ const ListView = (props: DashboardProps) => {
             categories: data.selectedCategories,
         };
 
-        //? FETCH SAVE TODO API FUNCTION
-        const fetchAPI = async (finalData: useAPISaveTodoData) => {
-            try {
-                const response = await axios.post(
-                    `${BASE_URL}/api/method/frappe.desk.form.save.savedocs`,
-                    {
-                        doc: JSON.stringify(finalData),
-                        action: "Save",
-                    },
-                    {
-                        headers: {
-                            Authorization: `token ${API_KEY}:${API_SECRET}`,
-                        },
-                    }
-                );
-
-                //? REFRESH THE STATE
-                if (response.status === 200) {
-                    handleRefreshState(true);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        //? FETCH POST API CALL
-        fetchAPI(finalData);
-    };
-
-    //? DELETE TODO HANDLER
-    const handleDeleteTodo = (data: string) => {
-        //? FETCH DELETE TODO API FUNCTION
-        const fetchAPI = async (data: string) => {
-            try {
-                const response = await axios.post(
-                    `${BASE_URL}/api/method/frappe.client.delete`,
-                    {
-                        doctype: "QuickDo",
-                        name: data,
-                    },
-                    {
-                        headers: {
-                            Authorization: `token ${API_KEY}:${API_SECRET}`,
-                        },
-                    }
-                );
-
-                //? REFRESH THE STATE
-                if (response.status === 200) {
-                    handleRefreshState(true);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        //? CALL FETCH API
-        fetchAPI(data);
-    };
+        return saveToDo({
+            doc: JSON.stringify(finalData),
+            action: "Save",
+        }).then((data) => {
+            mutate("todo_with_categories", data);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
 
 
-    // ! -------------------------------------------------------
-    //? GET TODO LIST WITH CATEGORIES DRIVER API FUNCTION
-    const getTodoWithCaregories = () => {
+    // ? DELETE TODO HANDLER
+    const { call: deleteToDo } = useFrappePostCall('frappe.client.delete')
+
+    const handleDeleteTodo = async (data: string) => {
+
+        return deleteToDo({
+            doctype: "QuickDo",
+            name: data,
+        }).then(() => {
+            mutate('todo_with_categories');
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+
+    //? GET TODO LIST WITH CATEGORIES HANDLER
+    const handleTodoListData = () => {
         const response = useFrappeGetCall<{ message: any }>(`quickdo.api.get_quickdo_with_categories`,
             {
                 doctype: "QuickDo",
                 fields: ["*"],
-                order_by: currentSort && currentSortDirection ? currentSort + " " + currentSortDirection : "asc creation",
+                order_by: currentSort && currentSortDirection ? currentSort + " " + currentSortDirection : "creation asc",
             },
             'todo_with_categories',
             {
-                dedupingInterval: 1000 * 60 * 5, // 5 minutes - do not refetch if the data is fresh
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false
             }
         )
 
         const finalData: useAllTodoData[] = [];
         if (response.data?.message) {
-            // console.log("Init", response.data?.message);
 
             response.data.message.map(
                 (todo: useAPITodoListData, index: number) => {
@@ -196,133 +157,38 @@ const ListView = (props: DashboardProps) => {
                     // handleRefreshState(false);
                 }
             );
-
-            //? SET THE FINAL DATA TO STATE
-            // setAllTodoData(finalData);
-            // console.log(finalData)
-
         }
 
         return finalData
     }
 
-    // const driverDataList = getTodoWithCaregories();
-    // console.log("test",driverDataList)
+    const todoListData = handleTodoListData();
 
-    // ! -------------------------------------------------------
-
-
-
-    //? TODO LIST API
-    useEffect(() => {
-
-        // mutate('todo_with_categories', (res?: { message: any }) => {
-        //     if (res) {
-        //         console.log("ressss", res);
-        //     } else {
-        //         return undefined
-        //     }
-        // });
-
-        //? FETCH TODO LIST API MAIN DATA LOADER API FUNCTION
-        const fetchAPI = async () => {
-            try {
-                const response = await axios.get(
-                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]${currentSort && currentSortDirection
-                        ? "&order_by=" + currentSort + " " + currentSortDirection
-                        : ""
-                    }`,
-                    {
-                        headers: {
-                            Authorization: `token ${API_KEY}:${API_SECRET}`,
-                        },
-                    }
-                );
-
-                //? IF THE API RETURNS DATA MAP THE DATA IN DESIRED FORMAT
-                if (response.data.message) {
-                    const finalData: useAllTodoData[] = [];
-                    response.data.message.map(
-                        (todo: useAPITodoListData, index: number) => {
-                            //? PARSE THE TODO HTML
-                            const parser = new DOMParser();
-                            const description_doc = parser.parseFromString(
-                                todo.description,
-                                "text/html"
-                            );
-                            const description: any = description_doc.querySelector(
-                                ".ql-editor.read-mode p"
-                            )?.textContent
-                                ? description_doc.querySelector(".ql-editor.read-mode p")
-                                    ?.textContent
-                                : todo.description;
-
-                            //? UPDATE THE FINAL DATA
-                            finalData.push({
-                                name: todo.name,
-                                owner: todo.owner,
-                                creation: todo.creation,
-                                modified: todo.modified,
-                                modified_by: todo.modified_by,
-                                completeTodo: todo.status == "Closed" ? true : false,
-                                importantTodo: todo.is_important,
-                                isSendReminder: todo.send_reminder,
-                                descriptionTodo: description || "",
-                                selectDueDate: todo.date || "",
-                                selectedCategories: todo.categories || [],
-                            });
-
-                            //? REFRESH STATE
-                            handleRefreshState(false);
-                        }
-                    );
-
-                    //? SET THE FINAL DATA TO STATE
-                    setAllTodoData(finalData);
-                }
-            } catch (error) {
-                console.log(error);
+    //? GET TODO CATEGORIES HANDLER
+    const handleTodoCategories = () => {
+        `${BASE_URL}/api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`
+        const response = useFrappeGetCall<{ message: any }>(`frappe.client.get_list`,
+            {
+                doctype: "QuickDo Category",
+                fields: ["category"],
+                order_by: "name asc",
+            },
+            'todo_categories',
+            {
+                dedupingInterval: 1000 * 60 * 5, // 5 minutes - do not refetch if the data is fresh
             }
-        };
+        )
 
-        //? CALL THE FETCH API FUNCTION
-        if (refreshState) {
-            fetchAPI();
+        const finalData = [];
+        if (response.data?.message) {
+            finalData.push(...response.data?.message)
         }
-    }, [refreshState]);
 
-    //? CATEGORIES LIST API
-    useEffect(() => {
-        //? FETCH CATEGORY LIST API FUNCTION
-        const fetchAPI = async () => {
-            try {
-                const response = await axios.get(
-                    `${BASE_URL}//api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
-                    {
-                        headers: {
-                            Authorization: `token ${API_KEY}:${API_SECRET}`,
-                        },
-                    }
-                );
+        return finalData
+    }
 
-                //? IF THE API RETURNS DATA
-                if (response.data.message) {
-                    //? SET ALL CATEGORIES STATE
-                    setGetAllCategories(response.data.message);
+    const todoCategories = handleTodoCategories();
 
-                    //? REFRESH STATE
-                    handleRefreshState(false);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        //? CALL THE FETCH API FUNCTION
-        if (refreshState) {
-            fetchAPI();
-        }
-    }, [refreshState]);
 
     return (
         <>
@@ -331,8 +197,8 @@ const ListView = (props: DashboardProps) => {
                 {/* CREATE TODO */}
                 <div className="create-todo-container">
                     <CreateTodo
-                        haldleNewToDo={handleSaveToDo}
-                        allCategories={getAllCategories}
+                        handleNewToDo={handleSaveToDo}
+                        allCategories={todoCategories}
                     />
                 </div>
                 {/* END CREATE TODO */}
@@ -429,11 +295,11 @@ const ListView = (props: DashboardProps) => {
                             {/* END LIST HEADINGS */}
 
                             {/* LIST VIEW ITEMS */}
-                            {allTodoData.map((item, index) => (
+                            {todoListData.map((item, index) => (
                                 <ListItem
                                     key={index}
                                     todoData={item}
-                                    allCategories={getAllCategories}
+                                    allCategories={todoCategories}
                                     handleSaveToDo={handleSaveToDo}
                                     handleDeleteTodo={handleDeleteTodo}
                                 />

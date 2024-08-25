@@ -99,7 +99,7 @@ export type ListViewProps = {
 //? CREATE TODO PROPS
 export type CreateTodoProps = {
     allCategories: useGetAllCategories[],
-    haldleNewToDo: (data: useAllTodoData) => void,
+    handleNewToDo: (data: useAllTodoData) => void,
 }
 
 //? DROPDOWN MULTI SELECT PROPS
