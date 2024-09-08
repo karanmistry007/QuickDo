@@ -1,11 +1,11 @@
 [
  {
   "address": null,
-  "app_logo": "/assets/quickdo/banner_image.png",
+  "app_logo": "/assets/quickdo/logo.png",
   "app_name": "QuickDo",
   "auto_account_deletion": 72,
   "banner_html": null,
-  "banner_image": "/assets/quickdo/banner_image.png",
+  "banner_image": "/assets/quickdo/logo.png",
   "brand_html": null,
   "call_to_action": null,
   "call_to_action_url": null,
@@ -29,7 +29,7 @@
   "home_page": null,
   "indexing_authorization_code": null,
   "indexing_refresh_token": null,
-  "modified": "2024-09-08 21:23:27.832290",
+  "modified": "2024-09-08 21:54:18.457714",
   "name": "Website Settings",
   "navbar_search": 0,
   "navbar_template": null,
