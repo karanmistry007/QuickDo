@@ -255,8 +255,8 @@ website_route_rules = [
 ]
 
 # fixtures = [
-    #     {"dt":"QuickDo Category","filters":[]},
-    #     {"dt":"Navbar Settings"},
-        # {"dt":"Website Settings"},
-    # {"dt": "Kanban Board", "filters": [["reference_doctype", "in", ["QuickDo"]]]},
+#     {"dt":"QuickDo Category","filters":[]},
+#     {"dt":"Navbar Settings"},
+#     {"dt":"Website Settings"},
+#     {"dt": "Kanban Board", "filters": [["reference_doctype", "in", ["QuickDo"]]]},
 # ]
