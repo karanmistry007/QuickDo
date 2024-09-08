@@ -38,7 +38,7 @@
     "route": "https://frappe.io/support"
    }
   ],
-  "modified": "2024-08-16 20:08:11.315722",
+  "modified": "2024-09-08 21:27:49.222020",
   "name": "Navbar Settings",
   "settings_dropdown": [
    {
@@ -63,7 +63,7 @@
     "is_standard": 0,
     "item_label": "QuickDo",
     "item_type": "Route",
-    "route": "/quickdo/my-day"
+    "route": "/quickdo/"
    },
    {
     "action": null,

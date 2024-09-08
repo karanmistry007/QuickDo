@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = "http://127.0.0.1:8001";
+export const BASE_URL = "http://127.0.0.1:8000";
 
 
 
@@ -29,8 +29,8 @@ GetLoginUser();
 
 
 //? API KEY AND SECRET FOR LOCAL
-export const API_KEY = "20cfdc5783eaae5";
-export const API_SECRET = "a355f414129a679";
+export const API_KEY = "4e3347660fe1693";
+export const API_SECRET = "10f83bc39d86ba6";
 
 //? BASE URL 
 // export const BASE_URL = window.location.origin;

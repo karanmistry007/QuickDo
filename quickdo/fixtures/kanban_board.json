@@ -1,0 +1,35 @@
+[
+ {
+  "columns": [
+   {
+    "column_name": "Open",
+    "indicator": "Gray",
+    "order": "[\"ToDo-08-09-24-00002\", \"ToDo-08-09-24-00001\"]",
+    "status": "Active"
+   },
+   {
+    "column_name": "Closed",
+    "indicator": "Gray",
+    "order": "[\"ToDo-08-09-24-00003\"]",
+    "status": "Active"
+   },
+   {
+    "column_name": "Cancelled",
+    "indicator": "Gray",
+    "order": "[\"ToDo-08-09-24-00004\"]",
+    "status": "Active"
+   }
+  ],
+  "docstatus": 0,
+  "doctype": "Kanban Board",
+  "field_name": "status",
+  "fields": "[\"date\", \"is_important\", \"send_reminder\", \"reference_type\"]",
+  "filters": null,
+  "kanban_board_name": "QuickDo Kanban",
+  "modified": "2024-09-08 20:56:43.245103",
+  "name": "QuickDo Kanban",
+  "private": 0,
+  "reference_doctype": "QuickDo",
+  "show_labels": 1
+ }
+]

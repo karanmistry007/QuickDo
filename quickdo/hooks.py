@@ -4,22 +4,28 @@ app_publisher = "Karan Mistry"
 app_description = "Introducing our to-do management app, built with React and the Frappe framework. Simplify your task creation and management with an intuitive interface that allows you to categorize and organize your to-dos efficiently. Boost your productivity and stay on top of your tasks with ease."
 app_email = "ksmistry007@gmail.com"
 app_license = "agpl-3.0"
+app_icon = "fa fa-th"
+app_color = "#e74c3c"
+source_link = "https://github.com/karanmistry007/QuickDo.git"
+app_logo_url = "/assets/quickdo/logo.png"
+app_home = "/app/quickdos"
 
 # Apps
 # ------------------
 
 # required_apps = []
 
+# ? ADD QUICKDO APP TO FRAPPE APPS PAGE
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "quickdo",
-# 		"logo": "/assets/quickdo/logo.png",
-# 		"title": "QuickDo",
-# 		"route": "/quickdo",
-# 		"has_permission": "quickdo.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+    {
+        "name": "quickdo",
+        "logo": "/assets/quickdo/logo.png",
+        "title": "QuickDo",
+        "route": "/app/quickdos",
+        # "has_permission": "quickdo.api.permission.has_app_permission",
+    }
+]
 
 # Includes in <head>
 # ------------------
@@ -243,9 +249,14 @@ app_license = "agpl-3.0"
 # }
 
 
-website_route_rules = [{'from_route': '/quickdo/<path:app_path>', 'to_route': 'quickdo'},]
+# ? SET WEBSITE DYNAMIC ROUTES FOR QUICKDO DASHBOARD
+website_route_rules = [
+    {"from_route": "/quickdo/<path:app_path>", "to_route": "quickdo"},
+]
 
 # fixtures = [
-#     {"dt":"QuickDo Category","filters":[]},
-#     {"dt":"Navbar Settings"},
+    #     {"dt":"QuickDo Category","filters":[]},
+    #     {"dt":"Navbar Settings"},
+        # {"dt":"Website Settings"},
+    # {"dt": "Kanban Board", "filters": [["reference_doctype", "in", ["QuickDo"]]]},
 # ]
