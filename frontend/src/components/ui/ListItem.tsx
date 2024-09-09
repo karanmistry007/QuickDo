@@ -125,13 +125,13 @@ const ListItem = (props: ListItemProps) => {
                             onChange={(e) => {
                                 setDescriptionTodo(e.target.value);
                             }}
-                            onBlur={() => {
-                                handleSaveToDo();
-                            }}
                             onKeyUp={(e) => {
                                 if (e.key === "Enter") {
-                                    handleSaveToDo();
+                                    e.currentTarget.blur();
                                 }
+                            }}
+                            onBlur={() => {
+                                handleSaveToDo();
                             }}
                         />
                     </div>

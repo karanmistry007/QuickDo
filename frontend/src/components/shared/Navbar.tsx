@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ToDoLogo from '../../assets/Images/Logo.png';
 import UserProfileImage from '../../assets/Images/UserProfile.jpeg';
 import { UserProfileItem } from '../../types/Common';
-
+import Cookies from 'js-cookie';
 
 //? USER PROFILE DROPDOWN
 const userProfileItems: UserProfileItem[] = [
@@ -16,9 +16,11 @@ const userProfileItems: UserProfileItem[] = [
 
 const Navbar = () => {
 
+
     //? HOOKS
     const [userProfileDropdownActive, setUserProfileDropdownActive] = useState<boolean>(false);
     const userProfileDropdownRef = useRef<HTMLDivElement>(null);
+    const userImage = Cookies.get('user_image');
 
     const handleUserProfileClickOutside = (event: MouseEvent) => {
         if (userProfileDropdownRef.current && !userProfileDropdownRef.current.contains(event.target as Node)) {
@@ -65,7 +67,7 @@ const Navbar = () => {
 
                         {/* USER PROFILE DROPDOWN */}
                         <div className="user-profile-dropdown cursor-pointer w-10 h-10" title='User Profile' onClick={() => setUserProfileDropdownActive(!userProfileDropdownActive)}>
-                            <img className='w-10 h-10 object-cover border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full select-none' src={UserProfileImage} alt="User" />
+                            <img className='w-10 h-10 object-cover border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full select-none' src={userImage ? userImage : UserProfileImage} alt="User" />
                         </div>
                         {/* END USER PROFILE DROPDOWN */}
 

@@ -10,6 +10,7 @@ import { useGetAllCategories, CreateTodoProps } from "../../types/Common";
 
 
 const CreateTodo = (props: CreateTodoProps) => {
+    
     //? HOOKS
     const [completeTodo, setCompleteTodo] = useState<boolean>(false);
     const [importantTodo, setImportantTodo] = useState<boolean>(false);

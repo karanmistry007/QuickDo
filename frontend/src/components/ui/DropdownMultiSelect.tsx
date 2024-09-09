@@ -14,6 +14,27 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
     const [showCategories, setShowCategories] = useState<boolean>(props.showCategories);
     const [allCategories, setAllCategories] = useState<useGetAllCategories[]>(props.allCategories);
 
+    // ? SET THE DROPDOWN REF FOR AUTO OPENING THE DROPDOWN ON TOP OR BOTTOM
+    const [openDirection, setOpenDirection] = useState('down');
+    useEffect(() => {
+        if (showCategories) {
+            const dropdown = showCategoryDropdownRef.current;
+            if (dropdown) {
+                const rect = dropdown.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const maxHeight = window.innerWidth >= 1280 ? 300 : 250;
+                const spaceBelow = windowHeight - rect.bottom;
+                const spaceAbove = rect.top;
+
+                if (spaceBelow < maxHeight && spaceAbove > spaceBelow) {
+                    setOpenDirection('up');
+                } else {
+                    setOpenDirection('down');
+                }
+            }
+        }
+    }, [showCategories]);
+
     //? UPDATE CATEGORIES AS CATEGORY UPDATES 
     useEffect(() => {
         setAllCategories(props.allCategories);
@@ -90,12 +111,15 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
 
                 {/* CATEGORIES ITEMS DROPDOWN*/}
                 <div
-                    className={`categories-items bg-white p-1 rounded-md flex-col gap-1 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.2)] max-h-[50dvh] overflow-y-scroll absolute z-50 ${props.position
-                        ? props.position == "left"
-                            ? "right-0"
-                            : "left-0"
-                        : "right-0"
-                        } ${showCategories ? "flex" : "hidden"}`}
+                    className={`${openDirection === 'down' ? 'top-full' : 'bottom-full'}
+                        categories-items bg-white p-1 rounded-md flex-col gap-1 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.2)] max-h-[250px] xl:max-h-[300px] overflow-y-scroll absolute z-50 ${props.position
+                            ? props.position == "left"
+                                ? "right-0"
+                                : "left-0"
+                            : "right-0"
+                        } 
+                        ${showCategories ? "flex" : "hidden"}
+                        `}
                 >
                     {allCategories.map((data, index) => (
                         <div

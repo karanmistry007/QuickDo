@@ -5,6 +5,17 @@
 
 /* ! SHARED CSS */
 
+
+/* ? REMOVE THE DEFAULT BEHAVIOR OF THE AUTOCOMPLETE INPUT FIELD */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: inherit;
+}
+
+
 .sidebar-active {
     background-color: #e5e7eb;
     position: relative;
