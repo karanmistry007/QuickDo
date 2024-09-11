@@ -254,7 +254,7 @@ const ListView = (props: DashboardProps) => {
     return (
         <>
             {/* DASHBOARD CONTAINER */}
-            <div className="dashboard-container w-full h-[calc(100dvh_-_80px)] overflow-y-scroll">
+            <div className="dashboard-container w-full h-[calc(100dvh_-_125px)] sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
                 {/* CREATE TODO */}
                 <div className="create-todo-container">
                     <CreateTodo

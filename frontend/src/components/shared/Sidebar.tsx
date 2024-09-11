@@ -76,7 +76,7 @@ export default function Sidebar() {
         <>
             {/* SIDEBAR */}
             <div
-                className={`sidebar py-3 mt-[1px] h-auto sm:h-[calc(100dvh_-_73px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[280px]" : "w-full sm:w-fit"}`}
+                className={`sidebar bg-white z-[9999999] py-3 mt-[1px] h-auto sm:h-[calc(100dvh_-_73px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[280px]" : "w-full sm:w-fit"}`}
             >
 
                 {/* SIDEBAR HEAD */}

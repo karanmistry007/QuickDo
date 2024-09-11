@@ -40,7 +40,7 @@ const Navbar = () => {
     return (
         <>
             {/* NAVBAR */}
-            <header className='p-4 sm:px-8 shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] z-[9999999]'>
+            <header className='p-4 bg-white sm:px-8 shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] z-[9999999]'>
                 <nav className="nav-item-container flex gap-2.5 sm:gap-4 justify-between items-center">
 
                     {/* LOGO */}
