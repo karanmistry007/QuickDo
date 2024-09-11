@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/shared/Navbar";
 import Sidebar from "./components/shared/Sidebar";
-import ListView from "./pages/ListView";
+import ListView from "./pages/Dashboard";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
 

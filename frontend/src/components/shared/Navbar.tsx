@@ -7,7 +7,8 @@ import Cookies from 'js-cookie';
 
 //? USER PROFILE DROPDOWN
 const userProfileItems: UserProfileItem[] = [
-    { name: "Frappe Dashboard", link: "/app/" },
+    { name: "Frappe Dashboard", link: "/app/quickdos" },
+    { name: "Apps", link: "/apps/" },
     { name: "My Profile", link: "/app/user-profile" },
     { name: "My Settings", link: "/app/user" },
     { name: "Logout", link: "/quickdo/auth/logout" },
@@ -21,6 +22,7 @@ const Navbar = () => {
     const [userProfileDropdownActive, setUserProfileDropdownActive] = useState<boolean>(false);
     const userProfileDropdownRef = useRef<HTMLDivElement>(null);
     const userImage = Cookies.get('user_image');
+    const currentUser = Cookies.get('full_name');
 
     const handleUserProfileClickOutside = (event: MouseEvent) => {
         if (userProfileDropdownRef.current && !userProfileDropdownRef.current.contains(event.target as Node)) {
@@ -66,7 +68,7 @@ const Navbar = () => {
                     <div className='user-profile nav-item relative' ref={userProfileDropdownRef}>
 
                         {/* USER PROFILE DROPDOWN */}
-                        <div className="user-profile-dropdown cursor-pointer w-10 h-10" title='User Profile' onClick={() => setUserProfileDropdownActive(!userProfileDropdownActive)}>
+                        <div className="user-profile-dropdown cursor-pointer w-10 h-10" title={`${currentUser?currentUser:"User Profile"}`} onClick={() => setUserProfileDropdownActive(!userProfileDropdownActive)}>
                             <button>
                                 <img className='w-10 h-10 object-cover border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full select-none' src={userImage ? userImage : UserProfileImage} alt="User" />
                             </button>

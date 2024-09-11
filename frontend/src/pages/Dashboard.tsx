@@ -393,7 +393,6 @@ const ListView = (props: DashboardProps) => {
             </div>
             {/* END DASHBOARD CONTAINER */}
 
-
         </>
     );
 };
