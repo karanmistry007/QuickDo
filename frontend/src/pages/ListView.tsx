@@ -350,7 +350,7 @@ const ListView = (props: DashboardProps) => {
                             {/* END LIST HEADINGS */}
 
                             {/* LIST VIEW ITEMS */}
-                            {allTodoData.map((item, index) => (
+                            {allTodoData.length !== 0 ? allTodoData.map((item, index) => (
                                 <ListItem
                                     key={index}
                                     todoData={item}
@@ -358,7 +358,13 @@ const ListView = (props: DashboardProps) => {
                                     handleSaveToDo={handleSaveToDo}
                                     handleDeleteTodo={handleDeleteTodo}
                                 />
-                            ))}
+                            )) :
+                                (<>
+                                    <div className="text-center my-20 sm:my-20 font-semibold">
+                                        No QuickDos Are Available Please Create One!
+                                    </div>
+                                </>)
+                            }
                             {/* END LIST VIEW ITEMS */}
 
                         </div>
