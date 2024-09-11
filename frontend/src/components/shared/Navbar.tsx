@@ -45,7 +45,7 @@ const Navbar = () => {
 
                     {/* LOGO */}
                     <div className='logo nav-item'>
-                        <a href="../../todo/my-day" className="logo-link">
+                        <a href="../../quickdo" className="logo-link">
                             <img src={ToDoLogo} className='w-full max-w-[140px] mix-blend-darken' alt="ToDo Logo" />
                         </a>
                     </div>

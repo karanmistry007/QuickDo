@@ -190,9 +190,9 @@ const ListItem = (props: ListItemProps) => {
                 {/* END CATEGORIES */}
 
                 {/* MORE */}
-                <div className="item more w-[15%] sm:w-[20%] text-center  lg:w-auto lg:col-span-1 justify-self-center">
+                <div className="item more w-[15%] sm:w-[20%] text-right sm:text-center  lg:w-auto lg:col-span-1 justify-self-center">
                     <button
-                        className="more cursor-pointer w-6 h-6"
+                        className="more cursor-pointer h-[18px] w-6 sm:h-6"
                         onClick={() => {
                             handleDrawerDisplay(true);
                         }}
