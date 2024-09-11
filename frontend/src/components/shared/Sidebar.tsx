@@ -63,9 +63,7 @@ export default function Sidebar() {
     }, [window.screen.width]);
 
     //? SIDEBAR COLLAPSE
-    const [sidebarCollapseActive, setSidebarCollapseActive] = useState<boolean>(
-        !isMobileScreen
-    );
+    const [sidebarCollapseActive, setSidebarCollapseActive] = useState<boolean>(false);
 
     //? ACTIVE SIDEBAR ITEMS
     const [activeSidebarItem, setActiveSidebarItem] = useState<string>(
@@ -85,15 +83,16 @@ export default function Sidebar() {
                 <div className="sidebar-head flex gap-2 items-center px-4 sm:px-8 sm:mt-4 w-full">
 
                     {/* SIDEBAR COLLAPSE */}
-                    <div
+                    <button
                         className="sidebar-collapse cursor-pointer"
+                        title={`${sidebarCollapseActive?"Collapse":"Expand"}`}
                         onClick={() => {
                             setSidebarCollapseActive(!sidebarCollapseActive);
                         }}
                     >
                         <FaAngleRight className="w-6 h-6 hidden" />
                         <TbMenu2 className="w-6 h-6" />
-                    </div>
+                    </button>
                     {/* END SIDEBAR COLLAPSE */}
 
                     {/* ACTIVE TAB */}
@@ -121,6 +120,7 @@ export default function Sidebar() {
                                 setActiveSidebarItem(item.name);
                                 navigate(item.link);
                             }}
+                            title={item.name}
                             className={`sidebar-item flex items-center gap-2 w-full hover:bg-gray-200 rounded-r-lg  py-1.5 sm:py-2 ${sidebarCollapseActive ? "px-4 sm:px-8" : "px-4 sm:px-6"} ${activeSidebarItem == item.name ? "sidebar-active" : ""}`}
                         >
                             <div className="sidebar-icon">

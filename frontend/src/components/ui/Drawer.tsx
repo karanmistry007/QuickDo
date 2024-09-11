@@ -86,22 +86,22 @@ const Drawer = (props: DrawerProps) => {
                     {/* DRAWER COLLAPSE */}
                     <div className="drawer-navbar w-[calc(100dvw_-_80px)] sm:w-[calc(70dvw_-_80px)] md:w-[calc(50dvw_-_80px)] lg:w-[calc(40dvw_-_80px)] xl:w-[calc(30dvw_-_80px)] pb-5 absolute">
                         <div className="nav-container flex justify-between  ">
-                            <div
+                            <button
                                 className="drawer-collapse border border-[#e2e2e2] w-fit p-1.5 bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full text-xl cursor-pointer"
                                 onClick={() => {
                                     handleSaveToDo(), props.handleDrawerDisplay(false);
                                 }}
                             >
                                 <FaAngleRight />
-                            </div>
-                            <div
+                            </button>
+                            <button
                                 className="delete-todo w-fit p-1.5 bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full text-xl cursor-pointer"
                                 onClick={() => {
                                     handleDeleteBoxDisplay(true);
                                 }}
                             >
                                 <BsTrash />
-                            </div>
+                            </button>
                         </div>
                     </div>
                     {/* END DRAWER COLLAPSE */}
@@ -131,13 +131,13 @@ const Drawer = (props: DrawerProps) => {
                             }}
                             title="Complete"
                         >
-                            <div
+                            <button
                                 className={`save hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
                             >
                                 <FaCheck
                                     className={`${completeTodo ? "opacity-1" : "opacity-0"}`}
                                 />
-                            </div>
+                            </button>
                             <div className="text">
                                 <h3>Complete ToDo</h3>
                             </div>
@@ -151,14 +151,14 @@ const Drawer = (props: DrawerProps) => {
                                 setImportantTodo(!importantTodo);
                             }}
                         >
-                            <div className="importance cursor-pointer">
+                            <button className="importance cursor-pointer">
                                 <HiOutlineStar
                                     className={`${importantTodo ? "hidden" : "show"} text-2xl`}
                                 />
                                 <BiSolidStar
                                     className={`${importantTodo ? "show" : "hidden"} text-2xl`}
                                 />
-                            </div>
+                            </button>
                             <h3>Importance</h3>
                         </div>
                         {/* END TODO IMPORTANCE */}
@@ -236,7 +236,7 @@ const Drawer = (props: DrawerProps) => {
                                 className={`categories-items bg-white p-1 rounded-md grid grid-cols-2 gap-1 justify-center max-h-[400px] overflow-y-auto`}
                             >
                                 {allCategories.map((data, index) => (
-                                    <div
+                                    <button
                                         key={data.category + index}
                                         className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${selectedCategories.some(
                                             (item) => item["category"] === data.category
@@ -259,7 +259,7 @@ const Drawer = (props: DrawerProps) => {
                                             />
                                         </div>
                                         <div className="category-text">{data.category}</div>
-                                    </div>
+                                    </button>
                                 ))}
                             </div>
                             {/* END CATEGORIES ITEMS DROPDOWN */}

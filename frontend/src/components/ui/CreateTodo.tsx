@@ -107,7 +107,7 @@ const CreateTodo = (props: CreateTodoProps) => {
                         <input
                             type="text"
                             className="outline-0 placeholder:text-gray-700 py-1.5 px-2 w-full"
-                            placeholder="Add a Task..."
+                            placeholder="Add a QuickDo..."
                             name="createTodo"
                             id="createTodo"
                             value={descriptionTodo}

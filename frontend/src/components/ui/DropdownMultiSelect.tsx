@@ -122,7 +122,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                         `}
                 >
                     {allCategories.map((data, index) => (
-                        <div
+                        <button
                             key={data.category + index}
                             className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${selectedCategories.some(
                                 (item) => item["category"] === data.category
@@ -133,7 +133,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                             onClick={() => handleCategoryMultiSelect(data.category)}
                         >
                             <div
-                                className={`save-todo-button bg-transparent rounded-full p-0.5 w-fit text-[10px] border border-gray-600 cursor-pointer`}
+                                className={`bg-transparent rounded-full p-0.5 w-fit text-[10px] border border-gray-600 cursor-pointer`}
                             >
                                 <FaCheck
                                     className={`${selectedCategories.some(
@@ -145,7 +145,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                                 />
                             </div>
                             <div className="category-text">{data.category}</div>
-                        </div>
+                        </button>
                     ))}
                 </div>
                 {/* END CATEGORIES ITEMS DROPDOWN */}

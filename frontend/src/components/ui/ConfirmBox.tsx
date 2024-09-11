@@ -11,12 +11,14 @@ const ConfirmBox = (props: ComfirmBoxProps) => {
                     <div className="confirm-box-card p-5 bg-white shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] rounded-md flex flex-col items-center justify-center gap-3">
                         <div className="confirm w-full flex justify-between items-center">
                             <h4 className="font-medium">Confirm</h4>
-                            <IoClose
-                                className="text-[22px] cursor-pointer"
-                                onClick={() => {
-                                    props.handleConfirmBoxDisplay(false);
-                                }}
-                            />
+                            <button>
+                                <IoClose
+                                    className="text-[22px] cursor-pointer"
+                                    onClick={() => {
+                                        props.handleConfirmBoxDisplay(false);
+                                    }}
+                                />
+                            </button>
                         </div>
                         <h3 className="confirm-message">{props.confirmMessage}</h3>
                         <div className="confirm-buttons self-start flex justify-start gap-2.5">

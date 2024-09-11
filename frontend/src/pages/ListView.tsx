@@ -30,10 +30,10 @@ const ListView = (props: DashboardProps) => {
     const [currentSort, setCurrentSort] = useState<string>("creation");
     const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
     const [sortDropdownActive, setSortDropdownActive] = useState<boolean>(false);
+    const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const sortDropdownRef = useRef<HTMLDivElement>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
-    const [initialLoading, setInitialLoading] = useState<boolean>(true)
 
 
     //? SORT CLICK HANDLER
@@ -272,15 +272,16 @@ const ListView = (props: DashboardProps) => {
                         ref={sortDropdownRef}
                     >
                         {/* SORT DROPDOWN */}
-                        <div className="sort flex justify-start items-center gap-2 px-1 bg-white shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] hover:bg-gray-100 text-nowrap w-fit rounded-md cursor-pointer select-none">
-                            <div
-                                className="sort p-1 md:px-2 md:py-1"
+                        <div className="sort flex justify-start items-center  bg-white shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] text-nowrap w-fit rounded-md cursor-pointer select-none">
+                            <button
+                                className="sort p-1 px-2 md:px-3 md:py-1 hover:bg-gray-100"
+                                title="Sort By"
                                 onClick={() => setSortDropdownActive(!sortDropdownActive)}
                             >
                                 {useSortData.find((item) => item.sort == currentSort)?.name}
-                            </div>
-                            <div
-                                className="sort-direction p-1 md:px-2 md:py-1 border-l"
+                            </button>
+                            <button
+                                className="sort-direction p-1.5 px-2 md:px-3 md:py-1.5 border-l text-[20px] hover:bg-gray-100"
                                 onClick={() => {
                                     setCurrentSortDirection(
                                         currentSortDirection === "asc" ? "desc" : "asc"
@@ -298,7 +299,7 @@ const ListView = (props: DashboardProps) => {
                                     className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
                                         }`}
                                 />
-                            </div>
+                            </button>
                         </div>
                         {/* SORT PROFILE DROPDOWN */}
 
@@ -309,9 +310,9 @@ const ListView = (props: DashboardProps) => {
                         >
                             {useSortData.map((item, index) => {
                                 return item.sort !== currentSort ? (
-                                    <div
+                                    <button
                                         key={index}
-                                        className="user-profile-item hover:bg-gray-100 rounded-md text-nowrap w-full"
+                                        className="user-profile-item text-start hover:bg-gray-100 rounded-md text-nowrap w-full"
                                     >
                                         <div
                                             className="frappe-ui-link w-full p-1 md:px-2 md:py-0.5 block"
@@ -323,7 +324,7 @@ const ListView = (props: DashboardProps) => {
                                         >
                                             {item.name}
                                         </div>
-                                    </div>
+                                    </button>
                                 ) : null;
                             })}
                         </div>

@@ -104,7 +104,7 @@ const ListItem = (props: ListItemProps) => {
 
                 {/* EDIT AND CLOSE TASK */}
                 <div className="item flex justify-start items-center gap-1 sm:gap-5 w-[85%] sm:w-[80%] text-center lg:w-auto lg:col-span-3 xl:col-span-5 xxl:col-span-7">
-                    <div
+                    <button
                         className={`complete hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
                         title="Complete"
                         onClick={() => {
@@ -114,7 +114,7 @@ const ListItem = (props: ListItemProps) => {
                         <FaCheck
                             className={`${completeTodo ? "opacity-1" : "opacity-0"}`}
                         />
-                    </div>
+                    </button>
                     <div className="input w-full">
                         <input
                             type="text"
@@ -157,7 +157,7 @@ const ListItem = (props: ListItemProps) => {
 
                 {/* IMPORTANCE */}
                 <div className="item hidden lg:block lg:col-span-1 justify-self-center">
-                    <div
+                    <button
                         className="importance cursor-pointer"
                         onClick={() => {
                             setImportantTodo(!importantTodo);
@@ -169,7 +169,7 @@ const ListItem = (props: ListItemProps) => {
                         <BiSolidStar
                             className={`${importantTodo ? "show" : "hidden"} text-2xl`}
                         />
-                    </div>
+                    </button>
                 </div>
                 {/* END IMPORTANCE */}
 
@@ -190,15 +190,15 @@ const ListItem = (props: ListItemProps) => {
                 {/* END CATEGORIES */}
 
                 {/* MORE */}
-                <div className="item more  w-[15%] sm:w-[20%] text-center  lg:w-auto lg:col-span-1 justify-self-center">
-                    <div
-                        className="more cursor-pointer"
+                <div className="item more w-[15%] sm:w-[20%] text-center  lg:w-auto lg:col-span-1 justify-self-center">
+                    <button
+                        className="more cursor-pointer w-6 h-6"
                         onClick={() => {
                             handleDrawerDisplay(true);
                         }}
                     >
                         <IoInformationCircle className="text-2xl ml-auto sm:m-auto lg:m-0" />
-                    </div>
+                    </button>
                 </div>
 
                 {/* SHOW DRAWER */}
