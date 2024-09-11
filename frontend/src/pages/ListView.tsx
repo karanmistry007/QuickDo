@@ -28,11 +28,12 @@ const ListView = (props: DashboardProps) => {
 
     //? HOOKS
     const [currentSort, setCurrentSort] = useState<string>("creation");
-    const [currentSortDirection, setCurrentSortDirection] = useState<string>("asc");
+    const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
     const [sortDropdownActive, setSortDropdownActive] = useState<boolean>(false);
     const sortDropdownRef = useRef<HTMLDivElement>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
+    const [initialLoading, setInitialLoading] = useState<boolean>(true)
 
 
     //? SORT CLICK HANDLER
@@ -195,11 +196,16 @@ const ListView = (props: DashboardProps) => {
 
                             //? REFRESH STATE
                             handleRefreshState(false);
+
                         }
                     );
 
+
                     //? SET THE FINAL DATA TO STATE
                     setAllTodoData(finalData);
+
+                    //? SET INITIAL LOADING
+                    setInitialLoading(false);
                 }
             } catch (error) {
                 console.log(error);
@@ -283,13 +289,13 @@ const ListView = (props: DashboardProps) => {
                                 }}
                             >
                                 <BsSortDownAlt
-                                    title="Ascending"
-                                    className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
+                                    title="Descending"
+                                    className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
                                         }`}
                                 />
                                 <BsSortUp
-                                    title="Descending"
-                                    className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
+                                    title="Ascending"
+                                    className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
                                         }`}
                                 />
                             </div>
@@ -350,7 +356,7 @@ const ListView = (props: DashboardProps) => {
                             {/* END LIST HEADINGS */}
 
                             {/* LIST VIEW ITEMS */}
-                            {allTodoData.length !== 0 ? allTodoData.map((item, index) => (
+                            {!initialLoading && (allTodoData.length !== 0 ? allTodoData.map((item, index) => (
                                 <ListItem
                                     key={index}
                                     todoData={item}
@@ -363,7 +369,7 @@ const ListView = (props: DashboardProps) => {
                                     <div className="text-center my-20 sm:my-20 font-semibold">
                                         No QuickDos Are Available Please Create One!
                                     </div>
-                                </>)
+                                </>))
                             }
                             {/* END LIST VIEW ITEMS */}
 
@@ -374,8 +380,19 @@ const ListView = (props: DashboardProps) => {
                 </div>
                 {/* END DASHBOARD */}
 
+                {/* LOADING ANIMATION */}
+                {initialLoading && (
+                    <div className="loader-container absolute w-[100dvw] h-[100dvh] left-0 top-0 flex justify-center items-center">
+                        <div className="loader">
+                        </div>
+                    </div>
+                )}
+                {/* END LOADING ANIMATION */}
+
             </div>
             {/* END DASHBOARD CONTAINER */}
+
+
         </>
     );
 };
