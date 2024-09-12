@@ -87,14 +87,14 @@ export default function Sidebar() {
     const [activeSidebarItem, setActiveSidebarItem] = useState<string>(
         sidebarItems.filter((item) => item.link == location?.pathname)[0]?.name
             ? sidebarItems.filter((item) => item.link == location?.pathname)[0]?.name
-            : "List"
+            : "Dashboard"
     );
 
     return (
         <>
             {/* SIDEBAR */}
             <div
-                className={`sidebar fixed left-0 top-[72px] sm:static bg-white pt-3 sm:py-0 z-[99] border-t h-auto sm:h-[calc(100dvh_-_60px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[200px]" : "w-full sm:w-fit"}`}
+                className={`sidebar fixed left-0 top-[72px] sm:static bg-white pt-3 sm:py-0 z-[99] sm:z-auto border-t h-auto sm:h-[calc(100dvh_-_60px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[200px] sidebar-left-to-right" : "w-full sm:w-fit sidebar-right-to-left"} transition-all duration-300`}
                 onMouseEnter={() => {
                     setSidebarCollapseActive(true);
                 }}

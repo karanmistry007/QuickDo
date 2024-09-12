@@ -321,8 +321,7 @@ const ListView = (props: DashboardProps) => {
 
                         {/* SORT ITEMS */}
                         <div
-                            className={`user-profile-dropdown-items absolute bg-white p-1 rounded-md left-0 top-[36px] flex flex-col justify-center items-start shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] ${sortDropdownActive ? "block" : "hidden"
-                                }`}
+                            className={`user-profile-dropdown-items absolute fade-animation bg-white p-1 rounded-md left-0 top-[36px] flex flex-col justify-center items-start shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] ${sortDropdownActive ? "block" : "hidden"}`}
                         >
                             {useSortData.map((item, index) => {
                                 return item.sort !== currentSort ? (

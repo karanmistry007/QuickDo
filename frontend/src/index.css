@@ -32,7 +32,6 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: inherit;
 }
 
-
 .sidebar-active {
     background-color: #e5e7eb;
     position: relative;
@@ -60,16 +59,13 @@ input:-webkit-autofill:active {
 }
 
 .categories-items::-webkit-scrollbar-thumb:hover {
-    /* Color on hover */
     border-radius: 8px;
 
 }
 
 .categories-items::-webkit-scrollbar-track {
     background: #e5e7eb;
-    /* Background color of the scrollbar track */
     border-radius: 10px;
-    /* Rounding the corners */
 }
 
 
@@ -85,29 +81,34 @@ input:-webkit-autofill:active {
 }
 
 .dashboard-container::-webkit-scrollbar-thumb:hover {
-    /* Color on hover */
     border-radius: 8px;
 
 }
 
 .dashboard-container::-webkit-scrollbar-track {
     background: #fafafa;
-    /* Background color of the scrollbar track */
     border-radius: 10px;
-    /* Rounding the corners */
 }
 
+
+/* ! END SHARED CSS */
+
+
+
+/* ? ANIMATIONS */
+
+/* ? TOASTER */
 .toaster {
     animation: toaster-right-to-left 0.3s ease-in-out;
 }
 
 @keyframes toaster-right-to-left {
     0% {
-        transform: translateX(100%);
+        transform: translateX(100%)translateY(0);
     }
 
     100% {
-        transform: translateX(0);
+        transform: translateX(0)translateY(0);
     }
 }
 
@@ -128,5 +129,105 @@ input:-webkit-autofill:active {
     }
 }
 
+/* ? END TOASTER */
 
-/* ! END SHARED CSS */
+
+/* ? SIDEBAR */
+.sidebar-left-to-right {
+    animation: sidebar-left-to-right 0.2s ease-in-out;
+}
+
+@keyframes sidebar-left-to-right {
+    0% {
+        width: 60px;
+    }
+
+    100% {
+        width: 200px;
+    }
+}
+
+/* .sidebar-right-to-left {
+    animation: sidebar-right-to-left 0.2s ease-in-out;
+} */
+
+@keyframes sidebar-right-to-left {
+    0% {
+        width: 200px;
+    }
+
+    100% {
+        width: 60px;
+    }
+}
+
+/* ? END SIDEBAR */
+
+
+/* ? COMMON */
+.scale-animation {
+    animation: scale-increasing 0.2s ease-in-out;
+}
+
+@keyframes scale-increasing {
+    0% {
+        scale: 0;
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+
+.fade-animation {
+    animation: fade 0.2s ease-in-out;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.right-to-left-animation {
+    animation: right-to-left 0.2s ease-in-out;
+}
+
+@keyframes right-to-left {
+    0% {
+        transform: translateX(100%)translateY(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0)translateY(0);
+        opacity: 1;
+    }
+}
+
+.top-to-bottom-animation {
+    animation: top-to-bottom 0.2s ease-in-out;
+}
+
+@keyframes top-to-bottom {
+    0% {
+        transform: translateX(0)translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0)translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ? COMMON */
+
+/* ? END ANIMATIONS */

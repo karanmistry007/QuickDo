@@ -40,7 +40,7 @@ const App = () => {
 							{/* PUBLIC ROUTES */}
 							<Route
 								path="/"
-								element={<Navigate to="/list" replace />}
+								element={<Navigate to="/dashboard" replace />}
 							/>
 							<Route
 								path="/auth/logout"

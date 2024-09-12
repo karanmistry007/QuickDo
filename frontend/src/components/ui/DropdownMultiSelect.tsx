@@ -112,7 +112,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                 {/* CATEGORIES ITEMS DROPDOWN*/}
                 <div
                     className={`${openDirection === 'down' ? 'top-full' : 'bottom-full'}
-                        categories-items bg-white p-1 rounded-md flex-col gap-1 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.2)] max-h-[250px] xl:max-h-[300px] overflow-y-scroll absolute z-50 ${props.position
+                        categories-items fade-animation bg-white p-1 rounded-md flex-col gap-1 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.2)] max-h-[250px] xl:max-h-[300px] overflow-y-scroll absolute z-50 ${props.position
                             ? props.position == "left"
                                 ? "right-0"
                                 : "left-0"

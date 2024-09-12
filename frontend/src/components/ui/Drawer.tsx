@@ -77,11 +77,11 @@ const Drawer = (props: DrawerProps) => {
         <>
             {/* DRAWER CONTAINER */}
             <div
-                className={`drawer-container bg-[#00000048] w-[100dvw] h-[100dvh] fixed left-0 top-0 z-50`}
+                className={`drawer-container bg-[#00000048] w-[100dvw] h-[100dvh] fixed left-0 top-0 z-[999]`}
             >
 
                 {/* DRAWER */}
-                <div className="drawer bg-[#ffffff] border border-[#e2e2e2] py-5 px-10 w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto sm:rounded-s-3xl">
+                <div className="drawer right-to-left-animation bg-[#ffffff] border border-[#e2e2e2] py-5 px-10 w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto sm:rounded-s-3xl">
                     
                     {/* DRAWER COLLAPSE */}
                     <div className="drawer-navbar w-[calc(100dvw_-_80px)] sm:w-[calc(70dvw_-_80px)] md:w-[calc(50dvw_-_80px)] lg:w-[calc(40dvw_-_80px)] xl:w-[calc(30dvw_-_80px)] pb-5 absolute">
