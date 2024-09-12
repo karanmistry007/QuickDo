@@ -12,6 +12,7 @@ import {
     useAPITodoListData,
     DashboardProps,
 } from "../types/Common";
+import Toaster from "../components/ui/Toaster";
 
 
 // ? DEFINE SORTING DATA
@@ -34,6 +35,13 @@ const ListView = (props: DashboardProps) => {
     const sortDropdownRef = useRef<HTMLDivElement>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
+
+    // ? TOASTER HANDLERS
+    const [showToaster, setShowToaster] = useState<boolean>(false);
+    const [toasterMessage, setToasterMessage] = useState<string>("");
+    const handleClose = (data: boolean) => {
+        setShowToaster(data);
+    };
 
 
     //? SORT CLICK HANDLER
@@ -105,6 +113,8 @@ const ListView = (props: DashboardProps) => {
                 }
             } catch (error) {
                 console.log(error);
+                setShowToaster(true);
+                setToasterMessage("Error Saving The QuickDo!");
             }
         };
 
@@ -136,6 +146,8 @@ const ListView = (props: DashboardProps) => {
                 }
             } catch (error) {
                 console.log(error);
+                setShowToaster(true);
+                setToasterMessage("Error Deleting The QuickDo!");
             }
         };
 
@@ -209,6 +221,8 @@ const ListView = (props: DashboardProps) => {
                 }
             } catch (error) {
                 console.log(error);
+                setShowToaster(true);
+                setToasterMessage("Error Loading QuickDos!");
             }
         };
 
@@ -242,6 +256,8 @@ const ListView = (props: DashboardProps) => {
                 }
             } catch (error) {
                 console.log(error);
+                setShowToaster(true);
+                setToasterMessage("Error Loading Categories!");
             }
         };
 
@@ -258,7 +274,7 @@ const ListView = (props: DashboardProps) => {
                 {/* CREATE TODO */}
                 <div className="create-todo-container">
                     <CreateTodo
-                        haldleNewToDo={handleSaveToDo}
+                        handleNewToDo={handleSaveToDo}
                         allCategories={getAllCategories}
                     />
                 </div>
@@ -390,9 +406,20 @@ const ListView = (props: DashboardProps) => {
                 )}
                 {/* END LOADING ANIMATION */}
 
+                {/* TOASTER */}
+                {showToaster && (
+                    <Toaster
+                        message={toasterMessage}
+                        onClose={handleClose}
+                        duration={5000}
+                        // color="bg-blue-400"
+                        color="bg-red-400"
+                    />
+                )}
+                {/* TOASTER */}
+
             </div>
             {/* END DASHBOARD CONTAINER */}
-
         </>
     );
 };

@@ -97,4 +97,36 @@ input:-webkit-autofill:active {
     /* Rounding the corners */
 }
 
+.toaster {
+    animation: toaster-right-to-left 0.3s ease-in-out;
+}
+
+@keyframes toaster-right-to-left {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .toaster {
+        animation: toaster-bottom-to-top 0.3s ease-in-out;
+    }
+}
+
+
+@keyframes toaster-bottom-to-top {
+    0% {
+        transform: translateX(-50%)translateY(100%);
+    }
+
+    100% {
+        transform: translateX(-50%)translateY(0);
+    }
+}
+
+
 /* ! END SHARED CSS */
