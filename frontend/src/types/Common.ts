@@ -69,7 +69,8 @@ export interface UserProfileItem {
 export interface SidebarItem {
     name: string,
     link: string,
-    icon: IconType
+    icon: IconType,
+    activeIcon: IconType
 }
 
 // ! END COMMON
@@ -78,8 +79,8 @@ export interface SidebarItem {
 // ! PROPS
 
 //? PRIVATE ROUTES PROPS
-export type PrivateRoutesProps ={
-    element:JSX.Element
+export type PrivateRoutesProps = {
+    element: JSX.Element
 }
 
 //? DASHBOARD PROPS 

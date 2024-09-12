@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import { FaAngleRight } from "react-icons/fa6";
 import { TbMenu2 } from "react-icons/tb";
-import { MdOutlineToday } from "react-icons/md";
-import { RiInboxArchiveLine } from "react-icons/ri";
-import { MdOutlineStarBorder } from "react-icons/md";
-import { RxCalendar } from "react-icons/rx";
-import { IoHomeOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SidebarItem } from "../../types/Common";
-
-import { RxDashboard } from "react-icons/rx";
-import { FaListOl } from "react-icons/fa";
-import { VscListOrdered } from "react-icons/vsc";
-
-import { GiPieChart } from "react-icons/gi";
-
 import { PiChartDonutDuotone } from "react-icons/pi";
+import { BiSolidDoughnutChart } from "react-icons/bi";
+import { VscListOrdered } from "react-icons/vsc";
+import { FaListOl } from "react-icons/fa";
+import { LuLayoutGrid } from "react-icons/lu";
+import { BsFillGridFill } from "react-icons/bs";
 import { BsCalendar4Range } from "react-icons/bs";
-import { BsKanban } from "react-icons/bs";
-import { PiKanbanLight } from "react-icons/pi";
+import { BsCalendarRangeFill } from "react-icons/bs";
 import { PiKanbanDuotone } from "react-icons/pi";
+import { PiKanbanFill } from "react-icons/pi";
 import { MdOutlineCategory } from "react-icons/md";
+import { MdCategory } from "react-icons/md";
+
 
 //? SIDEBAR ITEMS
 const sidebarItems: SidebarItem[] = [
@@ -28,31 +23,37 @@ const sidebarItems: SidebarItem[] = [
         name: "Dashboard",
         link: "/dashboard",
         icon: PiChartDonutDuotone,
+        activeIcon: BiSolidDoughnutChart,
     },
     {
         name: "List",
         link: "/list",
         icon: VscListOrdered,
+        activeIcon: FaListOl,
     },
     {
         name: "Grid",
         link: "/grid",
-        icon: RxDashboard,
+        icon: LuLayoutGrid,
+        activeIcon: BsFillGridFill,
     },
     {
         name: "Calendar",
         link: "/calendar",
         icon: BsCalendar4Range,
+        activeIcon: BsCalendarRangeFill,
     },
     {
         name: "Kanban",
         link: "/kanban",
         icon: PiKanbanDuotone,
+        activeIcon: PiKanbanFill,
     },
     {
         name: "Category",
         link: "/category",
         icon: MdOutlineCategory,
+        activeIcon: MdCategory,
     },
 ];
 
@@ -86,7 +87,7 @@ export default function Sidebar() {
     const [activeSidebarItem, setActiveSidebarItem] = useState<string>(
         sidebarItems.filter((item) => item.link == location?.pathname)[0]?.name
             ? sidebarItems.filter((item) => item.link == location?.pathname)[0]?.name
-            : "My Day"
+            : "List"
     );
 
     return (
@@ -147,14 +148,15 @@ export default function Sidebar() {
                             className={`sidebar-item flex items-center gap-2 w-full hover:bg-gray-200 rounded-r-lg  py-1.5 sm:py-2 ${sidebarCollapseActive ? "px-4 sm:px-4" : "px-4 sm:px-4"} ${activeSidebarItem == item.name ? "sidebar-active" : ""}`}
                         >
                             <div className="sidebar-icon">
+                                <item.activeIcon
+                                    className={`${activeSidebarItem == item.name ? "show" : "hidden"} h-6 w-6`}
+                                />
                                 <item.icon
-                                    className={`${sidebarCollapseActive ? "w-6 h-6" : "w-6 h-6"
-                                        }`}
+                                    className={`${activeSidebarItem == item.name ? "hidden" : "show"} h-6 w-6`}
                                 />
                             </div>
                             <div
-                                className={`sidebar-link select-none ${sidebarCollapseActive ? "" : "hidden"
-                                    }`}
+                                className={`sidebar-link select-none ${sidebarCollapseActive ? "" : "hidden"}`}
                             >
                                 {item.name}
                             </div>
