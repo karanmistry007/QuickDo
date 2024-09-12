@@ -9,33 +9,50 @@ import { IoHomeOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SidebarItem } from "../../types/Common";
 
+import { RxDashboard } from "react-icons/rx";
+import { FaListOl } from "react-icons/fa";
+import { VscListOrdered } from "react-icons/vsc";
+
+import { GiPieChart } from "react-icons/gi";
+
+import { PiChartDonutDuotone } from "react-icons/pi";
+import { BsCalendar4Range } from "react-icons/bs";
+import { BsKanban } from "react-icons/bs";
+import { PiKanbanLight } from "react-icons/pi";
+import { PiKanbanDuotone } from "react-icons/pi";
+import { MdOutlineCategory } from "react-icons/md";
 
 //? SIDEBAR ITEMS
 const sidebarItems: SidebarItem[] = [
     {
-        name: "My Day",
-        link: "/my-day",
-        icon: MdOutlineToday,
+        name: "Dashboard",
+        link: "/dashboard",
+        icon: PiChartDonutDuotone,
     },
     {
-        name: "Important",
-        link: "/important",
-        icon: MdOutlineStarBorder,
+        name: "List",
+        link: "/list",
+        icon: VscListOrdered,
     },
     {
-        name: "Inbox",
-        link: "/inbox",
-        icon: RiInboxArchiveLine,
+        name: "Grid",
+        link: "/grid",
+        icon: RxDashboard,
     },
     {
-        name: "Planned",
-        link: "/planned",
-        icon: RxCalendar,
+        name: "Calendar",
+        link: "/calendar",
+        icon: BsCalendar4Range,
     },
     {
-        name: "Tasks",
-        link: "/tasks",
-        icon: IoHomeOutline,
+        name: "Kanban",
+        link: "/kanban",
+        icon: PiKanbanDuotone,
+    },
+    {
+        name: "Category",
+        link: "/category",
+        icon: MdOutlineCategory,
     },
 ];
 
@@ -76,16 +93,22 @@ export default function Sidebar() {
         <>
             {/* SIDEBAR */}
             <div
-                className={`sidebar bg-white z-[9999999] py-3 mt-[1px] h-auto sm:h-[calc(100dvh_-_73px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[280px]" : "w-full sm:w-fit"}`}
+                className={`sidebar fixed left-0 top-[72px] sm:static bg-white pt-3 sm:py-0 z-[99] border-t h-auto sm:h-[calc(100dvh_-_60px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[200px]" : "w-full sm:w-fit"}`}
+                onMouseEnter={() => {
+                    setSidebarCollapseActive(true);
+                }}
+                onMouseLeave={() => {
+                    setSidebarCollapseActive(false);
+                }}
             >
 
                 {/* SIDEBAR HEAD */}
-                <div className="sidebar-head flex gap-2 items-center px-4 sm:px-8 sm:mt-4 w-full">
+                <div className="sidebar-head pb-3 sm:py-0 flex gap-2 items-center px-4 sm:px-8 sm:mt-4 w-full sm:hidden">
 
                     {/* SIDEBAR COLLAPSE */}
                     <button
                         className="sidebar-collapse cursor-pointer"
-                        title={`${sidebarCollapseActive?"Collapse":"Expand"}`}
+                        title={`${sidebarCollapseActive ? "Collapse" : "Expand"}`}
                         onClick={() => {
                             setSidebarCollapseActive(!sidebarCollapseActive);
                         }}
@@ -109,7 +132,7 @@ export default function Sidebar() {
 
                 {/* SIDEBAR ITEM CONTAINER */}
                 <div
-                    className={`sidebar-item-container flex flex-col gap-1 items-center mt-2 sm:mt-4 rounded-lg ${sidebarCollapseActive
+                    className={`sidebar-item-container flex flex-col gap-1 items-center my-2 sm:my-4 rounded-lg ${sidebarCollapseActive
                         ? "w-full sm:max-w-[280px]"
                         : "hidden sm:flex w-fit"}`}
                 >
@@ -121,11 +144,11 @@ export default function Sidebar() {
                                 navigate(item.link);
                             }}
                             title={item.name}
-                            className={`sidebar-item flex items-center gap-2 w-full hover:bg-gray-200 rounded-r-lg  py-1.5 sm:py-2 ${sidebarCollapseActive ? "px-4 sm:px-8" : "px-4 sm:px-6"} ${activeSidebarItem == item.name ? "sidebar-active" : ""}`}
+                            className={`sidebar-item flex items-center gap-2 w-full hover:bg-gray-200 rounded-r-lg  py-1.5 sm:py-2 ${sidebarCollapseActive ? "px-4 sm:px-4" : "px-4 sm:px-4"} ${activeSidebarItem == item.name ? "sidebar-active" : ""}`}
                         >
                             <div className="sidebar-icon">
                                 <item.icon
-                                    className={`${sidebarCollapseActive ? "w-6 h-6" : "w-10 h-10"
+                                    className={`${sidebarCollapseActive ? "w-6 h-6" : "w-6 h-6"
                                         }`}
                                 />
                             </div>

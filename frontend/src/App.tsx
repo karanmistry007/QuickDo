@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/shared/Navbar";
 import Sidebar from "./components/shared/Sidebar";
-import ListView from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
 
@@ -40,7 +40,7 @@ const App = () => {
 							{/* PUBLIC ROUTES */}
 							<Route
 								path="/"
-								element={<Navigate to="/my-day" replace />}
+								element={<Navigate to="/list" replace />}
 							/>
 							<Route
 								path="/auth/logout"
@@ -50,24 +50,28 @@ const App = () => {
 
 							{/* PRIVATE ROUTES */}
 							<Route
-								path="/my-day"
-								element={<PrivateRoutes element={<ListView name="My Day" link="/my-day" />} />}
+								path="/dashboard"
+								element={<PrivateRoutes element={<Dashboard name="Dashboard" link="/dashboard" />} />}
 							/>
 							<Route
-								path="/important"
-								element={<PrivateRoutes element={<ListView name="Important" link="/important" />} />}
+								path="/list"
+								element={<PrivateRoutes element={<Dashboard name="List" link="/list" />} />}
 							/>
 							<Route
-								path="/inbox"
-								element={<PrivateRoutes element={<ListView name="Inbox" link="/inbox" />} />}
+								path="/grid"
+								element={<PrivateRoutes element={<Dashboard name="Grid" link="/grid" />} />}
 							/>
 							<Route
-								path="/planned"
-								element={<PrivateRoutes element={<ListView name="Planned" link="/planned" />} />}
+								path="/calendar"
+								element={<PrivateRoutes element={<Dashboard name="Calendar" link="/calendar" />} />}
 							/>
 							<Route
-								path="/tasks"
-								element={<PrivateRoutes element={<ListView name="Tasks" link="/tasks" />} />}
+								path="/kanban"
+								element={<PrivateRoutes element={<Dashboard name="Kanban" link="/kanban" />} />}
+							/>
+							<Route
+								path="/category"
+								element={<PrivateRoutes element={<Dashboard name="Category" link="/category" />} />}
 							/>
 							{/* END PRIVATE ROUTES */}
 
