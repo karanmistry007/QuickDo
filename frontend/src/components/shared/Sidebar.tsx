@@ -133,7 +133,7 @@ export default function Sidebar() {
 
                 {/* SIDEBAR ITEM CONTAINER */}
                 <div
-                    className={`sidebar-item-container flex flex-col gap-1 items-center my-2 sm:my-4 rounded-lg ${sidebarCollapseActive
+                    className={`sidebar-item-container top-to-bottom-animation sm:animate-none flex flex-col gap-1 items-center my-2 sm:my-4 rounded-lg ${sidebarCollapseActive
                         ? "w-full sm:max-w-[280px]"
                         : "hidden sm:flex w-fit"}`}
                 >

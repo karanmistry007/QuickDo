@@ -99,7 +99,7 @@ input:-webkit-autofill:active {
 
 /* ? TOASTER */
 .toaster {
-    animation: toaster-right-to-left 0.3s ease-in-out;
+    animation: toaster-bottom-to-top 0.3s ease-in-out;
 }
 
 @keyframes toaster-right-to-left {
@@ -112,9 +112,9 @@ input:-webkit-autofill:active {
     }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (min-width: 640px) {
     .toaster {
-        animation: toaster-bottom-to-top 0.3s ease-in-out;
+    animation: toaster-right-to-left 0.3s ease-in-out;
     }
 }
 
@@ -133,8 +133,11 @@ input:-webkit-autofill:active {
 
 
 /* ? SIDEBAR */
-.sidebar-left-to-right {
-    animation: sidebar-left-to-right 0.2s ease-in-out;
+
+@media screen and (min-width: 640px) {
+    .sidebar-left-to-right {
+        animation: sidebar-left-to-right 0.2s ease-in-out;
+    }
 }
 
 @keyframes sidebar-left-to-right {
@@ -147,9 +150,11 @@ input:-webkit-autofill:active {
     }
 }
 
-/* .sidebar-right-to-left {
-    animation: sidebar-right-to-left 0.2s ease-in-out;
-} */
+/* @media screen and (min-width: 640px) { */
+    /* .sidebar-right-to-left {
+        animation: sidebar-right-to-left 0.2s ease-in-out;
+        } */
+/* } */
 
 @keyframes sidebar-right-to-left {
     0% {
