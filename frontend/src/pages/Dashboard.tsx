@@ -13,8 +13,6 @@ import { StatusDonutChart } from "@/components/charts/StatusDonutChart";
 import { ImportancePercentageChart } from "@/components/charts/ImportancePercentageChart";
 
 
-type Props = {}
-
 const Dashboard = (props: DashboardProps) => {
     return (
         <>
@@ -56,8 +54,8 @@ const Dashboard = (props: DashboardProps) => {
                 {/* CHART ROW 2 */}
                 <div className="line-chart-section m-4 sm:m-6 xl:m-10 grid xl:grid-cols-3 gap-4 sm:gap-6 xl:gap-10">
                     <CategoryBarChart />
-                    <StatusDonutChart/>
-                    <ImportancePercentageChart/>
+                    <StatusDonutChart />
+                    <ImportancePercentageChart />
                 </div>
                 {/* END CHART ROW 2 */}
 

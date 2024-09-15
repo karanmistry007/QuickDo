@@ -39,7 +39,7 @@ input:-webkit-autofill:active {
 
 .sidebar-active::before {
     content: "";
-    background-color: rgb(0, 0, 0);
+    background-color: #3c50e0;
     height: 100%;
     width: 4px;
     border-radius: 8px;
@@ -264,3 +264,4 @@ input:-webkit-autofill:active {
         --chart-5: 340 75% 55%;
     }
 }
+

@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import ListView from "./pages/ListView";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
+import CalendarView from "./pages/CalendarView";
 
 
 const App = () => {
@@ -64,7 +65,7 @@ const App = () => {
 							/>
 							<Route
 								path="/calendar"
-								element={<PrivateRoutes element={<ListView name="Calendar" link="/calendar" />} />}
+								element={<PrivateRoutes element={<CalendarView name="Calendar" link="/calendar" />} />}
 							/>
 							<Route
 								path="/kanban"
