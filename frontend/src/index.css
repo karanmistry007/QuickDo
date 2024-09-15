@@ -114,7 +114,7 @@ input:-webkit-autofill:active {
 
 @media screen and (min-width: 640px) {
     .toaster {
-    animation: toaster-right-to-left 0.3s ease-in-out;
+        animation: toaster-right-to-left 0.3s ease-in-out;
     }
 }
 
@@ -151,7 +151,7 @@ input:-webkit-autofill:active {
 }
 
 /* @media screen and (min-width: 640px) { */
-    /* .sidebar-right-to-left {
+/* .sidebar-right-to-left {
         animation: sidebar-right-to-left 0.2s ease-in-out;
         } */
 /* } */
@@ -236,3 +236,31 @@ input:-webkit-autofill:active {
 /* ? COMMON */
 
 /* ? END ANIMATIONS */
+
+
+/* ! SHADCN */
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+    }
+}
+
+
+@layer base {
+    :root {
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
+
+    .dark {
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
+}

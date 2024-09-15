@@ -8,6 +8,7 @@ import {
 import Navbar from "./components/shared/Navbar";
 import Sidebar from "./components/shared/Sidebar";
 import Dashboard from "./pages/Dashboard";
+import ListView from "./pages/ListView";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
 
@@ -55,23 +56,23 @@ const App = () => {
 							/>
 							<Route
 								path="/list"
-								element={<PrivateRoutes element={<Dashboard name="List" link="/list" />} />}
+								element={<PrivateRoutes element={<ListView name="List" link="/list" />} />}
 							/>
 							<Route
 								path="/grid"
-								element={<PrivateRoutes element={<Dashboard name="Grid" link="/grid" />} />}
+								element={<PrivateRoutes element={<ListView name="Grid" link="/grid" />} />}
 							/>
 							<Route
 								path="/calendar"
-								element={<PrivateRoutes element={<Dashboard name="Calendar" link="/calendar" />} />}
+								element={<PrivateRoutes element={<ListView name="Calendar" link="/calendar" />} />}
 							/>
 							<Route
 								path="/kanban"
-								element={<PrivateRoutes element={<Dashboard name="Kanban" link="/kanban" />} />}
+								element={<PrivateRoutes element={<ListView name="Kanban" link="/kanban" />} />}
 							/>
 							<Route
 								path="/category"
-								element={<PrivateRoutes element={<Dashboard name="Category" link="/category" />} />}
+								element={<PrivateRoutes element={<ListView name="Category" link="/category" />} />}
 							/>
 							{/* END PRIVATE ROUTES */}
 
