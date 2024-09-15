@@ -19,7 +19,7 @@ const Dashboard = (props: DashboardProps) => {
     return (
         <>
             {/* DASHBOARD CONTAINER  */}
-            <div className="dashboard-container w-full h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
+            <div className="dashboard-container  sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
 
                 {/* NUMBER CARD SECTION */}
                 <div className="number-card-section m-4 sm:m-6 xl:m-10 grid sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 xl:gap-10">

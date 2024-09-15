@@ -34,7 +34,7 @@ const App = () => {
 			>
 				<Router basename="/quickdo">
 					<Navbar />
-					<div className="sm:flex">
+					{/* <div className="sm:flex"> */}
 						<Sidebar />
 						<Routes>
 
@@ -77,7 +77,7 @@ const App = () => {
 							{/* END PRIVATE ROUTES */}
 
 						</Routes>
-					</div>
+					{/* </div> */}
 				</Router>
 			</FrappeProvider>
 		</>

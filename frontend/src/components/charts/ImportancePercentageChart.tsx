@@ -27,7 +27,7 @@ import {
 
 
 const chartData = [
-    { browser: "important", quickdo: 520, fill: "#3c50e0" },
+    { browser: "important", quickdo: 520,total:800, fill: "#3c50e0" },
 ]
 
 const chartConfig = {
@@ -111,9 +111,11 @@ export const ImportancePercentageChart = () => {
                                                 <tspan
                                                     x={viewBox.cx}
                                                     y={viewBox.cy}
-                                                    className="fill-foreground text-4xl font-bold"
+                                                    className="fill-foreground text-2xl font-bold"
                                                 >
                                                     {chartData[0].quickdo.toLocaleString()}
+                                                    /
+                                                    {chartData[0].total.toLocaleString()}
                                                 </tspan>
                                                 <tspan
                                                     x={viewBox.cx}
