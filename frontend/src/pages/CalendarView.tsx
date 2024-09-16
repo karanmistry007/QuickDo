@@ -161,7 +161,7 @@ const CalendarView = (props: DashboardProps) => {
         } else if (event.sent_reminder) {
             backgroundColor = "#EC864B";
         } else {
-            backgroundColor = "#449CF0";
+            backgroundColor = "#3c50e0";
         }
 
         return {

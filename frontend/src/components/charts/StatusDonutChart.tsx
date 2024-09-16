@@ -42,11 +42,11 @@ const chartConfig = {
     },
     completed: {
         label: "Completed",
-        color: "#33ff5cd6",
+        color: "#29CD42",
     },
     cancelled: {
         label: "Cancelled",
-        color: "#ea2121e0",
+        color: "#CB2929",
     },
 } satisfies ChartConfig
 
