@@ -73,6 +73,18 @@ export interface SidebarItem {
     activeIcon: IconType;
 }
 
+
+//? CALENDAR VIEW
+export interface CalendarEvents {
+    title: string;
+    start: Date;
+    end: Date;
+    color: string;
+    is_important: boolean;
+    sent_reminder: boolean;
+}
+
+
 // ! END COMMON
 
 // ! PROPS

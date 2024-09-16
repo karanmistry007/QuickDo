@@ -12,7 +12,7 @@ import {
     useAPITodoListData,
     DashboardProps,
 } from "../types/Common";
-import Toaster from "../components/ui/Toaster";
+import Toaster from "../components/ui/KaranToaster";
 
 
 // ? DEFINE SORTING DATA

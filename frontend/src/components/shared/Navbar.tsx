@@ -68,7 +68,7 @@ const Navbar = () => {
                     <div className='user-profile nav-item relative' ref={userProfileDropdownRef}>
 
                         {/* USER PROFILE DROPDOWN */}
-                        <div className="user-profile-dropdown cursor-pointer w-10 h-10" title={`${currentUser?currentUser:"User Profile"}`} onClick={() => setUserProfileDropdownActive(!userProfileDropdownActive)}>
+                        <div className="user-profile-dropdown cursor-pointer w-10 h-10" title={`${currentUser ? currentUser : "User Profile"}`} onClick={() => setUserProfileDropdownActive(!userProfileDropdownActive)}>
                             <button>
                                 <img className='w-10 h-10 object-cover border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full select-none' src={userImage ? userImage : UserProfileImage} alt="User" />
                             </button>
@@ -76,7 +76,7 @@ const Navbar = () => {
                         {/* END USER PROFILE DROPDOWN */}
 
                         {/* USER PROFILE ITEMS */}
-                        <div className={`user-profile-dropdown-items absolute fade-animation bg-white p-1 rounded-md right-0 top-10 sm:top-12 flex flex-col justify-center items-start shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] ${userProfileDropdownActive ? "block" : "hidden"}`}>
+                        <div className={`user-profile-dropdown-items z-[99] absolute fade-animation bg-white p-1 rounded-md right-0 top-10 sm:top-12 flex flex-col justify-center items-start shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] ${userProfileDropdownActive ? "block" : "hidden"}`}>
                             {userProfileItems.map((item, index) => (
                                 <div key={index} className="user-profile-item text-start hover:bg-gray-100 rounded-md text-nowrap w-full">
                                     <a href={item.link} className="frappe-ui-link w-full p-1 md:px-2 md:py-1 block">

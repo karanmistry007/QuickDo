@@ -12,6 +12,7 @@ import ListView from "./pages/ListView";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
 import CalendarView from "./pages/CalendarView";
+import { Toaster } from "./components/ui/toaster";
 
 
 const App = () => {
@@ -80,6 +81,7 @@ const App = () => {
 						</Routes>
 					{/* </div> */}
 				</Router>
+				<Toaster />
 			</FrappeProvider>
 		</>
 	);
