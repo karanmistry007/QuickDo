@@ -7,12 +7,13 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/shared/Navbar";
 import Sidebar from "./components/shared/Sidebar";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/DashboardView";
 import ListView from "./pages/ListView";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
 import CalendarView from "./pages/CalendarView";
 import { Toaster } from "./components/ui/toaster";
+import KanbanView from "./pages/KanbanView";
 
 
 const App = () => {
@@ -36,50 +37,49 @@ const App = () => {
 			>
 				<Router basename="/quickdo">
 					<Navbar />
-					{/* <div className="sm:flex"> */}
-						<Sidebar />
-						<Routes>
+					<Sidebar />
+					
+					<Routes>
 
-							{/* PUBLIC ROUTES */}
-							<Route
-								path="/"
-								element={<Navigate to="/dashboard" replace />}
-							/>
-							<Route
-								path="/auth/logout"
-								element={<Logout />}
-							/>
-							{/* END PUBLIC ROUTES */}
+						{/* PUBLIC ROUTES */}
+						<Route
+							path="/"
+							element={<Navigate to="/dashboard" replace />}
+						/>
+						<Route
+							path="/auth/logout"
+							element={<Logout />}
+						/>
+						{/* END PUBLIC ROUTES */}
 
-							{/* PRIVATE ROUTES */}
-							<Route
-								path="/dashboard"
-								element={<PrivateRoutes element={<Dashboard name="Dashboard" link="/dashboard" />} />}
-							/>
-							<Route
-								path="/list"
-								element={<PrivateRoutes element={<ListView name="List" link="/list" />} />}
-							/>
-							<Route
-								path="/grid"
-								element={<PrivateRoutes element={<ListView name="Grid" link="/grid" />} />}
-							/>
-							<Route
-								path="/calendar"
-								element={<PrivateRoutes element={<CalendarView name="Calendar" link="/calendar" />} />}
-							/>
-							<Route
-								path="/kanban"
-								element={<PrivateRoutes element={<ListView name="Kanban" link="/kanban" />} />}
-							/>
-							<Route
-								path="/category"
-								element={<PrivateRoutes element={<ListView name="Category" link="/category" />} />}
-							/>
-							{/* END PRIVATE ROUTES */}
+						{/* PRIVATE ROUTES */}
+						<Route
+							path="/dashboard"
+							element={<PrivateRoutes element={<Dashboard name="Dashboard" link="/dashboard" />} />}
+						/>
+						<Route
+							path="/list"
+							element={<PrivateRoutes element={<ListView name="List" link="/list" />} />}
+						/>
+						<Route
+							path="/kanban"
+							element={<PrivateRoutes element={<KanbanView name="Kanban" link="/kanban" />} />}
+						/>
+						<Route
+							path="/calendar"
+							element={<PrivateRoutes element={<CalendarView name="Calendar" link="/calendar" />} />}
+						/>
+						<Route
+							path="/kanban"
+							element={<PrivateRoutes element={<ListView name="Kanban" link="/kanban" />} />}
+						/>
+						<Route
+							path="/category"
+							element={<PrivateRoutes element={<ListView name="Category" link="/category" />} />}
+						/>
+						{/* END PRIVATE ROUTES */}
 
-						</Routes>
-					{/* </div> */}
+					</Routes>
 				</Router>
 				<Toaster />
 			</FrappeProvider>

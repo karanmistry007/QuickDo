@@ -982,7 +982,7 @@
 
 "@radix-ui/react-toast@^1.2.1":
   version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@radix-ui/react-toast/-/react-toast-1.2.1.tgz#4bde231ed27d007dcd0455a446565ca619f92a2d"
+  resolved "https://registry.npmjs.org/@radix-ui/react-toast/-/react-toast-1.2.1.tgz"
   integrity sha512-5trl7piMXcZiCq7MW6r8YYmu0bK5qDpTWz+FdEPdKyft2UixkspheYbjbrLXVN5NGKHFbOP7lm8eD0biiSqZqg==
   dependencies:
     "@radix-ui/primitive" "1.1.0"
@@ -3351,7 +3351,7 @@ tailwind-merge@^2.5.2:
 
 tailwindcss-animate@^1.0.7:
   version "1.0.7"
-  resolved "https://registry.yarnpkg.com/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz#318b692c4c42676cc9e67b19b78775742388bef4"
+  resolved "https://registry.npmjs.org/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz"
   integrity sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==
 
 tailwindcss@^3.4.11:
