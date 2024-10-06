@@ -75,6 +75,7 @@ const ListView = (props: DashboardProps) => {
 
     //? SAVE TODO HANDLER
     const handleSaveToDo = (data: useAllTodoData) => {
+
         //? MAP THE OBJECT TO FRAPPE'S DATA
         const finalData: useAPISaveTodoData = {
             name: data?.name,
@@ -83,7 +84,7 @@ const ListView = (props: DashboardProps) => {
             modified: data?.modified,
             modified_by: data?.modified_by,
             doctype: "QuickDo",
-            status: data.completeTodo ? "Closed" : "Open",
+            status: data.completeTodo ? "Completed" : "Open",
             is_important: data.importantTodo,
             send_reminder: data.isSendReminder,
             description: data.descriptionTodo,
@@ -198,7 +199,7 @@ const ListView = (props: DashboardProps) => {
                                 creation: todo.creation,
                                 modified: todo.modified,
                                 modified_by: todo.modified_by,
-                                completeTodo: todo.status == "Closed" ? true : false,
+                                completeTodo: todo.status == "Completed" ? true : false,
                                 importantTodo: todo.is_important,
                                 isSendReminder: todo.send_reminder,
                                 descriptionTodo: description || "",

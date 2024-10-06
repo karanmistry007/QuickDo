@@ -52,7 +52,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
-   "options": "Open\nClosed\nCancelled"
+   "options": "Open\nCompleted\nCancelled"
   },
   {
    "fieldname": "column_break_2",
@@ -202,7 +202,7 @@
  "is_calendar_and_gantt": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2024-09-08 22:59:03.925773",
+ "modified": "2024-10-06 22:45:26.939708",
  "modified_by": "Administrator",
  "module": "QuickDo",
  "name": "QuickDo",

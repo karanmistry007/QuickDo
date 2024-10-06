@@ -1,4 +1,4 @@
-export type Status = 'Open' | 'Closed' | 'Cancelled'
+export type Status = 'Open' | 'Completed' | 'Cancelled'
 export type Priority = 'low' | 'medium' | 'high'
 export type Task = {
     title: string,
@@ -8,5 +8,5 @@ export type Task = {
     points?: number
 }
 
-export const statuses: Status[] = ['Open', 'Closed', 'Cancelled']
+export const statuses: Status[] = ['Open', 'Completed', 'Cancelled']
 export const priorities: Priority[] = ['low', 'medium', 'high']

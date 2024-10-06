@@ -1,8 +1,29 @@
 import { useEffect, useState } from 'react'
 import TaskCard from '../components/TaskCard'
 import { Status, statuses, Task } from '../utils/data-tasks'
+import axios from 'axios';
+import { useAllTodoData, useAPITodoListData, useGetAllCategories } from '@/types/Common';
 
 const KanbanView = () => {
+
+
+    // TODO WILL REPLACE WITH THE SOCKET
+    //? UPDATE STATE
+    const [refreshState, setRefreshState] = useState<boolean>(true);
+    const handleRefreshState = (state: boolean) => {
+        setRefreshState(state);
+    };
+    const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
+    const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
+    const [initialLoading, setInitialLoading] = useState<boolean>(true);
+    //? CATEGORY API DATA
+    const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
+
+    //? ALL TODO API DATA
+    const [allTodoData, setAllTodoData] = useState<useAllTodoData[]>([]);
+
+
+
     const [tasks, setTasks] = useState<Task[]>([
         {
             title: "This is name of the task 1",
@@ -14,38 +35,128 @@ const KanbanView = () => {
         {
             title: "This is name of the task 1",
             id: "2",
-            status: "Closed",
+            status: "Completed",
             priority: "low",
             points: 1
         },
         {
             title: "This is name of the task 1",
             id: "3",
-            status: "Closed",
+            status: "Completed",
             priority: "low",
             points: 1
         },
         {
             title: "This is name of the task 1",
             id: "4",
-            status: "Closed",
+            status: "Completed",
             priority: "low",
             points: 1
         },
     ])
     const columns = statuses.map((status) => {
-        const tasksInColumn = tasks.filter((task) => task.status === status)
+        const tasksInColumn = allTodoData.filter((task) => task.status === status)
         return {
             status,
             tasks: tasksInColumn
         }
     })
 
-    // useEffect(() => {
-    //     fetch('http://localhost:3000/tasks').then((res) => res.json()).then((data) => {
-    //         setTasks(data)
-    //     })
-    // }, [])
+    //? TODO LIST API
+    useEffect(() => {
+
+        //? FETCH TODO LIST API MAIN DATA LOADER API FUNCTION
+        const fetchAPI = async () => {
+            try {
+                const response = await axios.get(
+                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]`,
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+
+                //? IF THE API RETURNS DATA MAP THE DATA IN DESIRED FORMAT
+                if (response.data.message) {
+                    const finalData: useAllTodoData[] = [];
+                    response.data.message.map(
+                        (todo: useAPITodoListData, index: number) => {
+                            //? PARSE THE TODO HTML
+                            const parser = new DOMParser();
+                            const description_doc = parser.parseFromString(
+                                todo.description,
+                                "text/html"
+                            );
+                            const description: any = description_doc.querySelector(
+                                ".ql-editor.read-mode p"
+                            )?.textContent
+                                ? description_doc.querySelector(".ql-editor.read-mode p")
+                                    ?.textContent
+                                : todo.description;
+
+                            //? UPDATE THE FINAL DATA
+                            finalData.push(todo);
+
+                            //? REFRESH STATE
+                            handleRefreshState(false);
+
+                        }
+                    );
+
+                    console.log(finalData)
+
+                    //? SET THE FINAL DATA TO STATE
+                    setAllTodoData(finalData);
+
+                    //? SET INITIAL LOADING
+                    setInitialLoading(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        //? CALL THE FETCH API FUNCTION
+        if (refreshState) {
+            fetchAPI();
+        }
+    }, [refreshState]);
+
+
+
+    //? FETCH SAVE TODO API FUNCTION
+    const saveQuickDo = async (task: Task) => {
+
+        // ? MAP DATA
+        task['doctype'] = "QuickDo"
+
+        try {
+            const response = await axios.post(
+                `${BASE_URL}/api/method/frappe.desk.form.save.savedocs`,
+                {
+                    doc: JSON.stringify(task),
+                    action: "Save",
+                },
+                {
+                    headers: {
+                        Authorization: AUTH_TOKEN,
+                    },
+                }
+            );
+
+            //? REFRESH THE STATE
+            if (response.status === 200) {
+                handleRefreshState(true);
+            }
+        } catch (error) {
+            console.log(error);
+            // setShowToaster(true);
+            // setToasterMessage("Error Saving The QuickDo!");
+        }
+    };
+
+
 
     const updateTask = (task: Task) => {
         // fetch(`http://localhost:3000/tasks/${task.id}`, {
@@ -56,18 +167,28 @@ const KanbanView = () => {
         //     body: JSON.stringify(task)
         // })
         const updatedTasks = tasks.map((t) => {
-            return t.id === task.id ? task : t
+            return t.name === task.name ? task : t
         })
-        setTasks(updatedTasks)
+        setTasks(updatedTasks);
+        console.log("Updated", task);
+
+        //? FETCH POST API CALL
+        saveQuickDo(task);
+
+
+
     }
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>, status: Status) => {
         e.preventDefault()
         setCurrentlyHoveringOver(null)
-        const id = e.dataTransfer.getData("id")
-        const task = tasks.find((task) => task.id === id)
+        const name = e.dataTransfer.getData("name")
+        console.log(name)
+        const task = allTodoData.find((task) => task.name === name)
+        console.log(task)
         if (task) {
             updateTask({ ...task, status })
+            console.log("drop", task, status);
         }
     }
 
@@ -75,6 +196,7 @@ const KanbanView = () => {
     const handleDragEnter = (status: Status) => {
         setCurrentlyHoveringOver(status)
     }
+
 
     return (
         <>
@@ -94,7 +216,7 @@ const KanbanView = () => {
                                     {column.status}
                                 </h3>
                                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                                    {column.tasks.reduce((total, task) => total + (task?.points || 0), 0)}
+                                    {column.tasks.length}
                                 </h3>
                             </div>
                             <div className={`w-full h-full ${currentlyHoveringOver === column.status ? 'bg-gray-200' : ''}`}>
