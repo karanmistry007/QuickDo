@@ -133,7 +133,6 @@ export type ListItemProps = {
 
 //? DRAWER PROPS
 export type DrawerProps = {
-    handleDrawerDisplay: (data: boolean) => void;
     todoData: useAllTodoData;
     allCategories: useGetAllCategories[];
     handleSaveToDo: (data: useAllTodoData) => void;
@@ -142,9 +141,9 @@ export type DrawerProps = {
 
 //? COMFIRM BOX PROPS
 export type ComfirmBoxProps = {
-    handleConfirmBoxDisplay: (data: boolean) => void;
-    handleSuccess: () => void;
+    confirmTitle: string;
     confirmMessage: string;
+    handleSuccess: () => void;
 };
 
 //? NUMBER CARD PROPS

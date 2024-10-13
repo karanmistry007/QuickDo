@@ -11,12 +11,14 @@ import { PiBellRingingFill } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
-import { BsTrash } from "react-icons/bs";
 import ConfirmBox from "./ConfirmBox";
 import { useGetAllCategories, DrawerProps } from "../../types/Common";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
+import { Button } from "./button";
+import { IoInformationCircle } from "react-icons/io5";
 
 
-const Drawer = (props: DrawerProps) => {
+const QuickDoDrawer = (props: DrawerProps) => {
 
     //? HOOKS
     const [completeTodo, setCompleteTodo] = useState<boolean>(props.todoData.completeTodo);
@@ -27,18 +29,25 @@ const Drawer = (props: DrawerProps) => {
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<useGetAllCategories[]>(props.todoData.selectedCategories);
     const [allCategories, setAllCategories] = useState<useGetAllCategories[]>(props.allCategories);
-    const [showDeleteBox, setShowDeleteBox] = useState<boolean>(false);
 
-    //? DELETE BOX DISPLAY HANDLER
-    const handleDeleteBoxDisplay = (display: boolean) => {
-        setShowDeleteBox(display);
-    };
 
     //? DELETE TODO HANDLER
     const handleDeleteTodo = () => {
         props.handleDeleteTodo(props.todoData.name || "");
-        props.handleDrawerDisplay(false);
     };
+
+
+    // ? UPDATE DATA AS PROPS CHANGES
+    useEffect(() => {
+
+        setCompleteTodo(props.todoData.completeTodo);
+        setImportantTodo(props.todoData.importantTodo);
+        setIsSendReminder(props.todoData.isSendReminder);
+        setDescriptionTodo(props.todoData.descriptionTodo);
+        setSelectDueDate(props.todoData.selectDueDate);
+        setSelectedCategories(props.todoData.selectedCategories);
+
+    }, [props.todoData]);
 
     //? UPDATE CATEGORIES AS PROPS UPDATES
     useEffect(() => {
@@ -75,39 +84,43 @@ const Drawer = (props: DrawerProps) => {
 
     return (
         <>
-            {/* DRAWER CONTAINER */}
-            <div
-                className={`drawer-container bg-[#00000048] w-[100dvw] h-[100dvh] fixed left-0 top-0 z-[999]`}
+            <Drawer
+                direction={"right"}
+                onClose={() => { handleSaveToDo() }}
             >
+                <DrawerTrigger asChild>
+                    <Button variant="link" className="p-0">
+                        <IoInformationCircle className="text-2xl ml-auto sm:m-auto lg:m-0" />
+                    </Button>
+                </DrawerTrigger>
+                <DrawerContent className="right-0 left-auto px-5  w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto">
 
-                {/* DRAWER */}
-                <div className="drawer right-to-left-animation bg-[#ffffff] border border-[#e2e2e2] py-5 px-10 w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto sm:rounded-s-3xl">
-                    
-                    {/* DRAWER COLLAPSE */}
-                    <div className="drawer-navbar w-[calc(100dvw_-_80px)] sm:w-[calc(70dvw_-_80px)] md:w-[calc(50dvw_-_80px)] lg:w-[calc(40dvw_-_80px)] xl:w-[calc(30dvw_-_80px)] pb-5 absolute">
-                        <div className="nav-container flex justify-between  ">
-                            <button
-                                className="drawer-collapse border border-[#e2e2e2] w-fit p-1.5 bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full text-xl cursor-pointer"
-                                onClick={() => {
-                                    handleSaveToDo(), props.handleDrawerDisplay(false);
-                                }}
-                            >
-                                <FaAngleRight />
-                            </button>
-                            <button
-                                className="delete-todo w-fit p-1.5 bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full text-xl cursor-pointer"
-                                onClick={() => {
-                                    handleDeleteBoxDisplay(true);
-                                }}
-                            >
-                                <BsTrash />
-                            </button>
-                        </div>
-                    </div>
-                    {/* END DRAWER COLLAPSE */}
+                    <DrawerHeader className="text-left p-0 mt-5">
+                        <DrawerTitle className="flex justify-between items-center">
 
-                    <div className="drawer-content h-full flex flex-col justify-center gap-5 sm:mt-5">
-                        
+                        <DrawerDescription className="hidden">
+                            Drawer Description
+                        </DrawerDescription>
+
+                            <DrawerClose>
+                                <Button variant="outline" className="text-xl rounded-full p-2">
+                                    <FaAngleRight />
+                                </Button>
+
+                            </DrawerClose>
+
+                            <ConfirmBox
+                                confirmTitle={"Delete QuickDo"}
+                                confirmMessage={"Are you sure you want to delete QuickDo?"}
+                                handleSuccess={handleDeleteTodo}
+                            />
+
+
+                        </DrawerTitle>
+                    </DrawerHeader>
+
+                    <div className="drawer-content flex flex-col justify-center gap-5 mt-5">
+
                         {/* TODO DESCRIPTION */}
                         <div className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md">
                             <input
@@ -263,29 +276,18 @@ const Drawer = (props: DrawerProps) => {
                                 ))}
                             </div>
                             {/* END CATEGORIES ITEMS DROPDOWN */}
-                            
+
                         </div>
                         {/* END TODO CATEGORIES */}
 
                     </div>
 
-                </div>
-                {/* END DRAWER */}
 
-            </div>
-            {/* END DRAWER CONTAINER */}
+                </DrawerContent>
+            </Drawer>
 
-            {/* CONFIRM BOX */}
-            {showDeleteBox && (
-                <ConfirmBox
-                    confirmMessage={"Are you sure you want to delete?"}
-                    handleConfirmBoxDisplay={handleDeleteBoxDisplay}
-                    handleSuccess={handleDeleteTodo}
-                />
-            )}
-            {/* END CONFIRM BOX */}
         </>
     );
 };
 
-export default Drawer;
+export default QuickDoDrawer;

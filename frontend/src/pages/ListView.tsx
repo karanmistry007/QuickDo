@@ -315,19 +315,18 @@ const ListView = () => {
 
                             <div className="sort-value">
                                 <Select
-
                                     onValueChange={(e) => {
                                         setCurrentSort(e),
                                             setRefreshState(true);
                                     }}
                                 >
-                                    <SelectTrigger className="w-[180px] border-0 border-r ">
+                                    <SelectTrigger className="w-fit border-0 border-r py-0">
                                         <SelectValue
                                             defaultValue={useSortData.find((item) => item.sort == currentSort)?.sort}
                                             placeholder={useSortData.find((item) => item.sort == currentSort)?.name}
                                         />
                                     </SelectTrigger>
-                                    <SelectContent className="max-h-[300px]">
+                                    <SelectContent className="max-h-[300px] w-fit">
                                         {useSortData.map((item, index) => {
                                             return (
                                                 <SelectItem key={index} value={item.sort} >{item.name}</SelectItem>
