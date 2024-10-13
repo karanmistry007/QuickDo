@@ -10,7 +10,7 @@
     height: 4px;
     width: 130px;
     --c: no-repeat linear-gradient(#000000 0 0);
-    background: var(--c), var(--c), #9f9f9f;
+    background: var(--c), var(--c), #dadada;
     background-size: 60% 100%;
     animation: l16 3s infinite;
 }

@@ -13,7 +13,6 @@ import {
     DashboardProps,
 } from "../types/Common";
 import { toast } from "@/hooks/use-toast";
-import ImportMeta from '@/types/env';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // ? DEFINE SORTING DATA
@@ -25,12 +24,11 @@ const useSortData: useSortDataItems[] = [
     { name: "Reminder", sort: "send_reminder" },
 ];
 
-const ListView = (props: DashboardProps) => {
+const ListView = () => {
 
     //? HOOKS
     const [currentSort, setCurrentSort] = useState<string>("creation");
     const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
-    const [sortDropdownActive, setSortDropdownActive] = useState<boolean>(false);
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const sortDropdownRef = useRef<HTMLDivElement>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
@@ -199,7 +197,7 @@ const ListView = (props: DashboardProps) => {
                 if (response.data.message) {
                     const finalData: useAllTodoData[] = [];
                     response.data.message.map(
-                        (todo: useAPITodoListData, index: number) => {
+                        (todo: useAPITodoListData) => {
                             //? PARSE THE TODO HTML
                             const parser = new DOMParser();
                             const description_doc = parser.parseFromString(

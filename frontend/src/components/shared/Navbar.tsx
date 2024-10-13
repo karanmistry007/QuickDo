@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import ToDoLogo from '../../assets/Images/Logo.png';
 import UserProfileImage from '../../assets/Images/UserProfile.jpeg';
@@ -28,23 +28,10 @@ const Navbar = () => {
 
 
     //? HOOKS
-    const [userProfileDropdownActive, setUserProfileDropdownActive] = useState<boolean>(false);
     const userProfileDropdownRef = useRef<HTMLDivElement>(null);
     const userImage = Cookies.get('user_image');
     const currentUser = Cookies.get('full_name');
 
-    const handleUserProfileClickOutside = (event: MouseEvent) => {
-        if (userProfileDropdownRef.current && !userProfileDropdownRef.current.contains(event.target as Node)) {
-            setUserProfileDropdownActive(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleUserProfileClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleUserProfileClickOutside);
-        };
-    }, []);
 
     return (
         <>
