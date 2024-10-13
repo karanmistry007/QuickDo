@@ -12,8 +12,8 @@ import {
     useAPITodoListData,
     DashboardProps,
 } from "../types/Common";
-import Toaster from "../components/ui/KaranToaster";
-
+import { toast } from "@/hooks/use-toast";
+import ImportMeta from '@/types/env';
 
 // ? DEFINE SORTING DATA
 const useSortData: useSortDataItems[] = [
@@ -23,7 +23,6 @@ const useSortData: useSortDataItems[] = [
     { name: "Due Date", sort: "date" },
     { name: "Reminder", sort: "send_reminder" },
 ];
-
 
 const ListView = (props: DashboardProps) => {
 
@@ -35,13 +34,6 @@ const ListView = (props: DashboardProps) => {
     const sortDropdownRef = useRef<HTMLDivElement>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
-
-    // ? TOASTER HANDLERS
-    const [showToaster, setShowToaster] = useState<boolean>(false);
-    const [toasterMessage, setToasterMessage] = useState<string>("");
-    const handleClose = (data: boolean) => {
-        setShowToaster(data);
-    };
 
 
     //? SORT CLICK HANDLER
@@ -111,11 +103,32 @@ const ListView = (props: DashboardProps) => {
                 //? REFRESH THE STATE
                 if (response.status === 200) {
                     handleRefreshState(true);
+
+                    // ? IF NEW CREATED
+                    if (!finalData.name) {
+                        toast({
+                            title: "QuickDo Created!",
+                            description: "The QuickDo has been created!",
+                        });
+                    }
+
+                    // ? IF UPDATED
+                    else {
+                        toast({
+                            title: "QuickDo Updated!",
+                            description: "The QuickDo has been updated!",
+                        });
+                    }
+
+
                 }
             } catch (error) {
                 console.log(error);
-                setShowToaster(true);
-                setToasterMessage("Error Saving The QuickDo!");
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while saving QuickDo!",
+                });
             }
         };
 
@@ -144,11 +157,18 @@ const ListView = (props: DashboardProps) => {
                 //? REFRESH THE STATE
                 if (response.status === 200) {
                     handleRefreshState(true);
+                    toast({
+                        title: "QuickDo Deleted!",
+                        description: "The QuickDo has been deleted!",
+                    });
                 }
             } catch (error) {
                 console.log(error);
-                setShowToaster(true);
-                setToasterMessage("Error Deleting The QuickDo!");
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while deleting QuickDo!",
+                });
             }
         };
 
@@ -222,8 +242,11 @@ const ListView = (props: DashboardProps) => {
                 }
             } catch (error) {
                 console.log(error);
-                setShowToaster(true);
-                setToasterMessage("Error Loading QuickDos!");
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while loading QuickDos!",
+                });
             }
         };
 
@@ -257,8 +280,11 @@ const ListView = (props: DashboardProps) => {
                 }
             } catch (error) {
                 console.log(error);
-                setShowToaster(true);
-                setToasterMessage("Error Loading Categories!");
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while loading Categories!",
+                });
             }
         };
 
@@ -405,18 +431,6 @@ const ListView = (props: DashboardProps) => {
                     </div>
                 )}
                 {/* END LOADING ANIMATION */}
-
-                {/* TOASTER */}
-                {showToaster && (
-                    <Toaster
-                        message={toasterMessage}
-                        onClose={handleClose}
-                        duration={5000}
-                        // color="bg-blue-400"
-                        color="bg-red-400"
-                    />
-                )}
-                {/* TOASTER */}
 
             </div>
             {/* END DASHBOARD CONTAINER */}

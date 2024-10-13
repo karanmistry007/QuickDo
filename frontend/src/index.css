@@ -5,20 +5,27 @@
 
 /* ! SHARED CSS */
 
+/* HTML: <div class="loader"></div> */
 .loader {
-    width: 50px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background:
-        radial-gradient(farthest-side, #000000 94%, #0000) top/8px 8px no-repeat,
-        conic-gradient(#0000 30%, #000000);
-    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
-    animation: l13 1s infinite linear;
+    height: 4px;
+    width: 130px;
+    --c: no-repeat linear-gradient(#000000 0 0);
+    background: var(--c), var(--c), #9f9f9f;
+    background-size: 60% 100%;
+    animation: l16 3s infinite;
 }
 
-@keyframes l13 {
+@keyframes l16 {
+    0% {
+        background-position: -150% 0, -150% 0
+    }
+
+    66% {
+        background-position: 250% 0, -150% 0
+    }
+
     100% {
-        transform: rotate(1turn)
+        background-position: 250% 0, 250% 0
     }
 }
 
@@ -264,4 +271,3 @@ input:-webkit-autofill:active {
         --chart-5: 340 75% 55%;
     }
 }
-
