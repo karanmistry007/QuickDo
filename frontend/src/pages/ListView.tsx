@@ -14,6 +14,7 @@ import {
 } from "../types/Common";
 import { toast } from "@/hooks/use-toast";
 import ImportMeta from '@/types/env';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // ? DEFINE SORTING DATA
 const useSortData: useSortDataItems[] = [
@@ -310,67 +311,59 @@ const ListView = (props: DashboardProps) => {
                 {/* DASHBOARD */}
                 <div className="dashboard-list-view-container">
                     {/* SORT SECTION*/}
-                    <div
-                        className="sort-section mx-4 sm:mx-5 w-fit relative select-none cursor-pointer"
-                        ref={sortDropdownRef}
-                    >
-                        {/* SORT DROPDOWN */}
-                        <div className="sort flex justify-start items-center  bg-white shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] text-nowrap w-fit rounded-md cursor-pointer select-none">
-                            <button
-                                className="sort p-1 px-2 md:px-3 md:py-1 hover:bg-gray-100"
-                                title="Sort By"
-                                onClick={() => setSortDropdownActive(!sortDropdownActive)}
-                            >
-                                {useSortData.find((item) => item.sort == currentSort)?.name}
-                            </button>
-                            <button
-                                className="sort-direction p-1.5 px-2 md:px-3 md:py-1.5 border-l text-[20px] hover:bg-gray-100"
-                                onClick={() => {
-                                    setCurrentSortDirection(
-                                        currentSortDirection === "asc" ? "desc" : "asc"
-                                    ),
-                                        setRefreshState(true);
-                                }}
-                            >
-                                <BsSortDownAlt
-                                    title="Descending"
-                                    className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
-                                        }`}
-                                />
-                                <BsSortUp
-                                    title="Ascending"
-                                    className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
-                                        }`}
-                                />
-                            </button>
-                        </div>
-                        {/* SORT PROFILE DROPDOWN */}
+                    <div className="sort-container  py-1 px-4 sm:px-5">
 
-                        {/* SORT ITEMS */}
-                        <div
-                            className={`user-profile-dropdown-items absolute fade-animation bg-white p-1 rounded-md left-0 top-[36px] flex flex-col justify-center items-start shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] ${sortDropdownActive ? "block" : "hidden"}`}
-                        >
-                            {useSortData.map((item, index) => {
-                                return item.sort !== currentSort ? (
-                                    <button
-                                        key={index}
-                                        className="user-profile-item text-start hover:bg-gray-100 rounded-md text-nowrap w-full"
-                                    >
-                                        <div
-                                            className="frappe-ui-link w-full p-1 md:px-2 md:py-0.5 block"
-                                            onClick={() => {
-                                                setCurrentSort(item.sort),
-                                                    setSortDropdownActive(false),
-                                                    setRefreshState(true);
-                                            }}
-                                        >
-                                            {item.name}
-                                        </div>
-                                    </button>
-                                ) : null;
-                            })}
+                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
+
+                            <div className="sort-value">
+                                <Select
+
+                                    onValueChange={(e) => {
+                                        setCurrentSort(e),
+                                            setRefreshState(true);
+                                    }}
+                                >
+                                    <SelectTrigger className="w-[180px] border-0 border-r ">
+                                        <SelectValue
+                                            defaultValue={useSortData.find((item) => item.sort == currentSort)?.sort}
+                                            placeholder={useSortData.find((item) => item.sort == currentSort)?.name}
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent className="max-h-[300px]">
+                                        {useSortData.map((item, index) => {
+                                            return (
+                                                <SelectItem key={index} value={item.sort} >{item.name}</SelectItem>
+                                            )
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="sort-direction">
+                                <button
+                                    className="sort-direction px-3 py-2 text-[20px]"
+                                    onClick={() => {
+                                        setCurrentSortDirection(
+                                            currentSortDirection === "asc" ? "desc" : "asc"
+                                        ),
+                                            setRefreshState(true);
+                                    }}
+                                >
+                                    <BsSortDownAlt
+                                        title="Descending"
+                                        className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
+                                            }`}
+                                    />
+                                    <BsSortUp
+                                        title="Ascending"
+                                        className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
+                                            }`}
+                                    />
+                                </button>
+                            </div>
+
                         </div>
-                        {/* SORT PROFILE ITEMS */}
+
                     </div>
                     {/* END SORT SECTION*/}
 
