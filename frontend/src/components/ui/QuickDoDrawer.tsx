@@ -17,30 +17,12 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, Dr
 import { Button } from "./button";
 import { IoInformationCircle } from "react-icons/io5";
 import { Calendar } from "@/components/ui/calendar"
-
-
-import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { format } from "date-fns"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-import { cn } from "@/lib/utils"
-import { toast } from "@/components/hooks/use-toast"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { Textarea } from "./textarea";
 
 
 const QuickDoDrawer = (props: DrawerProps) => {
@@ -165,25 +147,22 @@ const QuickDoDrawer = (props: DrawerProps) => {
                     <div className="drawer-content flex flex-col justify-center gap-5 mt-5">
 
                         {/* TODO DESCRIPTION */}
-                        <div className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md">
-                            <input
-                                type="text"
-                                className="outline-0 placeholder:text-gray-700 py-1.5 px-2 sm:py-2 sm:px-3 w-full rounded-md"
-                                name="ToDo"
-                                id="ToDo"
+                        <div className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100">
+                            <Textarea
+                                autoFocus
+                                className="w-full min-h-[64px]"
                                 value={descriptionTodo}
                                 onChange={(e) => {
                                     setDescriptionTodo(e.target.value);
                                 }}
-                            />
+                            ></Textarea>
                         </div>
                         {/* END TODO DESCRIPTION */}
 
                         {/* TODO DUE DATE */}
                         <Popover>
                             <PopoverTrigger asChild>
-
-                                <div className="todo-due-data flex items-center bg-white py-0.5 px-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md cursor-pointer select-none">
+                                <div className="todo-due-data flex items-center bg-white py-0.5 px-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md cursor-pointer select-none hover:bg-gray-100">
                                     <div className="due-data cursor-pointer">
                                         <PiCalendarDotsLight
                                             className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
@@ -204,7 +183,6 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                         </h3>
                                     </Button>
                                 </div>
-
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                                 <Calendar
@@ -219,7 +197,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
 
                         {/* COMPLETE TODO */}
                         <div
-                            className="todo-complete flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md"
+                            className="todo-complete flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100"
                             onClick={() => {
                                 setCompleteTodo(!completeTodo);
                             }}
@@ -240,7 +218,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
 
                         {/* TODO IMPORTANCE */}
                         <div
-                            className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none"
+                            className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
                             onClick={() => {
                                 setImportantTodo(!importantTodo);
                             }}
@@ -259,7 +237,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
 
                         {/* TODO REMINDER */}
                         <div
-                            className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none"
+                            className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
                             onClick={() => {
                                 setIsSendReminder(!isSendReminder);
                             }}

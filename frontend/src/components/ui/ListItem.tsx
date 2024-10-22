@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  FaCheck } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
 import DropdownMultiSelect from "./DropdownMultiSelect";
@@ -8,6 +8,14 @@ import {
     ListItemProps,
 } from "../../types/Common";
 import QuickDoDrawer from "./QuickDoDrawer";
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Button } from "./button";
+import { PiCalendarCheckFill, PiCalendarDotsLight } from "react-icons/pi";
 
 const ListItem = (props: ListItemProps) => {
 
@@ -52,10 +60,21 @@ const ListItem = (props: ListItemProps) => {
         });
     };
 
-
     //? UPDATE THE SELECTED CATEGORIES HANDLER
     const handleSelectedCategories = (data: useGetAllCategories[]) => {
         setSelectedCategories(data);
+    };
+
+    //? HANDLE SET DATE
+    const handleSetDate = (e: any) => {
+        const year = e?.getFullYear();
+        const month = String(e?.getMonth() + 1).padStart(2, '0'); // Add 1 to get the correct month
+        const day = String(e?.getDate()).padStart(2, '0');
+
+        //? FORMAT DATE AS YYYY-MM-DD
+        const formattedDate = e ? `${year}-${month}-${day}` : "";
+
+        setSelectDueDate(formattedDate); // Updates the selected date state
     };
 
     //? SAVE ON STATUS CHANGE
@@ -132,8 +151,34 @@ const ListItem = (props: ListItemProps) => {
                 {/* EDIT AND CLOSE TASK */}
 
                 {/* DUE DATE */}
+
                 <div className="item hidden lg:block lg:col-span-2 justify-self-center">
-                    <div className="due-date">
+
+                    <Popover>
+                        <PopoverTrigger asChild>
+                                <Button
+                                    variant={"transparent"}
+                                    className={"w-auto pl-3 flex gap-1.5 items-center justify-center"}
+                                >
+                                    <h3 className="font-normal text-base">
+                                        {selectDueDate ? (selectDueDate) : (
+                                            "Pick Due Date"
+                                        )}
+                                    </h3>
+                                    <PiCalendarDotsLight className={"text-xl mt-0.5"} />
+                                </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                                mode="single"
+                                selected={(new Date(selectDueDate))}
+                                onSelect={handleSetDate}
+                                initialFocus
+                            />
+                        </PopoverContent>
+                    </Popover>
+
+                    {/* <div className="due-date">
                         <input
                             className="outline-0 cursor-pointer rounded-md px-1 w-[124px]"
                             type="date"
@@ -144,7 +189,7 @@ const ListItem = (props: ListItemProps) => {
                                 setSelectDueDate(e.target.value);
                             }}
                         />
-                    </div>
+                    </div> */}
                 </div>
                 {/* END DUE DATE */}
 
