@@ -137,6 +137,7 @@ export type DrawerProps = {
     allCategories: useGetAllCategories[];
     handleSaveToDo: (data: useAllTodoData) => void;
     handleDeleteTodo: (data: string) => void;
+    autoOpenDrawer?: boolean;
 };
 
 //? COMFIRM BOX PROPS

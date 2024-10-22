@@ -1,4 +1,4 @@
-import { CalendarEvents, DashboardProps } from "@/types/Common";
+import { CalendarEvents, DashboardProps, useAllTodoData, useAPISaveTodoData, useGetAllCategories } from "@/types/Common";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import dayjs from "dayjs";
@@ -7,6 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast"
+import QuickDoDrawer from "@/components/ui/QuickDoDrawer";
 
 const localizer = dayjsLocalizer(dayjs);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -18,6 +19,240 @@ const CalendarView = (props: DashboardProps) => {
     const [events, setEvents] = useState<CalendarEvents[]>([]);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
+
+
+    // TODO WILL REPLACE WITH THE SOCKET
+    //? UPDATE STATE
+    const [refreshState, setRefreshState] = useState<boolean>(true);
+    const handleRefreshState = (state: boolean) => {
+        setRefreshState(state);
+    };
+
+    //? CATEGORY API DATA
+    const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
+
+
+    //? TODO DATA
+    const [todoData, setTodoData] = useState<useAllTodoData>();
+
+
+    //? CATEGORIES LIST API
+    useEffect(() => {
+        //? FETCH CATEGORY LIST API FUNCTION
+        const fetchAPI = async () => {
+            try {
+                const response = await axios.get(
+                    `${BASE_URL}//api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+
+                //? IF THE API RETURNS DATA
+                if (response.data.message) {
+                    //? SET ALL CATEGORIES STATE
+                    setGetAllCategories(response.data.message);
+
+                    //? REFRESH STATE
+                    handleRefreshState(false);
+                }
+            } catch (error) {
+                console.log(error);
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while loading Categories!",
+                });
+            }
+        };
+
+        //? CALL THE FETCH API FUNCTION
+        if (refreshState) {
+            fetchAPI();
+        }
+    }, [refreshState]);
+
+    //? SAVE TODO HANDLER
+    const handleSaveToDo = (data: useAllTodoData) => {
+
+        //? MAP THE OBJECT TO FRAPPE'S DATA
+        const finalData: useAPISaveTodoData = {
+            name: data?.name,
+            owner: data?.owner,
+            creation: data?.creation,
+            modified: data?.modified,
+            modified_by: data?.modified_by,
+            doctype: "QuickDo",
+            status: data.completeTodo ? "Completed" : "Open",
+            is_important: data.importantTodo,
+            send_reminder: data.isSendReminder,
+            description: data.descriptionTodo,
+            date: data.selectDueDate,
+            categories: data.selectedCategories,
+        };
+
+        //? FETCH SAVE TODO API FUNCTION
+        const fetchAPI = async (finalData: useAPISaveTodoData) => {
+            try {
+                const response = await axios.post(
+                    `${BASE_URL}/api/method/frappe.desk.form.save.savedocs`,
+                    {
+                        doc: JSON.stringify(finalData),
+                        action: "Save",
+                    },
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+
+                //? REFRESH THE STATE
+                if (response.status === 200) {
+                    handleRefreshState(true);
+
+                    // ? IF NEW CREATED
+                    if (!finalData.name) {
+                        toast({
+                            title: "QuickDo Created!",
+                            description: "The QuickDo has been created!",
+                        });
+                    }
+
+                    // ? IF UPDATED
+                    else {
+                        toast({
+                            title: "QuickDo Updated!",
+                            description: "The QuickDo has been updated!",
+                        });
+                    }
+
+                    setTodoData(undefined);
+                }
+            } catch (error) {
+                console.log(error);
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while saving QuickDo!",
+                });
+                setTodoData(undefined);
+            }
+        };
+
+        //? FETCH POST API CALL
+        fetchAPI(finalData);
+    };
+
+    //? DELETE TODO HANDLER
+    const handleDeleteTodo = (data: string) => {
+        //? FETCH DELETE TODO API FUNCTION
+        const fetchAPI = async (data: string) => {
+            try {
+                const response = await axios.post(
+                    `${BASE_URL}/api/method/frappe.client.delete`,
+                    {
+                        doctype: "QuickDo",
+                        name: data,
+                    },
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+
+                //? REFRESH THE STATE
+                if (response.status === 200) {
+                    handleRefreshState(true);
+                    toast({
+                        title: "QuickDo Deleted!",
+                        description: "The QuickDo has been deleted!",
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while deleting QuickDo!",
+                });
+            }
+        };
+
+        //? CALL FETCH API
+        fetchAPI(data);
+    };
+
+    //? DELETE TODO HANDLER
+    const handleGetTodo = (data: string) => {
+        //? FETCH DELETE TODO API FUNCTION
+        const fetchAPI = async (data: string) => {
+            try {
+                const response = await axios.post(
+                    `${BASE_URL}/api/method/frappe.client.get`,
+                    {
+                        doctype: "QuickDo",
+                        name: data,
+                    },
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+
+                //? REFRESH THE STATE
+                if (response.data.message) {
+                    handleRefreshState(true);
+
+                    const todoDoc = response.data.message;
+
+                    //? PARSE THE TODO HTML
+                    const parser = new DOMParser();
+                    const description_doc = parser.parseFromString(
+                        todoDoc.description,
+                        "text/html"
+                    );
+                    const description: any = description_doc.querySelector(
+                        ".ql-editor.read-mode p"
+                    )?.textContent
+                        ? description_doc.querySelector(".ql-editor.read-mode p")
+                            ?.textContent
+                        : todoDoc.description;
+
+                    //? UPDATE THE FINAL DATA
+                    const finalData = {
+                        name: todoDoc.name,
+                        owner: todoDoc.owner,
+                        creation: todoDoc.creation,
+                        modified: todoDoc.modified,
+                        modified_by: todoDoc.modified_by,
+                        completeTodo: todoDoc.status == "Completed" ? true : false,
+                        importantTodo: todoDoc.is_important,
+                        isSendReminder: todoDoc.send_reminder,
+                        descriptionTodo: description || "",
+                        selectDueDate: todoDoc.date || "",
+                        selectedCategories: todoDoc.categories || [],
+                    };
+
+                    setTodoData(finalData);
+                }
+            } catch (error) {
+                console.log(error);
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while getting QuickDo!",
+                });
+            }
+        };
+
+        //? CALL FETCH API
+        fetchAPI(data);
+    };
 
     // ? UPDATE QUICKDO FUNCTION
     const updateQuickDo = async (name: string, value: string) => {
@@ -56,44 +291,44 @@ const CalendarView = (props: DashboardProps) => {
 
 
     // ? LOAD QUICKDO DATA API FUNCTION
-    const loadQuickDoDataAPI = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/api/method/quickdo.api.get_quickdo_calendar_data`, {
-                headers: {
-                    Authorization: AUTH_TOKEN,
-                },
-            });
 
-            //? IF NO ERROR
-            if (response.data.message) {
 
-                // ? DEFINE VARIABLES
-                const QuickDoData = response.data.message;
-
-                QuickDoData.map((item: any) => {
-                    item.start = dateTimeConverter("start", item.start);
-                    item.end = dateTimeConverter("end", item.end);
+    useEffect(() => {
+        const loadQuickDoDataAPI = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/api/method/quickdo.api.get_quickdo_calendar_data`, {
+                    headers: {
+                        Authorization: AUTH_TOKEN,
+                    },
                 });
 
-                // ? SET EVENT DATA
-                setEvents(QuickDoData);
+                //? IF NO ERROR
+                if (response.data.message) {
+
+                    // ? DEFINE VARIABLES
+                    const QuickDoData = response.data.message;
+
+                    QuickDoData.map((item: any) => {
+                        item.start = dateTimeConverter("start", item.start);
+                        item.end = dateTimeConverter("end", item.end);
+                    });
+
+                    // ? SET EVENT DATA
+                    setEvents(QuickDoData);
+                }
+            }
+            catch (error) {
+                console.log(error);
+                toast({
+                    variant: "destructive",
+                    title: "Something Went Wrong!",
+                    description: "There was a problem while loading QuickDos!",
+                });
             }
         }
-        catch (error) {
-            console.log(error);
-            toast({
-                variant: "destructive",
-                title: "Something Went Wrong!",
-                description: "There was a problem while loading QuickDos!",
-            });
-        }
-    }
 
-
-    // ? FETCH THE API FOR THE CALENDER VIEW DATA
-    useEffect(() => {
         loadQuickDoDataAPI();
-    }, []);
+    }, [refreshState])
 
 
     // ? DATE TIME CONVERTER
@@ -106,6 +341,10 @@ const CalendarView = (props: DashboardProps) => {
         }
     }
 
+    //? SELECT EVENT HANDLER
+    const handleSelectEvent = (data: any) => {
+        handleGetTodo(data.name);
+    }
 
     //? DROP EVENT HANDLER
     const handleDropEvent = (data: any) => {
@@ -188,8 +427,19 @@ const CalendarView = (props: DashboardProps) => {
                         step={10}
                         showAllEvents
                         onEventDrop={handleDropEvent}
+                        onSelectEvent={handleSelectEvent}
                         resizable={false}
                     />
+                    {todoData &&
+                        <QuickDoDrawer
+                            autoOpenDrawer={true}
+                            todoData={todoData}
+                            allCategories={getAllCategories}
+                            handleSaveToDo={handleSaveToDo}
+                            handleDeleteTodo={handleDeleteTodo}
+                        />
+                    }
+
                 </div>
             </div>
             {/* END DASHBOARD CONTAINER */}

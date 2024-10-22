@@ -243,7 +243,7 @@ const ListView = () => {
                 console.log(error);
                 toast({
                     variant: "destructive",
-                    title: "Something Went Wrong!",
+                    title: "Something Went Wrong!", 
                     description: "There was a problem while loading QuickDos!",
                 });
             }

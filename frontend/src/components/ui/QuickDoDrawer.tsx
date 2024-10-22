@@ -16,6 +16,31 @@ import { useGetAllCategories, DrawerProps } from "../../types/Common";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
 import { Button } from "./button";
 import { IoInformationCircle } from "react-icons/io5";
+import { Calendar } from "@/components/ui/calendar"
+
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { format } from "date-fns"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import { cn } from "@/lib/utils"
+import { toast } from "@/components/hooks/use-toast"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 
 const QuickDoDrawer = (props: DrawerProps) => {
@@ -29,7 +54,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<useGetAllCategories[]>(props.todoData.selectedCategories);
     const [allCategories, setAllCategories] = useState<useGetAllCategories[]>(props.allCategories);
-
+    const [autoOpenDrawer, setAutoOpenDrawer] = useState<boolean>(props.autoOpenDrawer || false);
 
     //? DELETE TODO HANDLER
     const handleDeleteTodo = () => {
@@ -53,6 +78,23 @@ const QuickDoDrawer = (props: DrawerProps) => {
     useEffect(() => {
         setAllCategories(props.allCategories);
     }, [props.allCategories]);
+
+    //? UPDATE AUTO OPEN DRAWER AS PER THE PARENT
+    useEffect(() => {
+        setAutoOpenDrawer(props.autoOpenDrawer || false);
+    }, [props.autoOpenDrawer])
+
+    //? HANDLE SET DATE
+    const handleSetDate = (e: any) => {
+        const year = e?.getFullYear();
+        const month = String(e?.getMonth() + 1).padStart(2, '0'); // Add 1 to get the correct month
+        const day = String(e?.getDate()).padStart(2, '0');
+
+        //? FORMAT DATE AS YYYY-MM-DD
+        const formattedDate = e ? `${year}-${month}-${day}` : "";
+
+        setSelectDueDate(formattedDate); // Updates the selected date state
+    };
 
     //? UPDATE TODO
     const handleSaveToDo = () => {
@@ -87,8 +129,9 @@ const QuickDoDrawer = (props: DrawerProps) => {
             <Drawer
                 direction={"right"}
                 onClose={() => { handleSaveToDo() }}
+                open={autoOpenDrawer || undefined}
             >
-                <DrawerTrigger asChild>
+                <DrawerTrigger asChild className={`${autoOpenDrawer && "hidden"}`}>
                     <Button variant="link" className="p-0">
                         <IoInformationCircle className="text-2xl ml-auto sm:m-auto lg:m-0" />
                     </Button>
@@ -98,11 +141,11 @@ const QuickDoDrawer = (props: DrawerProps) => {
                     <DrawerHeader className="text-left p-0 mt-5">
                         <DrawerTitle className="flex justify-between items-center">
 
-                        <DrawerDescription className="hidden">
-                            Drawer Description
-                        </DrawerDescription>
+                            <DrawerDescription className="hidden">
+                                Drawer Description
+                            </DrawerDescription>
 
-                            <DrawerClose>
+                            <DrawerClose asChild>
                                 <Button variant="outline" className="text-xl rounded-full p-2">
                                     <FaAngleRight />
                                 </Button>
@@ -135,6 +178,44 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             />
                         </div>
                         {/* END TODO DESCRIPTION */}
+
+                        {/* TODO DUE DATE */}
+                        <Popover>
+                            <PopoverTrigger asChild>
+
+                                <div className="todo-due-data flex items-center bg-white py-0.5 px-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md cursor-pointer select-none">
+                                    <div className="due-data cursor-pointer">
+                                        <PiCalendarDotsLight
+                                            className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
+                                        />
+                                        <PiCalendarCheckFill
+                                            className={`text-2xl ${selectDueDate ? "show" : "hidden"}`}
+                                        />
+                                    </div>
+
+                                    <Button
+                                        variant={"transparent"}
+                                        className={"w-auto pl-3"}
+                                    >
+                                        <h3 className="font-normal text-base">
+                                            {selectDueDate ? (selectDueDate) : (
+                                                "Pick Due Date"
+                                            )}
+                                        </h3>
+                                    </Button>
+                                </div>
+
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    mode="single"
+                                    selected={(new Date(selectDueDate))}
+                                    onSelect={handleSetDate}
+                                    initialFocus
+                                />
+                            </PopoverContent>
+                        </Popover>
+                        {/* END TODO DUE DATE */}
 
                         {/* COMPLETE TODO */}
                         <div
@@ -195,29 +276,6 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             <h3>Reminder</h3>
                         </div>
                         {/* END TODO REMINDER */}
-
-                        {/* TODO DUE DATE */}
-                        <div className="todo-due-data flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none">
-                            <div className="due-data cursor-pointer">
-                                <PiCalendarDotsLight
-                                    className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
-                                />
-                                <PiCalendarCheckFill
-                                    className={`text-2xl ${selectDueDate ? "show" : "hidden"}`}
-                                />
-                            </div>
-                            <input
-                                type="date"
-                                className="outline-0 w-[124px] cursor-pointer"
-                                name="dueDate"
-                                id="dueDate"
-                                value={selectDueDate}
-                                onChange={(e) => {
-                                    setSelectDueDate(e.target.value);
-                                }}
-                            />
-                        </div>
-                        {/* END TODO DUE DATE */}
 
                         {/* TODO CATEGORIES */}
                         <div className="todo-categories bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none relative">
@@ -283,8 +341,8 @@ const QuickDoDrawer = (props: DrawerProps) => {
                     </div>
 
 
-                </DrawerContent>
-            </Drawer>
+                </DrawerContent >
+            </Drawer >
 
         </>
     );
