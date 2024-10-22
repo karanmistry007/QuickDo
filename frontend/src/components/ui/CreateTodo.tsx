@@ -7,10 +7,16 @@ import { PiCalendarDotsLight } from "react-icons/pi";
 import { PiCalendarCheckFill } from "react-icons/pi";
 import DropdownMultiSelect from "./DropdownMultiSelect";
 import { useGetAllCategories, CreateTodoProps } from "../../types/Common";
-
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Button } from "@/components/ui/button";
 
 const CreateTodo = (props: CreateTodoProps) => {
-    
+
     //? HOOKS
     const [completeTodo, setCompleteTodo] = useState<boolean>(false);
     const [importantTodo, setImportantTodo] = useState<boolean>(false);
@@ -80,6 +86,18 @@ const CreateTodo = (props: CreateTodoProps) => {
         setSelectedCategories(data);
     };
 
+    //? HANDLE SET DATE
+    const handleSetDate = (e: any) => {
+        const year = e?.getFullYear();
+        const month = String(e?.getMonth() + 1).padStart(2, '0'); // Add 1 to get the correct month
+        const day = String(e?.getDate()).padStart(2, '0');
+
+        //? FORMAT DATE AS YYYY-MM-DD
+        const formattedDate = e ? `${year}-${month}-${day}` : "";
+
+        setSelectDueDate(formattedDate); // Updates the selected date state
+    };
+
     return (
         <>
             {/* CREATE TODO */}
@@ -142,23 +160,30 @@ const CreateTodo = (props: CreateTodoProps) => {
                     >
 
                         {/* DUE DATE PICKER */}
-                        <button className="due-date relative cursor-pointer">
-                            <input
-                                type="date"
-                                className="w-6 top-0 left-0 absolute opacity-0"
-                                name="dueDate"
-                                id="dueDate"
-                                onChange={(e) => {
-                                    setSelectDueDate(e.target.value);
-                                }}
-                            />
-                            <PiCalendarDotsLight
-                                className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
-                            />
-                            <PiCalendarCheckFill
-                                className={`text-2xl ${selectDueDate ? "show" : "hidden"}`}
-                            />
-                        </button>
+                        <div className="due-date relative cursor-pointer">
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <button className="todo-due-data flex items-center cursor-pointer select-none">
+                                        <div className="due-data cursor-pointer">
+                                            <PiCalendarDotsLight
+                                                className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
+                                            />
+                                            <PiCalendarCheckFill
+                                                className={`text-2xl ${selectDueDate ? "show" : "hidden"}`}
+                                            />
+                                        </div>
+                                    </button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={(new Date(selectDueDate))}
+                                        onSelect={handleSetDate}
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                        </div>
                         {/* END DUE DATE PICKER */}
 
                         {/* REMINDER */}

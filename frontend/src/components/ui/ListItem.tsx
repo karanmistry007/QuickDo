@@ -156,17 +156,24 @@ const ListItem = (props: ListItemProps) => {
 
                     <Popover>
                         <PopoverTrigger asChild>
-                                <Button
-                                    variant={"transparent"}
-                                    className={"w-auto pl-3 flex gap-1.5 items-center justify-center"}
-                                >
-                                    <h3 className="font-normal text-base">
-                                        {selectDueDate ? (selectDueDate) : (
-                                            "Pick Due Date"
-                                        )}
-                                    </h3>
-                                    <PiCalendarDotsLight className={"text-xl mt-0.5"} />
-                                </Button>
+                            <Button
+                                variant={"transparent"}
+                                className={"w-auto pl-3 flex gap-1.5 items-center justify-center"}
+                            >
+                                <h3 className="font-normal text-base">
+                                    {selectDueDate ? (selectDueDate) : (
+                                        "Pick Due Date"
+                                    )}
+                                </h3>
+                                <div className="due-data cursor-pointer">
+                                    <PiCalendarDotsLight
+                                        className={`text-xl mt-0.5 ${selectDueDate ? "hidden" : "show"}`}
+                                    />
+                                    <PiCalendarCheckFill
+                                        className={`text-xl mt-0.5 ${selectDueDate ? "show" : "hidden"}`}
+                                    />
+                                </div>
+                            </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
