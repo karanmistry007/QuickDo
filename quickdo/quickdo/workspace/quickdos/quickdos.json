@@ -1,0 +1,102 @@
+{
+ "app": "quickdo",
+ "charts": [
+  {
+   "chart_name": "QuickDo Creation",
+   "label": "QuickDo Creation"
+  }
+ ],
+ "content": "[{\"id\":\"z_3I6etQpC\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Today Upcoming QuickDo\",\"col\":3}},{\"id\":\"dLsrkta2Hm\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Upcoming QuickDo\",\"col\":3}},{\"id\":\"c03plxjfte\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Overdue QuickDo\",\"col\":3}},{\"id\":\"c5wneIFFi1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Important QuickDo\",\"col\":3}},{\"id\":\"tFrj-6cm7S\",\"type\":\"chart\",\"data\":{\"chart_name\":\"QuickDo Creation\",\"col\":12}},{\"id\":\"o8ccu6fVru\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"QuickDo\",\"col\":4}},{\"id\":\"FjFF15csXm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"QuickDo List\",\"col\":4}},{\"id\":\"-apdOa8m02\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"QuickDo Calendar\",\"col\":4}},{\"id\":\"T30MbYXvol\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"QuickDo Kanban\",\"col\":4}},{\"id\":\"BPHkO1Ig2n\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"QuickDo Dashboard\",\"col\":4}},{\"id\":\"wGXBE4uFMc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"QuickDo Category\",\"col\":4}}]",
+ "creation": "2024-09-08 20:28:53.977049",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "mark-as-read",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "QuickDos",
+ "links": [],
+ "modified": "2024-09-13 01:30:13.047209",
+ "modified_by": "Administrator",
+ "module": "QuickDo",
+ "name": "QuickDos",
+ "number_cards": [
+  {
+   "label": "Today Upcoming QuickDo",
+   "number_card_name": "Today Upcoming QuickDo"
+  },
+  {
+   "label": "Overdue QuickDo",
+   "number_card_name": "Overdue QuickDo"
+  },
+  {
+   "label": "Total Upcoming QuickDo",
+   "number_card_name": "Total Upcoming QuickDo"
+  },
+  {
+   "label": "Important QuickDo",
+   "number_card_name": "Important QuickDo"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 23.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "QuickDo List",
+   "link_to": "QuickDo",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "QuickDo Category",
+   "link_to": "QuickDo Category",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "QuickDo",
+   "type": "URL",
+   "url": "/quickdo"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "Kanban",
+   "kanban_board": "QuickDo Kanban",
+   "label": "QuickDo Kanban",
+   "link_to": "QuickDo",
+   "stats_filter": "[]",
+   "type": "DocType",
+   "url": "/app/quickdo/view/kanban/"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "QuickDo Calendar",
+   "type": "URL",
+   "url": "/app/quickdo/view/calendar/"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "Dashboard",
+   "label": "QuickDo Dashboard",
+   "link_to": "QuickDo",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "QuickDos"
+}
