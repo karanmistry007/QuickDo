@@ -19,6 +19,7 @@ const useSortData: useSortDataItems[] = [
     { name: "Importance", sort: "is_important" },
     { name: "Due Date", sort: "date" },
     { name: "Reminder", sort: "send_reminder" },
+    { name: "Status", sort: "status" },
 ];
 
 const ListView = () => {
