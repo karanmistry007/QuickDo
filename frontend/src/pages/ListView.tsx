@@ -1,15 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import CreateTodo from "../components/ui/CreateTodo";
 import ListItem from "../components/ui/ListItem";
 import { BsSortUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import {
-    useAPISaveTodoData,
-    useAllTodoData,
-    useGetAllCategories,
+    useAllQuickDoData,
+    useAllCategories,
     useSortDataItems,
-    useAPITodoListData,
 } from "../types/Common";
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -29,26 +27,9 @@ const ListView = () => {
     const [currentSort, setCurrentSort] = useState<string>("creation");
     const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
-    const sortDropdownRef = useRef<HTMLDivElement>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
 
-
-    //? SORT CLICK HANDLER
-    const handleSortDropdownClick = (event: MouseEvent) => {
-        if (
-            sortDropdownRef.current &&
-            !sortDropdownRef.current.contains(event.target as Node)
-        ) {
-            setSortDropdownActive(false);
-        }
-    };
-    useEffect(() => {
-        document.addEventListener("mousedown", handleSortDropdownClick);
-        return () => {
-            document.removeEventListener("mousedown", handleSortDropdownClick);
-        };
-    }, []);
 
     // TODO WILL REPLACE WITH THE SOCKET
     //? UPDATE STATE
@@ -58,32 +39,32 @@ const ListView = () => {
     };
 
     //? CATEGORY API DATA
-    const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
+    const [getAllCategories, setGetAllCategories] = useState<useAllCategories[]>([]);
 
     //? ALL TODO API DATA
-    const [allTodoData, setAllTodoData] = useState<useAllTodoData[]>([]);
+    const [allTodoData, setAllTodoData] = useState<useAllQuickDoData[]>([]);
 
     //? SAVE TODO HANDLER
-    const handleSaveToDo = (data: useAllTodoData) => {
+    const handleSaveToDo = (data: useAllQuickDoData) => {
 
         //? MAP THE OBJECT TO FRAPPE'S DATA
-        const finalData: useAPISaveTodoData = {
+        const finalData: useAllQuickDoData = {
             name: data?.name,
             owner: data?.owner,
             creation: data?.creation,
             modified: data?.modified,
             modified_by: data?.modified_by,
             doctype: "QuickDo",
-            status: data.completeTodo ? "Completed" : "Open",
-            is_important: data.importantTodo,
-            send_reminder: data.isSendReminder,
-            description: data.descriptionTodo,
-            date: data.selectDueDate,
-            categories: data.selectedCategories,
+            status: data.status,
+            is_important: data.is_important,
+            send_reminder: data.send_reminder,
+            description: data.description,
+            date: data.date,
+            categories: data.categories,
         };
 
         //? FETCH SAVE TODO API FUNCTION
-        const fetchAPI = async (finalData: useAPISaveTodoData) => {
+        const fetchAPI = async (finalData: useAllQuickDoData) => {
             try {
                 const response = await axios.post(
                     `${BASE_URL}/api/method/frappe.desk.form.save.savedocs`,
@@ -176,9 +157,9 @@ const ListView = () => {
 
                 //? IF THE API RETURNS DATA MAP THE DATA IN DESIRED FORMAT
                 if (response.data.message) {
-                    const finalData: useAllTodoData[] = [];
+                    const finalData: useAllQuickDoData[] = [];
                     response.data.message.map(
-                        (todo: useAPITodoListData) => {
+                        (todo: useAllQuickDoData) => {
                             //? PARSE THE TODO HTML
                             const parser = new DOMParser();
                             const description_doc = parser.parseFromString(
@@ -199,12 +180,12 @@ const ListView = () => {
                                 creation: todo.creation,
                                 modified: todo.modified,
                                 modified_by: todo.modified_by,
-                                completeTodo: todo.status == "Completed" ? true : false,
-                                importantTodo: todo.is_important,
-                                isSendReminder: todo.send_reminder,
-                                descriptionTodo: description || "",
-                                selectDueDate: todo.date || "",
-                                selectedCategories: todo.categories || [],
+                                status: todo.status,
+                                is_important: todo.is_important,
+                                send_reminder: todo.send_reminder,
+                                description: description || "",
+                                date: todo.date || "",
+                                categories: todo.categories || [],
                             });
 
                             //? REFRESH STATE
@@ -256,11 +237,7 @@ const ListView = () => {
                 }
             } catch (error) {
                 console.log(error);
-                toast({
-                    variant: "destructive",
-                    title: "Something Went Wrong!",
-                    description: "There was a problem while loading Categories!",
-                });
+                toast.error('There was a problem while loading Categories!')
             }
         };
 

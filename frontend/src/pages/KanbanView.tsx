@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import TaskCard from '../components/TaskCard'
 import { Status, statuses, Task } from '../utils/data-tasks'
 import axios from 'axios';
-import { useActualAllTodoData } from '@/types/Common';
+import { useAllQuickDoData } from '@/types/Common';
 import { toast } from 'sonner'
 
 
@@ -22,7 +22,7 @@ const KanbanView = () => {
     // const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
 
     //? ALL TODO API DATA
-    const [allTodoData, setAllTodoData] = useState<useActualAllTodoData[]>([]);
+    const [allTodoData, setAllTodoData] = useState<useAllQuickDoData[]>([]);
 
 
 
@@ -81,9 +81,9 @@ const KanbanView = () => {
 
                 //? IF THE API RETURNS DATA MAP THE DATA IN DESIRED FORMAT
                 if (response.data.message) {
-                    const finalData: useActualAllTodoData[] = [];
+                    const finalData: useAllQuickDoData[] = [];
                     response.data.message.map(
-                        (todo: useActualAllTodoData) => {
+                        (todo: useAllQuickDoData) => {
 
                             //? UPDATE THE FINAL DATA
                             finalData.push(todo);
