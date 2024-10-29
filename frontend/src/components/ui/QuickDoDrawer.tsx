@@ -126,7 +126,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                 open={autoOpenDrawer || undefined}
             >
                 <DrawerTrigger asChild className={`${autoOpenDrawer && "hidden"}`}>
-                    <Button variant="link" className="p-0">
+                    <Button variant="link" className="p-0 h-auto">
                         <IoInformationCircle className="text-2xl ml-auto sm:m-auto lg:m-0" />
                     </Button>
                 </DrawerTrigger>
@@ -282,11 +282,11 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                 {/* CATEGORIES ICON */}
                                 <button className="categories text-2xl">
                                     <PiListBullets
-                                        className={`${categories.length == 0 ? "show" : "hidden"
+                                        className={`${categories && categories.length == 0 ? "show" : "hidden"
                                             }`}
                                     />
                                     <PiListChecks
-                                        className={`${categories.length == 0 ? "hidden" : "show"
+                                        className={`${categories && categories.length == 0 ? "hidden" : "show"
                                             }`}
                                     />
                                 </button>
@@ -298,10 +298,10 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             <div
                                 className={`categories-items bg-white p-1 rounded-md grid grid-cols-2 gap-1 justify-center max-h-[400px] overflow-y-auto`}
                             >
-                                {allCategories.map((data, index) => (
+                                {allCategories && allCategories.map((data, index) => (
                                     <button
                                         key={data.category + index}
-                                        className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${categories.some(
+                                        className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${categories && categories.some(
                                             (item) => item["category"] === data.category
                                         )
                                             ? "bg-slate-100"
@@ -313,7 +313,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                             className={`save-todo-button bg-transparent rounded-full p-0.5 w-fit text-[10px] border border-gray-600 cursor-pointer`}
                                         >
                                             <FaCheck
-                                                className={`${categories.some(
+                                                className={`${categories && categories.some(
                                                     (item) => item["category"] === data.category
                                                 )
                                                     ? "opacity-1"
