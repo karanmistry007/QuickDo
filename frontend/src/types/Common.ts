@@ -5,89 +5,48 @@ export type Status = 'Open' | 'Completed' | 'Cancelled';
 // export type Priority = 'Low' | 'Medium' | 'High';
 
 
-//? SELECTED CATEGORIES
-export interface useGetAllCategories {
+//? ALL CATEGORIES
+export interface useAllCategories {
     category: string;
 }
 
-//? ACTUAL TODO ITEMS
-export interface useActualAllTodoData {
-    title: string;
-    id: string;
+//? ALL QUICKDO ITEMS
+export interface useAllQuickDoData {
+
+    //? REQUIRED FIELDS
     status: Status;
-    // priority: Priority;
-    points?: number;
-    doctype?: string;
+    categories: useAllCategories[] | [];
+    date: string;
+    description: string;
+    is_important: boolean;
+    send_reminder: boolean;
+
+    //? MAY REQUIRE FIELDS
+    creation?: string;
+    owner?: string;
+    modified?: string;
+    modified_by?: string;
     name?: string;
+    doctype?: string;
+    color?: string | null;
+
+    //? MAY NOT REQUIRED FIELDS
+    title?: string;
+    id?: string;
+    idx?: number;
+    points?: number;
     allocated_to?: string | null;
     assigned_by?: string | null;
     assigned_by_full_name?: string | null;
     assignment_rule?: string | null;
-    categories?: Array<{ [key: string]: any }> | null;
-    color?: string | null;
-    creation?: string;
-    date?: string;
-    description?: string;
     docstatus?: number;
-    idx?: number;
     image?: string | null;
-    is_important?: number;
-    modified?: string;
-    modified_by?: string;
     naming_series?: string | null;
-    owner?: string;
     reference_name?: string | null;
     reference_type?: string | null;
     role?: string | null;
-    send_reminder?: number;
     sender?: string | null;
 };
-
-//? TODO ITEMS
-export interface useAllTodoData {
-    owner?: string;
-    creation?: string;
-    modified?: string;
-    modified_by?: string;
-    name?: string;
-    completeTodo: boolean;
-    importantTodo: boolean;
-    isSendReminder: boolean;
-    descriptionTodo: string;
-    selectDueDate: string;
-    selectedCategories: useGetAllCategories[];
-}
-
-//? API TODO LIST ITEMS
-export interface useAPITodoListData {
-    owner?: string;
-    creation?: string;
-    modified?: string;
-    modified_by?: string;
-    name?: string;
-    status: string;
-    is_important: boolean;
-    send_reminder: boolean;
-    description: string;
-    date: string;
-    categories: useGetAllCategories[];
-}
-
-//? API TODO CREATE DATA
-export interface useAPISaveTodoData {
-    owner?: string;
-    creation?: string;
-    modified?: string;
-    modified_by?: string;
-    name?: string;
-    doctype: string;
-    status: string;
-    is_important: boolean;
-    send_reminder: boolean;
-    description: string;
-    date: string;
-    categories: useGetAllCategories[];
-}
 
 //? SORT ITEMS
 export interface useSortDataItems {
@@ -138,40 +97,40 @@ export type DashboardProps = {
 
 //? LIST VIEW PROPS
 export type ListViewProps = {
-    allTodoData: useAllTodoData[];
-    allCategories: useGetAllCategories[];
-    handleSaveToDo: (data: useAllTodoData) => void;
+    allTodoData: useAllQuickDoData[];
+    allCategories: useAllCategories[];
+    handleSaveToDo: (data: useAllQuickDoData) => void;
     handleDeleteTodo: (data: string) => void;
 };
 
 //? CREATE TODO PROPS
 export type CreateTodoProps = {
-    allCategories: useGetAllCategories[];
-    handleNewToDo: (data: useAllTodoData) => void;
+    allCategories: useAllCategories[];
+    handleNewToDo: (data: useAllQuickDoData) => void;
 };
 
 //? DROPDOWN MULTI SELECT PROPS
 export type DropdownMultiSelectProps = {
     position?: string;
     showCategories: boolean;
-    allCategories: useGetAllCategories[];
-    selectedCategories: useGetAllCategories[];
-    handleSelectedCategories: (data: useGetAllCategories[]) => void;
+    allCategories: useAllCategories[];
+    categories: useAllCategories[];
+    handleCategories: (data: useAllCategories[]) => void;
 };
 
 //? LIST ITEM PROPS
 export type ListItemProps = {
-    todoData: useAllTodoData;
-    allCategories: useGetAllCategories[];
-    handleSaveToDo: (data: useAllTodoData) => void;
+    todoData: useAllQuickDoData;
+    allCategories: useAllCategories[];
+    handleSaveToDo: (data: useAllQuickDoData) => void;
     handleDeleteTodo: (data: string) => void;
 };
 
 //? DRAWER PROPS
 export type DrawerProps = {
-    todoData: useAllTodoData;
-    allCategories: useGetAllCategories[];
-    handleSaveToDo: (data: useAllTodoData) => void;
+    todoData: useAllQuickDoData;
+    allCategories: useAllCategories[];
+    handleSaveToDo: (data: useAllQuickDoData) => void;
     handleDeleteTodo: (data: string) => void;
     autoOpenDrawer?: boolean;
 };

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import TaskCard from '../components/TaskCard'
+import TaskCard from '../components/ui/TaskCard'
 import { Status, statuses, Task } from '../utils/data-tasks'
 import axios from 'axios';
-import { useActualAllTodoData } from '@/types/Common';
+import { useAllCategories, useAllQuickDoData } from '@/types/Common';
 import { toast } from 'sonner'
 
 
 const KanbanView = () => {
 
+    // ? HOOKS
+    const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
     // TODO WILL REPLACE WITH THE SOCKET
     //? UPDATE STATE
@@ -22,9 +24,10 @@ const KanbanView = () => {
     // const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
 
     //? ALL TODO API DATA
-    const [allTodoData, setAllTodoData] = useState<useActualAllTodoData[]>([]);
+    const [allTodoData, setAllTodoData] = useState<useAllQuickDoData[]>([]);
 
-
+    //? CATEGORY API DATA
+    const [getAllCategories, setGetAllCategories] = useState<useAllCategories[]>([]);
 
     const [tasks, setTasks] = useState<Task[]>([
         {
@@ -81,9 +84,9 @@ const KanbanView = () => {
 
                 //? IF THE API RETURNS DATA MAP THE DATA IN DESIRED FORMAT
                 if (response.data.message) {
-                    const finalData: useActualAllTodoData[] = [];
+                    const finalData: useAllQuickDoData[] = [];
                     response.data.message.map(
-                        (todo: useActualAllTodoData) => {
+                        (todo: useAllQuickDoData) => {
 
                             //? UPDATE THE FINAL DATA
                             finalData.push(todo);
@@ -111,6 +114,47 @@ const KanbanView = () => {
     }, [refreshState]);
 
 
+    //? CATEGORIES LIST API
+    useEffect(() => {
+        //? FETCH CATEGORY LIST API FUNCTION
+        const fetchAPI = async () => {
+            try {
+                const response = await axios.get(
+                    `${BASE_URL}//api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+
+                //? IF THE API RETURNS DATA
+                if (response.data.message) {
+                    //? SET ALL CATEGORIES STATE
+                    setGetAllCategories(response.data.message);
+
+                    //? REFRESH STATE
+                    handleRefreshState(false);
+
+                    //? SET INITIAL LOADING
+                    setInitialLoading(false);
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error('There was a problem while loading Categories!')
+            }
+        };
+
+        //? CALL THE FETCH API FUNCTION
+        if (refreshState) {
+            fetchAPI();
+
+        }
+    }, [refreshState]);
+
+    useEffect(() => {
+        console.log(getAllCategories)
+    }, [getAllCategories])
 
     //? FETCH SAVE TODO API FUNCTION
     const saveQuickDo = async (task: Task) => {
@@ -141,6 +185,38 @@ const KanbanView = () => {
             console.log(error);
             toast.error('There was a problem while updating QuickDo!')
         }
+    };
+
+    //? DELETE TODO HANDLER
+    const handleDeleteTodo = (data: string) => {
+        //? FETCH DELETE TODO API FUNCTION
+        const fetchAPI = async (data: string) => {
+            try {
+                const response = await axios.post(
+                    `${BASE_URL}/api/method/frappe.client.delete`,
+                    {
+                        doctype: "QuickDo",
+                        name: data,
+                    },
+                    {
+                        headers: {
+                            Authorization: AUTH_TOKEN,
+                        },
+                    }
+                );
+                //? REFRESH THE STATE
+                if (response.status === 200) {
+                    handleRefreshState(true);
+                    toast.success("The QuickDo has been deleted!");
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error("There was a problem while deleting QuickDo!");
+            }
+        };
+
+        //? CALL FETCH API
+        fetchAPI(data);
     };
 
 
@@ -184,47 +260,61 @@ const KanbanView = () => {
     return (
         <>
             {/* DASHBOARD CONTAINER  */}
-            <div className="dashboard-container  sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
-                <div className="flex divide-x p-10">
-                    {columns.map((column, index) => (
-                        <div
-                            key={index}
-                            className='w-full'
-                            onDrop={(e) => handleDrop(e, column.status)}
-                            onDragOver={(e) => e.preventDefault()}
-                            onDragEnter={() => handleDragEnter(column.status)}
-                        >
-                            <div className="flex justify-between text-3xl p-2 border-b">
-                                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                                    {column.status}
-                                </h3>
-                                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                                    {column.tasks.length}
-                                </h3>
+            {!initialLoading && (
+
+                <div className="dashboard-container  sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
+                    <div className="flex divide-x p-10">
+                        {columns.map((column, index) => (
+                            <div
+                                key={index}
+                                className='w-full'
+                                onDrop={(e) => handleDrop(e, column.status)}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDragEnter={() => handleDragEnter(column.status)}
+                            >
+                                <div className="flex justify-between text-3xl p-2 border-b">
+                                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                                        {column.status}
+                                    </h3>
+                                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                                        {column.tasks.length}
+                                    </h3>
+                                </div>
+                                <div className={`w-full h-full ${currentlyHoveringOver === column.status ? 'bg-gray-200' : ''}`}>
+                                    {column.tasks.length !== 0 ?
+                                        column.tasks.map((task: useAllQuickDoData, index: number) => (
+                                            <div key={index}>
+                                                <TaskCard
+                                                    task={task}
+                                                    updateTask={updateTask}
+                                                    allCategories={getAllCategories}
+                                                    handleDeleteTodo={handleDeleteTodo}
+                                                />
+                                            </div>
+                                        ))
+                                        : (
+                                            <div className='w-full h-full flex justify-center items-center'>
+                                                <p>
+                                                    No QuickDos
+                                                </p>
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
-                            <div className={`w-full h-full ${currentlyHoveringOver === column.status ? 'bg-gray-200' : ''}`}>
-                                {column.tasks.length !== 0 ?
-                                    column.tasks.map((task, index) => (
-                                        <div key={index}>
-                                            <TaskCard
-                                                task={task}
-                                                updateTask={updateTask}
-                                            />
-                                        </div>
-                                    ))
-                                    : (
-                                        <div className='w-full h-full flex justify-center items-center'>
-                                            <p>
-                                                No QuickDos
-                                            </p>
-                                        </div>
-                                    )
-                                }
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
+
+            {/* LOADING ANIMATION */}
+            {initialLoading && (
+                <div className="loader-container absolute w-[100dvw] h-[100dvh] left-0 top-0 flex justify-center items-center">
+                    <div className="loader">
+                    </div>
+                </div>
+            )}
+            {/* END LOADING ANIMATION */}
         </>
     )
 }

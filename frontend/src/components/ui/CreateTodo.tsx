@@ -6,7 +6,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import { PiCalendarDotsLight } from "react-icons/pi";
 import { PiCalendarCheckFill } from "react-icons/pi";
 import DropdownMultiSelect from "./DropdownMultiSelect";
-import { useGetAllCategories, CreateTodoProps } from "../../types/Common";
+import { useAllCategories, CreateTodoProps, Status } from "../../types/Common";
 import { Calendar } from "@/components/ui/calendar"
 import {
     Popover,
@@ -18,13 +18,13 @@ import { Button } from "@/components/ui/button";
 const CreateTodo = (props: CreateTodoProps) => {
 
     //? HOOKS
-    const [completeTodo, setCompleteTodo] = useState<boolean>(false);
-    const [importantTodo, setImportantTodo] = useState<boolean>(false);
-    const [descriptionTodo, setDescriptionTodo] = useState<string>("");
-    const [isSendReminder, setIsSendReminder] = useState<boolean>(false);
-    const [selectDueDate, setSelectDueDate] = useState<string>("");
-    const [selectedCategories, setSelectedCategories] = useState<useGetAllCategories[]>([]);
-    const [allCategories, setAllCategories] = useState<useGetAllCategories[]>(props.allCategories || "[]");
+    const [status, setStatus] = useState<Status>("Open");
+    const [is_important, setIs_important] = useState<boolean>(false);
+    const [description, setDescription] = useState<string>("");
+    const [send_reminder, setSend_reminder] = useState<boolean>(false);
+    const [date, setdate] = useState<string>("");
+    const [categories, setCategories] = useState<useAllCategories[]>([]);
+    const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories || "[]");
     const [saveNewTodo, setSaveNewTodo] = useState<boolean>(false);
     const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
@@ -48,31 +48,31 @@ const CreateTodo = (props: CreateTodoProps) => {
     //? SAVE TODO HANDLER
     const handleSaveTodo = () => {
         //? IF THE TODO DESCRIPTION EXISTS
-        if (descriptionTodo) {
+        if (description) {
             //? SET THE TICK MARK
             setSaveNewTodo(true);
 
             //? SAVE TODO DATA
             props.handleNewToDo({
                 name: "",
-                completeTodo: completeTodo,
-                importantTodo: importantTodo,
-                isSendReminder: isSendReminder,
-                descriptionTodo: descriptionTodo,
-                selectDueDate: selectDueDate,
-                selectedCategories: selectedCategories,
+                status: status,
+                is_important: is_important,
+                send_reminder: send_reminder,
+                description: description,
+                date: date,
+                categories: categories,
             });
 
             //? RESET ALL OF THE STATES
-            setTimeout(() => {
-                setSaveNewTodo(false);
-                setCompleteTodo(false);
-                setImportantTodo(false);
-                setDescriptionTodo("");
-                setIsSendReminder(false);
-                setSelectDueDate("");
-                setSelectedCategories([]);
-            }, 200);
+            // setTimeout(() => {
+            setSaveNewTodo(false);
+            setStatus("Open");
+            setIs_important(false);
+            setDescription("");
+            setSend_reminder(false);
+            setdate("");
+            setCategories([]);
+            // }, 200);
         }
     };
 
@@ -82,8 +82,8 @@ const CreateTodo = (props: CreateTodoProps) => {
     }, [props.allCategories]);
 
     //? UPDATE THE SELECTED CATEGORIES HANDLER
-    const handleSelectedCategories = (data: useGetAllCategories[]) => {
-        setSelectedCategories(data);
+    const handleCategories = (data: useAllCategories[]) => {
+        setCategories(data);
     };
 
     //? HANDLE SET DATE
@@ -95,7 +95,7 @@ const CreateTodo = (props: CreateTodoProps) => {
         //? FORMAT DATE AS YYYY-MM-DD
         const formattedDate = e ? `${year}-${month}-${day}` : "";
 
-        setSelectDueDate(formattedDate); // Updates the selected date state
+        setdate(formattedDate); // Updates the selected date state
     };
 
     return (
@@ -128,9 +128,9 @@ const CreateTodo = (props: CreateTodoProps) => {
                             placeholder="Add a QuickDo..."
                             name="createTodo"
                             id="createTodo"
-                            value={descriptionTodo}
+                            value={description}
                             onChange={(e) => {
-                                setDescriptionTodo(e.target.value);
+                                setDescription(e.target.value);
                             }}
                             onKeyDown={(e) => {
                                 e.key === "Enter" ? handleSaveTodo() : "";
@@ -166,10 +166,10 @@ const CreateTodo = (props: CreateTodoProps) => {
                                     <button className="todo-due-data flex items-center cursor-pointer select-none">
                                         <div className="due-data cursor-pointer">
                                             <PiCalendarDotsLight
-                                                className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
+                                                className={`text-2xl ${date ? "hidden" : "show"}`}
                                             />
                                             <PiCalendarCheckFill
-                                                className={`text-2xl ${selectDueDate ? "show" : "hidden"}`}
+                                                className={`text-2xl ${date ? "show" : "hidden"}`}
                                             />
                                         </div>
                                     </button>
@@ -177,7 +177,7 @@ const CreateTodo = (props: CreateTodoProps) => {
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                         mode="single"
-                                        selected={(new Date(selectDueDate))}
+                                        selected={(new Date(date))}
                                         onSelect={handleSetDate}
                                         initialFocus
                                     />
@@ -190,15 +190,15 @@ const CreateTodo = (props: CreateTodoProps) => {
                         <button
                             className="send-reminder text-2xl"
                             onClick={() => {
-                                setIsSendReminder(!isSendReminder);
+                                setSend_reminder(!send_reminder);
                             }}
                             title="Reminder"
                         >
                             <PiBellRingingLight
-                                className={`${isSendReminder ? "hidden" : "show"}`}
+                                className={`${send_reminder ? "hidden" : "show"}`}
                             />
                             <PiBellRingingFill
-                                className={`${isSendReminder ? "show" : "hidden"}`}
+                                className={`${send_reminder ? "show" : "hidden"}`}
                             />
                         </button>
                         {/* END REMINDER */}
@@ -208,8 +208,8 @@ const CreateTodo = (props: CreateTodoProps) => {
                             position={"right"}
                             showCategories={showCategories}
                             allCategories={allCategories}
-                            selectedCategories={selectedCategories}
-                            handleSelectedCategories={handleSelectedCategories}
+                            categories={categories}
+                            handleCategories={handleCategories}
                         />
                         {/* END CATEGORIES MULTISELECT */}
 

@@ -12,7 +12,7 @@ import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
 import ConfirmBox from "./ConfirmBox";
-import { useGetAllCategories, DrawerProps } from "../../types/Common";
+import { useAllCategories, DrawerProps, Status } from "../../types/Common";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
 import { Button } from "./button";
 import { IoInformationCircle } from "react-icons/io5";
@@ -23,19 +23,20 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Textarea } from "./textarea";
+import { RxCross1 } from "react-icons/rx";
 
 
 const QuickDoDrawer = (props: DrawerProps) => {
 
     //? HOOKS
-    const [completeTodo, setCompleteTodo] = useState<boolean>(props.todoData.completeTodo);
-    const [importantTodo, setImportantTodo] = useState<boolean>(props.todoData.importantTodo);
-    const [isSendReminder, setIsSendReminder] = useState<boolean>(props.todoData.isSendReminder);
-    const [descriptionTodo, setDescriptionTodo] = useState<string>(props.todoData.descriptionTodo);
-    const [selectDueDate, setSelectDueDate] = useState<string>(props.todoData.selectDueDate);
+    const [status, setStatus] = useState<Status>(props.todoData.status);
+    const [is_important, setIs_important] = useState<boolean>(props.todoData.is_important);
+    const [send_reminder, setSend_reminder] = useState<boolean>(props.todoData.send_reminder);
+    const [description, setDescription] = useState<string>(props.todoData.description);
+    const [date, setdate] = useState<string>(props.todoData.date);
     const [showCategories, setShowCategories] = useState<boolean>(false);
-    const [selectedCategories, setSelectedCategories] = useState<useGetAllCategories[]>(props.todoData.selectedCategories);
-    const [allCategories, setAllCategories] = useState<useGetAllCategories[]>(props.allCategories);
+    const [categories, setCategories] = useState<useAllCategories[]>(props.todoData.categories);
+    const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories);
     const [autoOpenDrawer, setAutoOpenDrawer] = useState<boolean>(props.autoOpenDrawer || false);
 
     //? DELETE TODO HANDLER
@@ -43,16 +44,27 @@ const QuickDoDrawer = (props: DrawerProps) => {
         props.handleDeleteTodo(props.todoData.name || "");
     };
 
+    //? STATUS HANDLER
+    const handleStatus = (status: Status) => {
+        if (status === "Open") {
+            setStatus("Completed");
+        } else if (status === "Completed") {
+            setStatus("Cancelled");
+        } else {
+            setStatus("Open");
+        }
+    }
+
 
     // ? UPDATE DATA AS PROPS CHANGES
     useEffect(() => {
 
-        setCompleteTodo(props.todoData.completeTodo);
-        setImportantTodo(props.todoData.importantTodo);
-        setIsSendReminder(props.todoData.isSendReminder);
-        setDescriptionTodo(props.todoData.descriptionTodo);
-        setSelectDueDate(props.todoData.selectDueDate);
-        setSelectedCategories(props.todoData.selectedCategories);
+        setStatus(props.todoData.status);
+        setIs_important(props.todoData.is_important);
+        setSend_reminder(props.todoData.send_reminder);
+        setDescription(props.todoData.description);
+        setdate(props.todoData.date);
+        setCategories(props.todoData.categories);
 
     }, [props.todoData]);
 
@@ -75,7 +87,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
         //? FORMAT DATE AS YYYY-MM-DD
         const formattedDate = e ? `${year}-${month}-${day}` : "";
 
-        setSelectDueDate(formattedDate); // Updates the selected date state
+        setdate(formattedDate); // Updates the selected date state
     };
 
     //? UPDATE TODO
@@ -86,18 +98,18 @@ const QuickDoDrawer = (props: DrawerProps) => {
             creation: props.todoData.creation,
             modified: props.todoData.modified,
             modified_by: props.todoData.modified_by,
-            completeTodo: completeTodo,
-            importantTodo: importantTodo,
-            isSendReminder: isSendReminder,
-            descriptionTodo: descriptionTodo,
-            selectDueDate: selectDueDate,
-            selectedCategories: selectedCategories,
+            status: status,
+            is_important: is_important,
+            send_reminder: send_reminder,
+            description: description,
+            date: date,
+            categories: categories,
         });
     };
 
     //? CATEGORIES MULTISELECT HANDLER
     const handleCategoryMultiSelect = (category: string) => {
-        setSelectedCategories((prevCategories) => {
+        setCategories((prevCategories) => {
             if (prevCategories.some((item) => item.category === category)) {
                 return prevCategories.filter((item) => item.category !== category);
             } else {
@@ -114,7 +126,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                 open={autoOpenDrawer || undefined}
             >
                 <DrawerTrigger asChild className={`${autoOpenDrawer && "hidden"}`}>
-                    <Button variant="link" className="p-0">
+                    <Button variant="link" className="p-0 h-auto">
                         <IoInformationCircle className="text-2xl ml-auto sm:m-auto lg:m-0" />
                     </Button>
                 </DrawerTrigger>
@@ -131,7 +143,6 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                 <Button variant="outline" className="text-xl rounded-full p-2">
                                     <FaAngleRight />
                                 </Button>
-
                             </DrawerClose>
 
                             <ConfirmBox
@@ -151,9 +162,9 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             <Textarea
                                 autoFocus
                                 className="w-full min-h-[64px]"
-                                value={descriptionTodo}
+                                value={description}
                                 onChange={(e) => {
-                                    setDescriptionTodo(e.target.value);
+                                    setDescription(e.target.value);
                                 }}
                             ></Textarea>
                         </div>
@@ -165,10 +176,10 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                 <div className="todo-due-data flex items-center bg-white py-0.5 px-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md cursor-pointer select-none hover:bg-gray-100">
                                     <div className="due-data cursor-pointer">
                                         <PiCalendarDotsLight
-                                            className={`text-2xl ${selectDueDate ? "hidden" : "show"}`}
+                                            className={`text-2xl ${date ? "hidden" : "show"}`}
                                         />
                                         <PiCalendarCheckFill
-                                            className={`text-2xl ${selectDueDate ? "show" : "hidden"}`}
+                                            className={`text-2xl ${date ? "show" : "hidden"}`}
                                         />
                                     </div>
 
@@ -177,7 +188,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                         className={"w-auto pl-3"}
                                     >
                                         <h3 className="font-normal text-base">
-                                            {selectDueDate ? (selectDueDate) : (
+                                            {date ? (date) : (
                                                 "Pick Due Date"
                                             )}
                                         </h3>
@@ -187,7 +198,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             <PopoverContent className="w-auto p-0" align="start">
                                 <Calendar
                                     mode="single"
-                                    selected={(new Date(selectDueDate))}
+                                    selected={(new Date(date))}
                                     onSelect={handleSetDate}
                                     initialFocus
                                 />
@@ -199,15 +210,18 @@ const QuickDoDrawer = (props: DrawerProps) => {
                         <div
                             className="todo-complete flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100"
                             onClick={() => {
-                                setCompleteTodo(!completeTodo);
+                                handleStatus(status);
                             }}
                             title="Complete"
                         >
                             <button
-                                className={`save hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
+                                className={`min-h-[18px] sm:min-h-5 min-w-[18px] sm:min-w-5 hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
                             >
                                 <FaCheck
-                                    className={`${completeTodo ? "opacity-1" : "opacity-0"}`}
+                                    className={`${status === "Completed" ? "show" : "hidden"}`}
+                                />
+                                <RxCross1
+                                    className={`${status === "Cancelled" ? "show" : "hidden"}`}
                                 />
                             </button>
                             <div className="text">
@@ -220,15 +234,15 @@ const QuickDoDrawer = (props: DrawerProps) => {
                         <div
                             className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
                             onClick={() => {
-                                setImportantTodo(!importantTodo);
+                                setIs_important(!is_important);
                             }}
                         >
                             <button className="importance cursor-pointer">
                                 <HiOutlineStar
-                                    className={`${importantTodo ? "hidden" : "show"} text-2xl`}
+                                    className={`${is_important ? "hidden" : "show"} text-2xl`}
                                 />
                                 <BiSolidStar
-                                    className={`${importantTodo ? "show" : "hidden"} text-2xl`}
+                                    className={`${is_important ? "show" : "hidden"} text-2xl`}
                                 />
                             </button>
                             <h3>Importance</h3>
@@ -239,16 +253,16 @@ const QuickDoDrawer = (props: DrawerProps) => {
                         <div
                             className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
                             onClick={() => {
-                                setIsSendReminder(!isSendReminder);
+                                setSend_reminder(!send_reminder);
                             }}
                             title="Reminder"
                         >
                             <button className="send-reminder text-2xl">
                                 <PiBellRingingLight
-                                    className={`${isSendReminder ? "hidden" : "show"}`}
+                                    className={`${send_reminder ? "hidden" : "show"}`}
                                 />
                                 <PiBellRingingFill
-                                    className={`${isSendReminder ? "show" : "hidden"}`}
+                                    className={`${send_reminder ? "show" : "hidden"}`}
                                 />
                             </button>
                             <h3>Reminder</h3>
@@ -268,11 +282,11 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                 {/* CATEGORIES ICON */}
                                 <button className="categories text-2xl">
                                     <PiListBullets
-                                        className={`${selectedCategories.length == 0 ? "show" : "hidden"
+                                        className={`${categories && categories.length == 0 ? "show" : "hidden"
                                             }`}
                                     />
                                     <PiListChecks
-                                        className={`${selectedCategories.length == 0 ? "hidden" : "show"
+                                        className={`${categories && categories.length == 0 ? "hidden" : "show"
                                             }`}
                                     />
                                 </button>
@@ -284,10 +298,10 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             <div
                                 className={`categories-items bg-white p-1 rounded-md grid grid-cols-2 gap-1 justify-center max-h-[400px] overflow-y-auto`}
                             >
-                                {allCategories.map((data, index) => (
+                                {allCategories && allCategories.map((data, index) => (
                                     <button
                                         key={data.category + index}
-                                        className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${selectedCategories.some(
+                                        className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${categories && categories.some(
                                             (item) => item["category"] === data.category
                                         )
                                             ? "bg-slate-100"
@@ -299,7 +313,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                             className={`save-todo-button bg-transparent rounded-full p-0.5 w-fit text-[10px] border border-gray-600 cursor-pointer`}
                                         >
                                             <FaCheck
-                                                className={`${selectedCategories.some(
+                                                className={`${categories && categories.some(
                                                     (item) => item["category"] === data.category
                                                 )
                                                     ? "opacity-1"

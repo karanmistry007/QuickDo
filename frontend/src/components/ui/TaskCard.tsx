@@ -1,27 +1,33 @@
 import { useEffect, useState } from 'react'
-import { Task } from '@/utils/data-tasks'
 import { Card } from '@/components/ui/card'
 import { Textarea } from "@/components/ui/textarea"
+import { useAllCategories, useAllQuickDoData } from '@/types/Common'
+import QuickDoDrawer from './QuickDoDrawer'
 
-const TaskCard = ({ task, updateTask }: {
-    task: Task
-    updateTask: (task: Task) => void
+const TaskCard = (props: {
+    task: useAllQuickDoData;
+    updateTask: (task: useAllQuickDoData) => void;
+    allCategories: useAllCategories[];
+    handleDeleteTodo: (data: string) => void;
 }) => {
     const [isEditingDescription, setIsEditingDescription] = useState<boolean>(false);
-    const [description, setDescription] = useState<string>(task.description || "");
+    const [description, setDescription] = useState<string>(props.task.description || "");
 
     useEffect(() => {
-        if (task.description) {
-            setDescription(task.description);
+        if (props.task.description) {
+            setDescription(props.task.description);
         }
-    }, [task.description])
+    }, [props.task.description])
+
+    // console.log(props.task)
+    // console.log(props.allCategories)
 
     return (
         <>
             <div
                 draggable
                 onDragStart={(e) => {
-                    e.dataTransfer.setData("name", task.name || "")
+                    e.dataTransfer.setData("name", props.task.name || "")
                 }}
                 className="rounded-lg m-5 bg-gray-50 w-[calc(100%_-_40px)]"
             >
@@ -36,17 +42,28 @@ const TaskCard = ({ task, updateTask }: {
                                 onChange={(e) => setDescription(e.target.value)}
                                 onKeyDown={(e) => {
                                     e.key === "Enter" && setIsEditingDescription(false);
-                                    e.key === "Enter" && updateTask({ ...task, description: description });
+                                    e.key === "Enter" && props.updateTask({ ...props.task, description: description });
                                 }}
                             ></Textarea>
                         </div>
                     ) : (
-                        <div className='cursor-pointer min-h-[80px]'
+                        <div className='cursor-pointer min-h-[80px] relative'
                             onDoubleClick={() => setIsEditingDescription(true)}
                         >
                             <p className="leading-7">
-                                {task.description}
+                                {props.task.description}
                             </p>
+
+                            {/* MORE */}
+                            <div className="more absolute right-0 -bottom-2.5 h-fit">
+                                <QuickDoDrawer
+                                    todoData={props.task}
+                                    allCategories={props.allCategories}
+                                    handleSaveToDo={props.updateTask}
+                                    handleDeleteTodo={props.handleDeleteTodo}
+                                />
+                            </div>
+                            {/* END MORE */}
                         </div>
                     )}
                 </Card>

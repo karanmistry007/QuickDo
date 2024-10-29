@@ -1,4 +1,4 @@
-import { CalendarEvents, DashboardProps, useAllTodoData, useAPISaveTodoData, useGetAllCategories } from "@/types/Common";
+import { CalendarEvents, DashboardProps, useAllQuickDoData, useAllCategories } from "@/types/Common";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import dayjs from "dayjs";
@@ -28,11 +28,11 @@ const CalendarView = (props: DashboardProps) => {
     };
 
     //? CATEGORY API DATA
-    const [getAllCategories, setGetAllCategories] = useState<useGetAllCategories[]>([]);
+    const [getAllCategories, setGetAllCategories] = useState<useAllCategories[]>([]);
 
 
     //? TODO DATA
-    const [todoData, setTodoData] = useState<useAllTodoData>();
+    const [todoData, setTodoData] = useState<useAllQuickDoData>();
 
 
     //? CATEGORIES LIST API
@@ -70,26 +70,26 @@ const CalendarView = (props: DashboardProps) => {
     }, [refreshState]);
 
     //? SAVE TODO HANDLER
-    const handleSaveToDo = (data: useAllTodoData) => {
+    const handleSaveToDo = (data: useAllQuickDoData) => {
 
         //? MAP THE OBJECT TO FRAPPE'S DATA
-        const finalData: useAPISaveTodoData = {
+        const finalData: useAllQuickDoData = {
             name: data?.name,
             owner: data?.owner,
             creation: data?.creation,
             modified: data?.modified,
             modified_by: data?.modified_by,
             doctype: "QuickDo",
-            status: data.completeTodo ? "Completed" : "Open",
-            is_important: data.importantTodo,
-            send_reminder: data.isSendReminder,
-            description: data.descriptionTodo,
-            date: data.selectDueDate,
-            categories: data.selectedCategories,
+            status: data.status ? "Completed" : "Open",
+            is_important: data.is_important,
+            send_reminder: data.send_reminder,
+            description: data.description,
+            date: data.date,
+            categories: data.categories,
         };
 
         //? FETCH SAVE TODO API FUNCTION
-        const fetchAPI = async (finalData: useAPISaveTodoData) => {
+        const fetchAPI = async (finalData: useAllQuickDoData) => {
             try {
                 const response = await axios.post(
                     `${BASE_URL}/api/method/frappe.desk.form.save.savedocs`,
@@ -208,12 +208,12 @@ const CalendarView = (props: DashboardProps) => {
                         creation: todoDoc.creation,
                         modified: todoDoc.modified,
                         modified_by: todoDoc.modified_by,
-                        completeTodo: todoDoc.status == "Completed" ? true : false,
-                        importantTodo: todoDoc.is_important,
-                        isSendReminder: todoDoc.send_reminder,
-                        descriptionTodo: description || "",
-                        selectDueDate: todoDoc.date || "",
-                        selectedCategories: todoDoc.categories || [],
+                        status: todoDoc.status == "Completed" ? true : false,
+                        is_important: todoDoc.is_important,
+                        send_reminder: todoDoc.send_reminder,
+                        description: description || "",
+                        date: todoDoc.date || "",
+                        categories: todoDoc.categories || [],
                     };
 
                     setTodoData(finalData);
