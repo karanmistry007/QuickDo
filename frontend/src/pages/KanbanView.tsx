@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import TaskCard from '../components/ui/TaskCard'
 import { Status, statuses, Task } from '../utils/data-tasks'
 import axios from 'axios';
-import { useAllCategories, useAllQuickDoData } from '@/types/Common';
+import { DashboardProps, useAllCategories, useAllQuickDoData } from '@/types/Common';
 import { toast } from 'sonner'
 
 
-const KanbanView = () => {
+const KanbanView = (props: DashboardProps) => {
 
     // ? HOOKS
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
@@ -152,9 +152,6 @@ const KanbanView = () => {
         }
     }, [refreshState]);
 
-    useEffect(() => {
-        console.log(getAllCategories)
-    }, [getAllCategories])
 
     //? FETCH SAVE TODO API FUNCTION
     const saveQuickDo = async (task: Task) => {
