@@ -14,6 +14,15 @@ import {
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { Button } from "@/components/ui/button";
+import { IoChevronDownOutline } from "react-icons/io5";
+
+
 // ? DEFINE SORTING DATA
 const useSortData: useSortDataItems[] = [
     { name: "Created", sort: "creation" },
@@ -24,7 +33,7 @@ const useSortData: useSortDataItems[] = [
     { name: "Status", sort: "status" },
 ];
 
-const InboxView = (props: DashboardProps) => {
+const GroupByView = (props: DashboardProps) => {
 
     //? HOOKS
     const [currentSort, setCurrentSort] = useState<string>("creation");
@@ -32,6 +41,9 @@ const InboxView = (props: DashboardProps) => {
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
+    const [isCollapseOpen, setIsCollapseOpen] = useState<boolean>(true);
+    const [isCollapseCompleted, setIsCollapseCompleted] = useState<boolean>(true);
+    const [isCollapseCancelled, setIsCollapseCancelled] = useState<boolean>(true);
 
 
 
@@ -47,6 +59,9 @@ const InboxView = (props: DashboardProps) => {
 
     //? ALL TODO API DATA
     const [allTodoData, setAllTodoData] = useState<useAllQuickDoData[]>([]);
+    const [openQuickDoData, setOpenQuickDoData] = useState<useAllQuickDoData[]>([]);
+    const [completedQuickDoData, setCompletedQuickDoData] = useState<useAllQuickDoData[]>([]);
+    const [cancelledQuickDoData, setCancelledQuickDoData] = useState<useAllQuickDoData[]>([]);
 
     //? SAVE TODO HANDLER
     const handleSaveToDo = (data: useAllQuickDoData) => {
@@ -249,6 +264,17 @@ const InboxView = (props: DashboardProps) => {
         }
     }, [refreshState]);
 
+
+    //? FILTER OPEN, COMPLETED, AND CLOSED QUICKDO
+    useEffect(() => {
+        if (allTodoData) {
+            setOpenQuickDoData(allTodoData.filter((item) => (item.status === "Open")))
+            setCompletedQuickDoData(allTodoData.filter((item) => (item.status === "Completed")))
+            setCancelledQuickDoData(allTodoData.filter((item) => (item.status === "Cancelled")))
+        }
+    }, [allTodoData])
+
+
     return (
         <>
             {/* DASHBOARD CONTAINER */}
@@ -345,23 +371,109 @@ const InboxView = (props: DashboardProps) => {
                             {/* END LIST HEADINGS */}
 
                             {/* LIST VIEW ITEMS */}
+                            {/* OPEN QUICKDO */}
+                            <Collapsible
+                                open={isCollapseOpen}
+                                onOpenChange={setIsCollapseOpen}
+                                className="my-2 py-2 border-b border-gray-300"
+                            >
+                                <div className="flex items-center justify-between space-x-4 w-full">
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="outline" className="w-full justify-start hover:bg-inherit border-0 shadow-none gap-2 text-base">
+                                            <IoChevronDownOutline className={`${isCollapseOpen ? "" : "-rotate-90"} duration-150 text-lg`} />
+                                            Open
+                                        </Button>
+                                    </CollapsibleTrigger>
+                                </div>
+                                <CollapsibleContent className="">
+                                    {(openQuickDoData.length !== 0 ? openQuickDoData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            todoData={item}
+                                            allCategories={getAllCategories}
+                                            handleSaveToDo={handleSaveToDo}
+                                            handleDeleteTodo={handleDeleteTodo}
+                                        />
+                                    )) :
+                                        (<>
+                                            <div className="text-center my-20 sm:my-20 font-semibold">
+                                                No Open QuickDos Are Available Please Create One!
+                                            </div>
+                                        </>))
+                                    }
+                                </CollapsibleContent>
+                            </Collapsible>
+                            {/* END OPEN QUICKDO */}
 
-                            {!initialLoading && (allTodoData.length !== 0 ? allTodoData.map((item, index) => (
-                                <ListItem
-                                    key={index}
-                                    todoData={item}
-                                    allCategories={getAllCategories}
-                                    handleSaveToDo={handleSaveToDo}
-                                    handleDeleteTodo={handleDeleteTodo}
-                                />
-                            )) :
-                                (<>
-                                    <div className="text-center my-20 sm:my-20 font-semibold">
-                                        No Open QuickDos Are Available Please Create One!
-                                    </div>
-                                </>))
-                            }
 
+                            {/* COMPLETED QUICKDO */}
+                            <Collapsible
+                                open={isCollapseCompleted}
+                                onOpenChange={setIsCollapseCompleted}
+                                className="my-2 py-2 border-b border-gray-300"
+                            >
+                                <div className="flex items-center justify-between space-x-4 w-full">
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="outline" className="w-full justify-start hover:bg-inherit border-0 shadow-none gap-2 text-base">
+                                            <IoChevronDownOutline className={`${isCollapseCompleted ? "" : "-rotate-90"} duration-150 text-lg`} />
+                                            Completed
+                                        </Button>
+                                    </CollapsibleTrigger>
+                                </div>
+                                <CollapsibleContent className="">
+                                    {(completedQuickDoData.length !== 0 ? completedQuickDoData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            todoData={item}
+                                            allCategories={getAllCategories}
+                                            handleSaveToDo={handleSaveToDo}
+                                            handleDeleteTodo={handleDeleteTodo}
+                                        />
+                                    )) :
+                                        (<>
+                                            <div className="text-center my-20 sm:my-20 font-semibold">
+                                                No Completed QuickDos Are Available Please Create One!
+                                            </div>
+                                        </>))
+                                    }
+                                </CollapsibleContent>
+                            </Collapsible>
+                            {/* END COMPLETED QUICKDO */}
+
+
+                            {/* CANCELLED QUICKDO */}
+                            <Collapsible
+                                open={isCollapseCancelled}
+                                onOpenChange={setIsCollapseCancelled}
+                                className="my-2 py-2 border-b border-gray-300"
+                            >
+                                <div className="flex items-center justify-between space-x-4 w-full">
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="outline" className="w-full justify-start hover:bg-inherit border-0 shadow-none gap-2 text-base">
+                                            <IoChevronDownOutline className={`${isCollapseCancelled ? "" : "-rotate-90"} duration-150 text-lg`} />
+                                            Cancelled
+                                        </Button>
+                                    </CollapsibleTrigger>
+                                </div>
+                                <CollapsibleContent className="">
+                                    {(cancelledQuickDoData.length !== 0 ? cancelledQuickDoData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            todoData={item}
+                                            allCategories={getAllCategories}
+                                            handleSaveToDo={handleSaveToDo}
+                                            handleDeleteTodo={handleDeleteTodo}
+                                        />
+                                    )) :
+                                        (<>
+                                            <div className="text-center my-20 sm:my-20 font-semibold">
+                                                No Cancelled QuickDos Are Available Please Create One!
+                                            </div>
+                                        </>))
+                                    }
+                                </CollapsibleContent>
+                            </Collapsible>
+                            {/* END CANCELLED QUICKDO */}
                             {/* END LIST VIEW ITEMS */}
                         </div>
                     </div>
@@ -385,4 +497,4 @@ const InboxView = (props: DashboardProps) => {
     );
 };
 
-export default InboxView;
+export default GroupByView;

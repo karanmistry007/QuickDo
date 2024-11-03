@@ -15,6 +15,7 @@ import CalendarView from "./pages/CalendarView";
 import { Toaster } from "sonner"
 import KanbanView from "./pages/KanbanView";
 import InboxView from "./pages/InboxView";
+import GroupByView from "./pages/GroupByView";
 
 
 const App = () => {
@@ -61,6 +62,10 @@ const App = () => {
 						<Route
 							path="/my-day"
 							element={<PrivateRoutes element={<MyDayView name="My Day" link="/my-day" />} />}
+						/>
+						<Route
+							path="/group-by"
+							element={<PrivateRoutes element={<GroupByView name="Group By" link="/group-by" />} />}
 						/>
 						<Route
 							path="/inbox"

@@ -15,6 +15,9 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoHome } from "react-icons/io5";
 import { PiCloudSunDuotone } from "react-icons/pi";
 import { PiCloudSunFill } from "react-icons/pi";
+import { IoLayersOutline } from "react-icons/io5";
+import { IoLayers } from "react-icons/io5";
+
 
 
 
@@ -38,6 +41,12 @@ const sidebarItems: SidebarItem[] = [
         link: "/inbox",
         icon: IoHomeOutline,
         activeIcon: IoHome,
+    },
+    {
+        name: "Group By",
+        link: "/group-by",
+        icon: IoLayersOutline,
+        activeIcon: IoLayers,
     },
     {
         name: "Calendar",
