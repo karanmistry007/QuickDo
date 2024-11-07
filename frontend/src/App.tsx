@@ -8,12 +8,14 @@ import {
 import Navbar from "./components/shared/Navbar";
 import Sidebar from "./components/shared/Sidebar";
 import Dashboard from "./pages/DashboardView";
-import ListView from "./pages/ListView";
+import MyDayView from "./pages/MyDayView";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
 import CalendarView from "./pages/CalendarView";
 import { Toaster } from "sonner"
 import KanbanView from "./pages/KanbanView";
+import InboxView from "./pages/InboxView";
+import GroupByView from "./pages/GroupByView";
 
 
 const App = () => {
@@ -58,24 +60,28 @@ const App = () => {
 							element={<PrivateRoutes element={<Dashboard name="Dashboard" link="/dashboard" />} />}
 						/>
 						<Route
-							path="/list"
-							element={<PrivateRoutes element={<ListView name="List" link="/list" />} />}
+							path="/my-day"
+							element={<PrivateRoutes element={<MyDayView name="My Day" link="/my-day" />} />}
+						/>
+						<Route
+							path="/group-by"
+							element={<PrivateRoutes element={<GroupByView name="Group By" link="/group-by" />} />}
+						/>
+						<Route
+							path="/inbox"
+							element={<PrivateRoutes element={<InboxView name="Inbox" link="/inbox" />} />}
 						/>
 						<Route
 							path="/kanban"
-							element={<PrivateRoutes element={<KanbanView name="Kanban" link="/kanban" />} />}
+							element={<PrivateRoutes element={<KanbanView name="Inbox" link="/kanban" />} />}
 						/>
 						<Route
 							path="/calendar"
 							element={<PrivateRoutes element={<CalendarView name="Calendar" link="/calendar" />} />}
 						/>
 						<Route
-							path="/kanban"
-							element={<PrivateRoutes element={<ListView name="Kanban" link="/kanban" />} />}
-						/>
-						<Route
 							path="/category"
-							element={<PrivateRoutes element={<ListView name="Category" link="/category" />} />}
+							element={<PrivateRoutes element={<MyDayView name="Category" link="/category" />} />}
 						/>
 						{/* END PRIVATE ROUTES */}
 

@@ -8,6 +8,7 @@ import {
     useAllQuickDoData,
     useAllCategories,
     useSortDataItems,
+    DashboardProps,
 } from "../types/Common";
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -22,7 +23,7 @@ const useSortData: useSortDataItems[] = [
     { name: "Status", sort: "status" },
 ];
 
-const ListView = () => {
+const ListView = (props: DashboardProps) => {
 
     //? HOOKS
     const [currentSort, setCurrentSort] = useState<string>("creation");
@@ -145,7 +146,7 @@ const ListView = () => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(
-                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]${currentSort && currentSortDirection
+                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&filters=[["date","in",["","2024-10-16"]]]&fields=["*"]${currentSort && currentSortDirection
                         ? "&order_by=" + currentSort + " " + currentSortDirection
                         : ""
                     }`,

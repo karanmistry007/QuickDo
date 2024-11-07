@@ -19,9 +19,6 @@ const TaskCard = (props: {
         }
     }, [props.task.description])
 
-    // console.log(props.task)
-    // console.log(props.allCategories)
-
     return (
         <>
             <div
