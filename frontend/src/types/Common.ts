@@ -150,3 +150,9 @@ export interface NumberCardProps {
 }
 
 // ! END PROPS
+
+
+// ? FILTERS
+export interface useStatusFiltersItems {
+    name: Status;
+}

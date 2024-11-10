@@ -9,10 +9,39 @@ import {
     useAllCategories,
     useSortDataItems,
     DashboardProps,
-    Status,
+    useStatusFiltersItems,
 } from "../types/Common";
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { IoClose } from "react-icons/io5";
+
+
+import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button";
+import { json } from "react-router-dom";
+
+
+// ? DEFINE STATUS DROPDOWN DATA
+const useStatusFilterData: useStatusFiltersItems[] = [
+    { name: "Open" },
+    { name: "Completed" },
+    { name: "Cancelled" },
+]
 
 // ? DEFINE SORTING DATA
 const useSortData: useSortDataItems[] = [
@@ -25,6 +54,142 @@ const useSortData: useSortDataItems[] = [
 ];
 
 const InboxView = (props: DashboardProps) => {
+
+
+    // ! TEMP
+    const [filters, setFilters] = useState<any>([]);
+
+    // ! TEMPORARY HANDLE FILTERS DATA
+    const handleFilters = (key: string, value: string, child_table: string = "") => {
+
+        // ? IF CHILD TABLE
+        if (child_table) {
+            // ? CHECK IF THE CHILD TABLE EXISTS IN FILTERS
+            const existingFilterIndex = filters.findIndex(
+                (filter: any) => filter[0] === child_table
+            );
+
+            console.log(existingFilterIndex)
+
+
+
+            if (existingFilterIndex !== -1) {
+
+                // ? VARIABLES
+                const inFilters = filters[existingFilterIndex][3];
+
+                console.log(inFilters)
+
+                // ? IF THE VALUE EXISTS IN THE FILTER, REMOVE IT
+                if (inFilters.includes(value)) {
+                    console.log("Value exists in filters, removing it");
+
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        child_table,
+                        key,
+                        "in",
+                        inFilters.filter((item: string) => item !== value),
+                    ];
+
+                    setFilters(updatedFilters);
+                }
+                // ? IF THE VALUE DOES NOT EXIST IN THE FILTER, ADD IT
+                else {
+                    console.log("Value does not exist in filters, adding it");
+
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        child_table,
+                        key,
+                        "in",
+                        [...inFilters, value],
+                    ];
+
+                    setFilters(updatedFilters);
+                }
+            }
+            // ? IF THE KEY DOES NOT EXIST IN FILTERS, ADD IT
+            else {
+                console.log("Key does not exist in filters, adding it");
+
+                setFilters((prevFilters: any) => [
+                    ...prevFilters,
+                    [child_table,key, "in", [value]],
+                ]);
+            }
+
+
+
+
+
+
+
+            console.log("Handling child table logic -------------------------------");
+        }
+
+        // ? IF NOT A CHILD TABLE
+        else {
+            // ? CHECK IF THE KEY EXISTS IN FILTERS
+            const existingFilterIndex = filters.findIndex(
+                (filter: any) => filter[0] === key
+            );
+
+            if (existingFilterIndex !== -1) {
+
+                // ? VARIABLES
+                const inFilters = filters[existingFilterIndex][2];
+
+                // ? IF THE VALUE EXISTS IN THE FILTER, REMOVE IT
+                if (inFilters.includes(value)) {
+                    console.log("Value exists in filters, removing it");
+
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        key,
+                        "in",
+                        inFilters.filter((item: string) => item !== value),
+                    ];
+
+                    setFilters(updatedFilters);
+                }
+                // ? IF THE VALUE DOES NOT EXIST IN THE FILTER, ADD IT
+                else {
+                    console.log("Value does not exist in filters, adding it");
+
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        key,
+                        "in",
+                        [...inFilters, value],
+                    ];
+
+                    setFilters(updatedFilters);
+                }
+            }
+            // ? IF THE KEY DOES NOT EXIST IN FILTERS, ADD IT
+            else {
+                console.log("Key does not exist in filters, adding it");
+
+                setFilters((prevFilters: any) => [
+                    ...prevFilters,
+                    [key, "in", [value]],
+                ]);
+            }
+        }
+    };
+
+    // ! TEMP HANDLE CLEAR FILTERS
+    const handleClearFilters = () => {
+        setFilters([]);
+    }
+
+    // ! TEMP USE EFFECT ON THE FILTERS CHANGES
+    useEffect(() => {
+        console.log(filters);
+        setRefreshState(true);
+    }, [filters])
+
 
     //? HOOKS
     const [currentSort, setCurrentSort] = useState<string>("creation");
@@ -148,7 +313,7 @@ const InboxView = (props: DashboardProps) => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(
-                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]${currentSort && currentSortDirection
+                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]&filters=${JSON.stringify(filters)}${currentSort && currentSortDirection
                         ? "&order_by=" + currentSort + " " + currentSortDirection
                         : ""
                     }`,
@@ -264,9 +429,160 @@ const InboxView = (props: DashboardProps) => {
 
                 {/* DASHBOARD */}
                 <div className="dashboard-list-view-container">
-                    {/* SORT SECTION*/}
-                    <div className="sort-container  py-1 px-4 sm:px-5">
 
+                    {/* UTILS BAR */}
+                    <div className="utils-container flex justify-end gap-5 py-1 px-4 sm:px-5">
+
+                        <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
+
+                            <div className="sort-value">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline">
+                                            Filters
+                                        </Button>
+                                    </DropdownMenuTrigger>
+
+                                    <DropdownMenuContent className="w-56">
+                                        <DropdownMenuLabel>
+                                            Filters
+                                        </DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+
+                                        {/* GROUP 1 */}
+                                        <DropdownMenuGroup>
+
+                                            {/* STATUS FILTERS */}
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger>
+                                                    Status
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+
+                                                        {useStatusFilterData.length !== 0 &&
+                                                            useStatusFilterData.map((data: useStatusFiltersItems, index: number) => (
+
+                                                                <DropdownMenuCheckboxItem
+                                                                    checked={
+                                                                        filters.some(
+                                                                            (filter: any) => filter[0] === "status" && filter[2]?.includes(data.name)
+                                                                        )
+                                                                    }
+                                                                    onCheckedChange={() => {
+                                                                        handleFilters("status", data.name)
+                                                                    }}
+                                                                    key={index}
+                                                                >
+                                                                    {data.name}
+                                                                </DropdownMenuCheckboxItem>
+                                                            ))
+
+                                                        }
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                            {/* END STATUS FILTERS */}
+
+
+                                            {/* CATEGORY FILTERS */}
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger>
+                                                    Category
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+
+                                                        {getAllCategories.length !== 0 &&
+                                                            getAllCategories.map((data: useAllCategories, index: number) => (
+
+                                                                <DropdownMenuCheckboxItem
+                                                                    checked={
+                                                                        filters.some(
+                                                                            (filter: any) => filter[0] === "QuickDo Categories" && filter[3]?.includes(data.category)
+                                                                        )}
+                                                                    onCheckedChange={() => {
+                                                                        handleFilters("category", data.category, "QuickDo Categories")
+                                                                    }}
+                                                                    key={index}
+                                                                >
+                                                                    {data.category}
+                                                                </DropdownMenuCheckboxItem>
+                                                            ))
+
+                                                        }
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                            {/* END CATEGORY FILTERS */}
+
+
+                                            {/* DUE DATE FILTERS */}
+                                            <DropdownMenuItem>
+                                                Due Date
+                                            </DropdownMenuItem>
+                                            {/* END DUE DATE FILTERS */}
+
+                                        </DropdownMenuGroup>
+                                        {/* END GROUP 1 */}
+
+                                        <DropdownMenuSeparator />
+
+                                        {/* GROUP 2 */}
+                                        <DropdownMenuGroup>
+
+                                            {/* IMPORTANCE FILTERS */}
+                                            <DropdownMenuCheckboxItem
+                                                checked={
+                                                    filters.some(
+                                                        (filter: any) => filter[0] === "is_important" && filter[2]?.includes("1")
+                                                    ) ? true : false
+                                                }
+                                                onCheckedChange={() => handleFilters("is_important", "1")}
+                                            >
+                                                Importance
+                                            </DropdownMenuCheckboxItem>
+                                            {/* END IMPORTANCE FILTERS */}
+
+                                            {/* REMINDER FILTERS */}
+                                            <DropdownMenuCheckboxItem
+                                                checked={
+                                                    filters.some(
+                                                        (filter: any) => filter[0] === "send_reminder" && filter[2]?.includes("1")
+                                                    ) ? true : false
+                                                }
+                                                onCheckedChange={() => handleFilters("send_reminder", "1")}
+                                            >
+                                                Reminder
+                                            </DropdownMenuCheckboxItem>
+                                            {/* END REMINDER FILTERS */}
+
+                                        </DropdownMenuGroup>
+                                        {/* END GROUP 2 */}
+
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+
+                            </div>
+
+                            <div className="clear-filters">
+                                <button
+                                    className="clear-filters px-3 py-2 text-[20px]"
+                                    onClick={() => {
+                                        handleClearFilters();
+                                        setRefreshState(true);
+                                    }}
+                                >
+                                    <IoClose
+                                        title="Clear Filters"
+                                        className={`text-xl`}
+                                    />
+                                </button>
+                            </div>
+
+                        </div>
+
+                        {/* SORT */}
                         <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
 
                             <div className="sort-value">
@@ -316,9 +632,10 @@ const InboxView = (props: DashboardProps) => {
                             </div>
 
                         </div>
-
                     </div>
-                    {/* END SORT SECTION*/}
+                    {/* END SORT */}
+
+                    {/* END UTILS BAR */}
 
                     {/* LIST VIEW */}
                     <div className="list-view-container pt-0 p-4 sm:pt-0 md:pt-0 sm:p-5 w-full">
@@ -379,7 +696,7 @@ const InboxView = (props: DashboardProps) => {
                 )}
                 {/* END LOADING ANIMATION */}
 
-            </div>
+            </div >
             {/* END DASHBOARD CONTAINER */}
         </>
     );
