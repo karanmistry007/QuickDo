@@ -35,6 +35,7 @@ const useStatusFilterData: useStatusFiltersItems[] = [
     { name: "Completed" },
     { name: "Cancelled" },
 ]
+
 // ? DEFINE SORTING DATA
 const useSortData: useSortDataItems[] = [
     { name: "Created", sort: "creation" },
