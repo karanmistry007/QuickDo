@@ -39,6 +39,23 @@ const QuickDoDrawer = (props: DrawerProps) => {
     const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories);
     const [autoOpenDrawer, setAutoOpenDrawer] = useState<boolean>(props.autoOpenDrawer || false);
 
+    //? SET MOBILE SCREEN
+    const [isMobileScreen, setIsMobileScreen] = useState<boolean>(window.innerWidth < 640 ? true : false);
+
+    useEffect(() => {
+        //? SET SCREEN WIDTH HANDLER
+        const screenWidthHandler = () => {
+            if (window.innerWidth < 640) {
+                setIsMobileScreen(true);
+            } else {
+                setIsMobileScreen(false);
+            }
+        };
+        screenWidthHandler();
+        window.addEventListener("resize", screenWidthHandler);
+    }, [window.screen.width]);
+
+
     //? DELETE TODO HANDLER
     const handleDeleteTodo = () => {
         props.handleDeleteTodo(props.todoData.name || "");
@@ -121,7 +138,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
     return (
         <>
             <Drawer
-                direction={"right"}
+                direction={`${isMobileScreen?"bottom":"right"}`}
                 onClose={() => { handleSaveToDo() }}
                 open={autoOpenDrawer || undefined}
             >

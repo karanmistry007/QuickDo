@@ -45,6 +45,7 @@ const useSortData: useSortDataItems[] = [
     { name: "Due Date", sort: "date" },
     { name: "Reminder", sort: "send_reminder" },
     { name: "Status", sort: "status" },
+    { name: "Description", sort: "description" },
 ];
 
 const InboxView = (props: DashboardProps) => {
@@ -410,8 +411,8 @@ const InboxView = (props: DashboardProps) => {
                             <div className="sort-value">
                                 <Select
                                     onValueChange={(e) => {
-                                        setCurrentSort(e),
-                                            setRefreshState(true);
+                                        setCurrentSort(e);
+                                        setRefreshState(true);
                                     }}
                                 >
                                     <SelectTrigger className="w-fit border-0 border-r py-0">
@@ -462,7 +463,7 @@ const InboxView = (props: DashboardProps) => {
                             <div className="sort-value">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline">
+                                        <Button variant="outline" className="font-normal">
                                             Filters
                                         </Button>
                                     </DropdownMenuTrigger>
