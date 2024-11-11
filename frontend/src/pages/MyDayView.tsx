@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CreateTodo from "../components/ui/CreateTodo";
+import CreateQuickDo from "../components/ui/create-quickdo";
 import ListItem from "../components/ui/ListItem";
 import { BsSortUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
@@ -255,7 +255,7 @@ const ListView = (props: DashboardProps) => {
             <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
                 {/* CREATE TODO */}
                 <div className="create-todo-container">
-                    <CreateTodo
+                    <CreateQuickDo
                         handleNewToDo={handleSaveToDo}
                         allCategories={getAllCategories}
                     />

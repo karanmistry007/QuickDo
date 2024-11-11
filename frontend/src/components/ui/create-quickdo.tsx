@@ -13,9 +13,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button";
 
-const CreateTodo = (props: CreateTodoProps) => {
+const CreateQuickDo = (props: CreateTodoProps) => {
 
     //? HOOKS
     const [status, setStatus] = useState<Status>("Open");
@@ -27,7 +26,6 @@ const CreateTodo = (props: CreateTodoProps) => {
     const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories || "[]");
     const [saveNewTodo, setSaveNewTodo] = useState<boolean>(false);
     const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
-    const [showCategories, setShowCategories] = useState<boolean>(false);
 
     //? SET MOBILE SCREEN
     const [isMobileScreen, setIsMobileScreen] = useState<boolean>(window.innerWidth < 640 ? true : false);
@@ -206,7 +204,7 @@ const CreateTodo = (props: CreateTodoProps) => {
                         {/* CATEGORIES MULTISELECT */}
                         <DropdownMultiSelect
                             position={"right"}
-                            showCategories={showCategories}
+                            showCategories={false}
                             allCategories={allCategories}
                             categories={categories}
                             handleCategories={handleCategories}
@@ -223,4 +221,4 @@ const CreateTodo = (props: CreateTodoProps) => {
     );
 };
 
-export default CreateTodo;
+export default CreateQuickDo;
