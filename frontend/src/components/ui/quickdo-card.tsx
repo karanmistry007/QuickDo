@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Textarea } from "@/components/ui/textarea"
 import { useAllCategories, useAllQuickDoData } from '@/types/Common'
-import QuickDoDrawer from './QuickDoDrawer'
+import QuickDoDrawer from './quickdo-drawer'
 
-const TaskCard = (props: {
+const QuickDoCard = (props: {
     task: useAllQuickDoData;
     updateTask: (task: useAllQuickDoData) => void;
     allCategories: useAllCategories[];
@@ -69,4 +69,4 @@ const TaskCard = (props: {
     )
 }
 
-export default TaskCard
+export default QuickDoCard

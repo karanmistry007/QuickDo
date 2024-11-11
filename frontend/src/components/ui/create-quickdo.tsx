@@ -5,7 +5,7 @@ import { PiBellRingingFill } from "react-icons/pi";
 import { IoInformationCircle } from "react-icons/io5";
 import { PiCalendarDotsLight } from "react-icons/pi";
 import { PiCalendarCheckFill } from "react-icons/pi";
-import DropdownMultiSelect from "./DropdownMultiSelect";
+import DropdownMultiSelect from "./dropdown-multiselect";
 import { useAllCategories, CreateTodoProps, Status } from "../../types/Common";
 import { Calendar } from "@/components/ui/calendar"
 import {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaAngleRight } from "react-icons/fa6";
 import { TbMenu2 } from "react-icons/tb";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -74,22 +74,6 @@ export default function Sidebar() {
     //? HOOKS
     const location = useLocation();
     const navigate = useNavigate();
-
-    //? SET MOBILE SCREEN
-    const [isMobileScreen, setIsMobileScreen] = useState<boolean>(window.innerWidth < 640 ? true : false);
-
-    useEffect(() => {
-        //? SET SCREEN WIDTH HANDLER
-        const screenWidthHandler = () => {
-            if (window.innerWidth < 640) {
-                setIsMobileScreen(true);
-            } else {
-                setIsMobileScreen(false);
-            }
-        };
-        screenWidthHandler();
-        window.addEventListener("resize", screenWidthHandler);
-    }, [window.screen.width]);
 
     //? SIDEBAR COLLAPSE
     const [sidebarCollapseActive, setSidebarCollapseActive] = useState<boolean>(false);

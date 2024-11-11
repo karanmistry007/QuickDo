@@ -16,7 +16,7 @@ import {
 const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
 
     //? HOOKS
-    const [categories, setcategories] = useState<useAllCategories[]>(props.categories);
+    const [categories, setCategories] = useState<useAllCategories[]>(props.categories);
     const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories);
 
 
@@ -28,7 +28,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
 
     //? CATEGORIES MULTISELECT HANDLER
     const handleCategoryMultiSelect = (category: string) => {
-        setcategories((prevCategories) => {
+        setCategories((prevCategories) => {
             if (prevCategories.some((item) => item.category === category)) {
                 return prevCategories.filter((item) => item.category !== category);
             } else {
@@ -45,7 +45,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
 
     //? EFFECT ON PROP'S SELECTED CATEGORIES CHANGE
     useEffect(() => {
-        setcategories(props.categories);
+        setCategories(props.categories);
     }, [props.categories]);
 
     return (
