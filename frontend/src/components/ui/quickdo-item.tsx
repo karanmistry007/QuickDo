@@ -168,7 +168,6 @@ const QuickDoItem = (props: ListItemProps) => {
                 {/* EDIT AND CLOSE TASK */}
 
                 {/* DUE DATE */}
-
                 <div className="item hidden lg:block lg:col-span-2 justify-self-center">
 
                     <Popover>

@@ -16,6 +16,7 @@ import { Toaster } from "sonner"
 import KanbanView from "./pages/kanban-view";
 import InboxView from "./pages/inbox-view";
 import GroupByView from "./pages/group-by-view";
+import CategoryView from "./pages/category-view";
 
 
 const App = () => {
@@ -81,7 +82,7 @@ const App = () => {
 						/>
 						<Route
 							path="/category"
-							element={<PrivateRoutes element={<MyDayView name="Category" link="/category" />} />}
+							element={<PrivateRoutes element={<CategoryView name="Category" link="/category" />} />}
 						/>
 						{/* END PRIVATE ROUTES */}
 

@@ -8,6 +8,12 @@ export type Status = 'Open' | 'Completed' | 'Cancelled';
 //? ALL CATEGORIES
 export interface useAllCategories {
     category: string;
+    name?: string;
+    owner?: string;
+    creation?: string;
+    modified?: string;
+    modified_by?: string;
+    doctype?: "QuickDo Category",
 }
 
 //? ALL QUICKDO ITEMS
@@ -109,6 +115,12 @@ export type CreateTodoProps = {
     handleNewToDo: (data: useAllQuickDoData) => void;
 };
 
+//? CREATE TODO PROPS
+export type CreateCategoryProps = {
+    allCategories: useAllCategories[];
+    handleSaveCategory: (data: useAllCategories) => void;
+};
+
 //? DROPDOWN MULTI SELECT PROPS
 export type DropdownMultiSelectProps = {
     position?: string;
@@ -125,6 +137,14 @@ export type ListItemProps = {
     handleSaveToDo: (data: useAllQuickDoData) => void;
     handleDeleteTodo: (data: string) => void;
 };
+
+//? CATEGORY ITEM PROPS
+export type ListCategoryProps = {
+    CategoryData: useAllCategories;
+    handleSaveCategory: (data: useAllCategories) => void;
+    handleDeleteCategory: (data: string) => void;
+};
+
 
 //? DRAWER PROPS
 export type DrawerProps = {

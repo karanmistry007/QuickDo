@@ -30,6 +30,7 @@ const useSortData: useSortDataItems[] = [
     { name: "Due Date", sort: "date" },
     { name: "Reminder", sort: "send_reminder" },
     { name: "Status", sort: "status" },
+    { name: "Description", sort: "description" },
 ];
 
 const GroupByView = (props: DashboardProps) => {
