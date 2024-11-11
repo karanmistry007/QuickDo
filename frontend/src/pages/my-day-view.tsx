@@ -9,9 +9,32 @@ import {
     useAllCategories,
     useSortDataItems,
     DashboardProps,
+    useStatusFiltersItems,
 } from "../types/Common";
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { IoClose } from "react-icons/io5";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button";
+
+// ? DEFINE STATUS DROPDOWN DATA
+const useStatusFilterData: useStatusFiltersItems[] = [
+    { name: "Open" },
+    { name: "Completed" },
+    { name: "Cancelled" },
+]
 
 // ? DEFINE SORTING DATA
 const useSortData: useSortDataItems[] = [
@@ -27,12 +50,127 @@ const useSortData: useSortDataItems[] = [
 const ListView = (props: DashboardProps) => {
 
     //? HOOKS
+    const currDate = new Date();
+    const currISODate = currDate.toISOString().split("T")[0];
     const [currentSort, setCurrentSort] = useState<string>("creation");
     const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
+    const [filters, setFilters] = useState<any>([["date", "<=", currISODate]]);
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
 
+
+    // ? HANDLE FILTERS DATA
+    const handleFilters = (key: string, value: string, child_table: string = "") => {
+
+        // ? IF DEALING WITH A CHILD TABLE
+        if (child_table) {
+            // ? CHECK IF THE CHILD TABLE EXISTS IN FILTERS
+            const existingFilterIndex = filters.findIndex(
+                (filter: any) => filter[0] === child_table
+            );
+
+            // ? IF THE CHILD TABLE FILTER EXISTS
+            if (existingFilterIndex !== -1) {
+                const inFilters = filters[existingFilterIndex][3];
+
+                // ? IF THE VALUE EXISTS IN THE FILTER, REMOVE IT
+                if (inFilters.includes(value)) {
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        child_table,
+                        key,
+                        "in",
+                        inFilters.filter((item: string) => item !== value),
+                    ];
+
+                    // ? REMOVE THE FILTER ENTRY IF THE LIST IS EMPTY
+                    if (updatedFilters[existingFilterIndex][3].length === 0) {
+                        updatedFilters.splice(existingFilterIndex, 1);
+                    }
+
+                    setFilters(updatedFilters);
+                }
+                // ? IF THE VALUE DOES NOT EXIST IN THE FILTER, ADD IT
+                else {
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        child_table,
+                        key,
+                        "in",
+                        [...inFilters, value],
+                    ];
+
+                    setFilters(updatedFilters);
+                }
+            }
+            // ? IF THE KEY DOES NOT EXIST IN FILTERS, ADD IT
+            else {
+                setFilters((prevFilters: any) => [
+                    ...prevFilters,
+                    [child_table, key, "in", [value]],
+                ]);
+            }
+        }
+
+        // ? IF NOT DEALING WITH A CHILD TABLE
+        else {
+            // ? CHECK IF THE KEY EXISTS IN FILTERS
+            const existingFilterIndex = filters.findIndex(
+                (filter: any) => filter[0] === key
+            );
+
+            // ? IF THE KEY EXISTS IN FILTERS
+            if (existingFilterIndex !== -1) {
+                const inFilters = filters[existingFilterIndex][2];
+
+                // ? IF THE VALUE EXISTS IN THE FILTER, REMOVE IT
+                if (inFilters.includes(value)) {
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        key,
+                        "in",
+                        inFilters.filter((item: string) => item !== value),
+                    ];
+
+                    // ? REMOVE THE FILTER ENTRY IF THE LIST IS EMPTY
+                    if (updatedFilters[existingFilterIndex][2].length === 0) {
+                        updatedFilters.splice(existingFilterIndex, 1);
+                    }
+
+                    setFilters(updatedFilters);
+                }
+                // ? IF THE VALUE DOES NOT EXIST IN THE FILTER, ADD IT
+                else {
+                    const updatedFilters = [...filters];
+                    updatedFilters[existingFilterIndex] = [
+                        key,
+                        "in",
+                        [...inFilters, value],
+                    ];
+
+                    setFilters(updatedFilters);
+                }
+            }
+            // ? IF THE KEY DOES NOT EXIST IN FILTERS, ADD IT
+            else {
+                setFilters((prevFilters: any) => [
+                    ...prevFilters,
+                    [key, "in", [value]],
+                ]);
+            }
+        }
+    };
+
+    // ? HANDLE CLEAR FILTERS
+    const handleClearFilters = () => {
+        setFilters([["date", "<=", currISODate]]);
+    }
+
+    // ? USE EFFECT ON THE FILTERS CHANGES
+    useEffect(() => {
+        setRefreshState(true);
+    }, [filters])
 
     // TODO WILL REPLACE WITH THE SOCKET
     //? UPDATE STATE
@@ -147,7 +285,7 @@ const ListView = (props: DashboardProps) => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(
-                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&filters=[["date","in",["","2024-10-16"]]]&fields=["*"]${currentSort && currentSortDirection
+                    `${BASE_URL}/api/method/quickdo.api.get_quickdo_with_categories?doctype=QuickDo&fields=["*"]&filters=${JSON.stringify(filters)}${currentSort && currentSortDirection
                         ? "&order_by=" + currentSort + " " + currentSortDirection
                         : ""
                     }`,
@@ -193,10 +331,8 @@ const ListView = (props: DashboardProps) => {
 
                             //? REFRESH STATE
                             handleRefreshState(false);
-
                         }
                     );
-
 
                     //? SET THE FINAL DATA TO STATE
                     setAllTodoData(finalData);
@@ -265,16 +401,161 @@ const ListView = (props: DashboardProps) => {
 
                 {/* DASHBOARD */}
                 <div className="dashboard-list-view-container">
-                    {/* SORT SECTION*/}
-                    <div className="sort-container  py-1 px-4 sm:px-5">
 
-                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
+                    {/* UTILS BAR */}
+                    <div className="utils-container flex justify-start gap-5 py-1 px-4 sm:px-5">
+
+                        {/* FILTERS SECTION */}
+                        <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-2">
+
+                            <div className="filter-value">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline" className="font-normal">
+                                            Filters
+                                        </Button>
+                                    </DropdownMenuTrigger>
+
+                                    <DropdownMenuContent className="w-56">
+                                        <DropdownMenuLabel>
+                                            Filters
+                                        </DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+
+                                        {/* GROUP 1 */}
+                                        <DropdownMenuGroup>
+
+                                            {/* STATUS FILTERS */}
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger>
+                                                    Status
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+
+                                                        {useStatusFilterData.length !== 0 &&
+                                                            useStatusFilterData.map((data: useStatusFiltersItems, index: number) => (
+
+                                                                <DropdownMenuCheckboxItem
+                                                                    checked={
+                                                                        filters.some(
+                                                                            (filter: any) => filter[0] === "status" && filter[2]?.includes(data.name)
+                                                                        )
+                                                                    }
+                                                                    onCheckedChange={() => {
+                                                                        handleFilters("status", data.name)
+                                                                    }}
+                                                                    key={index}
+                                                                >
+                                                                    {data.name}
+                                                                </DropdownMenuCheckboxItem>
+                                                            ))
+
+                                                        }
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                            {/* END STATUS FILTERS */}
+
+
+                                            {/* CATEGORY FILTERS */}
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger>
+                                                    Category
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+
+                                                        {getAllCategories.length !== 0 &&
+                                                            getAllCategories.map((data: useAllCategories, index: number) => (
+
+                                                                <DropdownMenuCheckboxItem
+                                                                    checked={
+                                                                        filters.some(
+                                                                            (filter: any) => filter[0] === "QuickDo Categories" && filter[3]?.includes(data.category)
+                                                                        )}
+                                                                    onCheckedChange={() => {
+                                                                        handleFilters("category", data.category, "QuickDo Categories")
+                                                                    }}
+                                                                    key={index}
+                                                                >
+                                                                    {data.category}
+                                                                </DropdownMenuCheckboxItem>
+                                                            ))
+
+                                                        }
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                            {/* END CATEGORY FILTERS */}
+
+                                        </DropdownMenuGroup>
+                                        {/* END GROUP 1 */}
+
+                                        <DropdownMenuSeparator />
+
+                                        {/* GROUP 2 */}
+                                        <DropdownMenuGroup>
+
+                                            {/* IMPORTANCE FILTERS */}
+                                            <DropdownMenuCheckboxItem
+                                                checked={
+                                                    filters.some(
+                                                        (filter: any) => filter[0] === "is_important" && filter[2]?.includes("1")
+                                                    ) ? true : false
+                                                }
+                                                onCheckedChange={() => handleFilters("is_important", "1")}
+                                            >
+                                                Importance
+                                            </DropdownMenuCheckboxItem>
+                                            {/* END IMPORTANCE FILTERS */}
+
+                                            {/* REMINDER FILTERS */}
+                                            <DropdownMenuCheckboxItem
+                                                checked={
+                                                    filters.some(
+                                                        (filter: any) => filter[0] === "send_reminder" && filter[2]?.includes("1")
+                                                    ) ? true : false
+                                                }
+                                                onCheckedChange={() => handleFilters("send_reminder", "1")}
+                                            >
+                                                Reminder
+                                            </DropdownMenuCheckboxItem>
+                                            {/* END REMINDER FILTERS */}
+
+                                        </DropdownMenuGroup>
+                                        {/* END GROUP 2 */}
+
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+
+                            <div className="clear-filters">
+                                <button
+                                    className="clear-filters px-3 py-2 text-[20px]"
+                                    onClick={() => {
+                                        handleClearFilters();
+                                        setRefreshState(true);
+                                    }}
+                                >
+                                    <IoClose
+                                        title="Clear Filters"
+                                        className={`text-xl`}
+                                    />
+                                </button>
+                            </div>
+
+                        </div>
+                        {/* END FILTERS SECTION */}
+
+                        {/* SORT */}
+                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-1">
 
                             <div className="sort-value">
                                 <Select
                                     onValueChange={(e) => {
-                                        setCurrentSort(e),
-                                            setRefreshState(true);
+                                        setCurrentSort(e);
+                                        setRefreshState(true);
                                     }}
                                 >
                                     <SelectTrigger className="w-fit border-0 border-r py-0">
@@ -317,9 +598,10 @@ const ListView = (props: DashboardProps) => {
                             </div>
 
                         </div>
+                        {/* END SORT */}
 
                     </div>
-                    {/* END SORT SECTION*/}
+                    {/* END UTILS BAR */}
 
                     {/* LIST VIEW */}
                     <div className="list-view-container pt-0 p-4 sm:pt-0 md:pt-0 sm:p-5 w-full">
