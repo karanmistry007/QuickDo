@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CreateTodo from "../components/ui/CreateTodo";
+import CreateQuickDo from "../components/ui/create-quickdo";
 import ListItem from "../components/ui/ListItem";
 import { BsSortUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
@@ -14,9 +14,6 @@ import {
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { IoClose } from "react-icons/io5";
-
-
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -26,15 +23,12 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
-import { json } from "react-router-dom";
-
 
 // ? DEFINE STATUS DROPDOWN DATA
 const useStatusFilterData: useStatusFiltersItems[] = [
@@ -56,34 +50,30 @@ const useSortData: useSortDataItems[] = [
 const InboxView = (props: DashboardProps) => {
 
 
-    // ! TEMP
+    // ? HOOKS
+    const [currentSort, setCurrentSort] = useState<string>("creation");
+    const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
+    const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const [filters, setFilters] = useState<any>([]);
+    const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
+    const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
 
     // ! TEMPORARY HANDLE FILTERS DATA
     const handleFilters = (key: string, value: string, child_table: string = "") => {
 
-        // ? IF CHILD TABLE
+        // ? IF DEALING WITH A CHILD TABLE
         if (child_table) {
             // ? CHECK IF THE CHILD TABLE EXISTS IN FILTERS
             const existingFilterIndex = filters.findIndex(
                 (filter: any) => filter[0] === child_table
             );
 
-            console.log(existingFilterIndex)
-
-
-
+            // ? IF THE CHILD TABLE FILTER EXISTS
             if (existingFilterIndex !== -1) {
-
-                // ? VARIABLES
                 const inFilters = filters[existingFilterIndex][3];
-
-                console.log(inFilters)
 
                 // ? IF THE VALUE EXISTS IN THE FILTER, REMOVE IT
                 if (inFilters.includes(value)) {
-                    console.log("Value exists in filters, removing it");
-
                     const updatedFilters = [...filters];
                     updatedFilters[existingFilterIndex] = [
                         child_table,
@@ -92,12 +82,15 @@ const InboxView = (props: DashboardProps) => {
                         inFilters.filter((item: string) => item !== value),
                     ];
 
+                    // ? REMOVE THE FILTER ENTRY IF THE LIST IS EMPTY
+                    if (updatedFilters[existingFilterIndex][3].length === 0) {
+                        updatedFilters.splice(existingFilterIndex, 1);
+                    }
+
                     setFilters(updatedFilters);
                 }
                 // ? IF THE VALUE DOES NOT EXIST IN THE FILTER, ADD IT
                 else {
-                    console.log("Value does not exist in filters, adding it");
-
                     const updatedFilters = [...filters];
                     updatedFilters[existingFilterIndex] = [
                         child_table,
@@ -111,39 +104,26 @@ const InboxView = (props: DashboardProps) => {
             }
             // ? IF THE KEY DOES NOT EXIST IN FILTERS, ADD IT
             else {
-                console.log("Key does not exist in filters, adding it");
-
                 setFilters((prevFilters: any) => [
                     ...prevFilters,
-                    [child_table,key, "in", [value]],
+                    [child_table, key, "in", [value]],
                 ]);
             }
-
-
-
-
-
-
-
-            console.log("Handling child table logic -------------------------------");
         }
 
-        // ? IF NOT A CHILD TABLE
+        // ? IF NOT DEALING WITH A CHILD TABLE
         else {
             // ? CHECK IF THE KEY EXISTS IN FILTERS
             const existingFilterIndex = filters.findIndex(
                 (filter: any) => filter[0] === key
             );
 
+            // ? IF THE KEY EXISTS IN FILTERS
             if (existingFilterIndex !== -1) {
-
-                // ? VARIABLES
                 const inFilters = filters[existingFilterIndex][2];
 
                 // ? IF THE VALUE EXISTS IN THE FILTER, REMOVE IT
                 if (inFilters.includes(value)) {
-                    console.log("Value exists in filters, removing it");
-
                     const updatedFilters = [...filters];
                     updatedFilters[existingFilterIndex] = [
                         key,
@@ -151,12 +131,15 @@ const InboxView = (props: DashboardProps) => {
                         inFilters.filter((item: string) => item !== value),
                     ];
 
+                    // ? REMOVE THE FILTER ENTRY IF THE LIST IS EMPTY
+                    if (updatedFilters[existingFilterIndex][2].length === 0) {
+                        updatedFilters.splice(existingFilterIndex, 1);
+                    }
+
                     setFilters(updatedFilters);
                 }
                 // ? IF THE VALUE DOES NOT EXIST IN THE FILTER, ADD IT
                 else {
-                    console.log("Value does not exist in filters, adding it");
-
                     const updatedFilters = [...filters];
                     updatedFilters[existingFilterIndex] = [
                         key,
@@ -169,8 +152,6 @@ const InboxView = (props: DashboardProps) => {
             }
             // ? IF THE KEY DOES NOT EXIST IN FILTERS, ADD IT
             else {
-                console.log("Key does not exist in filters, adding it");
-
                 setFilters((prevFilters: any) => [
                     ...prevFilters,
                     [key, "in", [value]],
@@ -179,25 +160,15 @@ const InboxView = (props: DashboardProps) => {
         }
     };
 
-    // ! TEMP HANDLE CLEAR FILTERS
+    // ? HANDLE CLEAR FILTERS
     const handleClearFilters = () => {
         setFilters([]);
     }
 
-    // ! TEMP USE EFFECT ON THE FILTERS CHANGES
+    // ? USE EFFECT ON THE FILTERS CHANGES
     useEffect(() => {
-        console.log(filters);
         setRefreshState(true);
     }, [filters])
-
-
-    //? HOOKS
-    const [currentSort, setCurrentSort] = useState<string>("creation");
-    const [currentSortDirection, setCurrentSortDirection] = useState<string>("desc");
-    const [initialLoading, setInitialLoading] = useState<boolean>(true);
-    const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
-    const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
-
 
 
     // TODO WILL REPLACE WITH THE SOCKET
@@ -420,7 +391,7 @@ const InboxView = (props: DashboardProps) => {
             <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
                 {/* CREATE TODO */}
                 <div className="create-todo-container">
-                    <CreateTodo
+                    <CreateQuickDo
                         handleNewToDo={handleSaveToDo}
                         allCategories={getAllCategories}
                     />
@@ -431,8 +402,61 @@ const InboxView = (props: DashboardProps) => {
                 <div className="dashboard-list-view-container">
 
                     {/* UTILS BAR */}
-                    <div className="utils-container flex justify-end gap-5 py-1 px-4 sm:px-5">
+                    <div className="utils-container flex justify-start gap-5 py-1 px-4 sm:px-5">
 
+                        {/* SORT */}
+                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
+
+                            <div className="sort-value">
+                                <Select
+                                    onValueChange={(e) => {
+                                        setCurrentSort(e),
+                                            setRefreshState(true);
+                                    }}
+                                >
+                                    <SelectTrigger className="w-fit border-0 border-r py-0">
+                                        <SelectValue
+                                            defaultValue={useSortData.find((item) => item.sort == currentSort)?.sort}
+                                            placeholder={useSortData.find((item) => item.sort == currentSort)?.name}
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent className="max-h-[300px] w-fit">
+                                        {useSortData.map((item, index) => {
+                                            return (
+                                                <SelectItem key={index} value={item.sort} >{item.name}</SelectItem>
+                                            )
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="sort-direction">
+                                <button
+                                    className="sort-direction px-3 py-2 text-[20px]"
+                                    onClick={() => {
+                                        setCurrentSortDirection(
+                                            currentSortDirection === "asc" ? "desc" : "asc"
+                                        ),
+                                            setRefreshState(true);
+                                    }}
+                                >
+                                    <BsSortDownAlt
+                                        title="Descending"
+                                        className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
+                                            }`}
+                                    />
+                                    <BsSortUp
+                                        title="Ascending"
+                                        className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
+                                            }`}
+                                    />
+                                </button>
+                            </div>
+
+                        </div>
+                        {/* END SORT */}
+
+                        {/* FILTERS SECTION */}
                         <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
 
                             <div className="sort-value">
@@ -581,60 +605,9 @@ const InboxView = (props: DashboardProps) => {
                             </div>
 
                         </div>
+                        {/* END FILTERS SECTION */}
 
-                        {/* SORT */}
-                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
-
-                            <div className="sort-value">
-                                <Select
-                                    onValueChange={(e) => {
-                                        setCurrentSort(e),
-                                            setRefreshState(true);
-                                    }}
-                                >
-                                    <SelectTrigger className="w-fit border-0 border-r py-0">
-                                        <SelectValue
-                                            defaultValue={useSortData.find((item) => item.sort == currentSort)?.sort}
-                                            placeholder={useSortData.find((item) => item.sort == currentSort)?.name}
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent className="max-h-[300px] w-fit">
-                                        {useSortData.map((item, index) => {
-                                            return (
-                                                <SelectItem key={index} value={item.sort} >{item.name}</SelectItem>
-                                            )
-                                        })}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div className="sort-direction">
-                                <button
-                                    className="sort-direction px-3 py-2 text-[20px]"
-                                    onClick={() => {
-                                        setCurrentSortDirection(
-                                            currentSortDirection === "asc" ? "desc" : "asc"
-                                        ),
-                                            setRefreshState(true);
-                                    }}
-                                >
-                                    <BsSortDownAlt
-                                        title="Descending"
-                                        className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
-                                            }`}
-                                    />
-                                    <BsSortUp
-                                        title="Ascending"
-                                        className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
-                                            }`}
-                                    />
-                                </button>
-                            </div>
-
-                        </div>
                     </div>
-                    {/* END SORT */}
-
                     {/* END UTILS BAR */}
 
                     {/* LIST VIEW */}
