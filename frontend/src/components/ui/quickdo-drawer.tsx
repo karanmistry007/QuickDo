@@ -11,7 +11,7 @@ import { PiBellRingingFill } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
-import ConfirmBox from "./ConfirmBox";
+import ConfirmBox from "./confirm";
 import { useAllCategories, DrawerProps, Status } from "../../types/Common";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
 import { Button } from "./button";
@@ -81,13 +81,13 @@ const QuickDoDrawer = (props: DrawerProps) => {
     //? HANDLE SET DATE
     const handleSetDate = (e: any) => {
         const year = e?.getFullYear();
-        const month = String(e?.getMonth() + 1).padStart(2, '0'); // Add 1 to get the correct month
+        const month = String(e?.getMonth() + 1).padStart(2, '0');
         const day = String(e?.getDate()).padStart(2, '0');
 
         //? FORMAT DATE AS YYYY-MM-DD
         const formattedDate = e ? `${year}-${month}-${day}` : "";
 
-        setdate(formattedDate); // Updates the selected date state
+        setdate(formattedDate);
     };
 
     //? UPDATE TODO

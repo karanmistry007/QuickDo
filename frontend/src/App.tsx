@@ -5,17 +5,17 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
-import Navbar from "./components/shared/Navbar";
-import Sidebar from "./components/shared/Sidebar";
-import Dashboard from "./pages/DashboardView";
-import MyDayView from "./pages/MyDayView";
+import Navbar from "./components/shared/navbar";
+import Sidebar from "./components/shared/sidebar";
+import Dashboard from "./pages/dashboard-view";
+import MyDayView from "./pages/my-day-view";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
-import CalendarView from "./pages/CalendarView";
+import CalendarView from "./pages/calendar-view";
 import { Toaster } from "sonner"
-import KanbanView from "./pages/KanbanView";
-import InboxView from "./pages/InboxView";
-import GroupByView from "./pages/GroupByView";
+import KanbanView from "./pages/kanban-view";
+import InboxView from "./pages/inbox-view";
+import GroupByView from "./pages/group-by-view";
 
 
 const App = () => {

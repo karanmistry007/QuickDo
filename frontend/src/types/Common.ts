@@ -135,8 +135,8 @@ export type DrawerProps = {
     autoOpenDrawer?: boolean;
 };
 
-//? COMFIRM BOX PROPS
-export type ComfirmBoxProps = {
+//? CONFIRM BOX PROPS
+export type ConfirmBoxProps = {
     confirmTitle: string;
     confirmMessage: string;
     handleSuccess: () => void;

@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
-import DropdownMultiSelect from "./DropdownMultiSelect";
+import DropdownMultiSelect from "./dropdown-multiselect";
 import {
     useAllCategories,
     ListItemProps,
     Status,
 } from "../../types/Common";
-import QuickDoDrawer from "./QuickDoDrawer";
+import QuickDoDrawer from "./quickdo-drawer";
 import { Calendar } from "@/components/ui/calendar"
 import {
     Popover,
@@ -19,7 +19,7 @@ import { Button } from "./button";
 import { PiCalendarCheckFill, PiCalendarDotsLight } from "react-icons/pi";
 import { RxCross1 } from "react-icons/rx";
 
-const ListItem = (props: ListItemProps) => {
+const QuickDoItem = (props: ListItemProps) => {
 
     //? HOOKS
     const [status, setStatus] = useState<Status>(props.todoData.status);
@@ -82,13 +82,13 @@ const ListItem = (props: ListItemProps) => {
     //? HANDLE SET DATE
     const handleSetDate = (e: any) => {
         const year = e?.getFullYear();
-        const month = String(e?.getMonth() + 1).padStart(2, '0'); // Add 1 to get the correct month
+        const month = String(e?.getMonth() + 1).padStart(2, '0');
         const day = String(e?.getDate()).padStart(2, '0');
 
         //? FORMAT DATE AS YYYY-MM-DD
         const formattedDate = e ? `${year}-${month}-${day}` : "";
 
-        setdate(formattedDate); // Updates the selected date state
+        setdate(formattedDate);
     };
 
     //? SAVE ON STATUS CHANGE
@@ -140,7 +140,7 @@ const ListItem = (props: ListItemProps) => {
                         <FaCheck
                             className={`${status === "Completed" ? "show" : "hidden"}`}
                         />
-                        <RxCross1 
+                        <RxCross1
                             className={`${status === "Cancelled" ? "show" : "hidden"}`}
                         />
                     </button>
@@ -253,4 +253,4 @@ const ListItem = (props: ListItemProps) => {
     );
 };
 
-export default ListItem;
+export default QuickDoItem;

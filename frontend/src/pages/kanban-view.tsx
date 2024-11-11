@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import TaskCard from '../components/ui/TaskCard'
+import QuickDoCard from '../components/ui/quickdo-card'
 import { Status, statuses, Task } from '../utils/data-tasks'
 import axios from 'axios';
 import { DashboardProps, useAllCategories, useAllQuickDoData } from '@/types/Common';
@@ -281,7 +281,7 @@ const KanbanView = (props: DashboardProps) => {
                                     {column.tasks.length !== 0 ?
                                         column.tasks.map((task: useAllQuickDoData, index: number) => (
                                             <div key={index}>
-                                                <TaskCard
+                                                <QuickDoCard
                                                     task={task}
                                                     updateTask={updateTask}
                                                     allCategories={getAllCategories}
