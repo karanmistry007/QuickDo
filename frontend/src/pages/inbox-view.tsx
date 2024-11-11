@@ -59,7 +59,7 @@ const InboxView = (props: DashboardProps) => {
     const BASE_URL = import.meta.env.VITE_BASE_URL || window.location.origin;
     const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
 
-    // ! TEMPORARY HANDLE FILTERS DATA
+    // ? HANDLE FILTERS DATA
     const handleFilters = (key: string, value: string, child_table: string = "") => {
 
         // ? IF DEALING WITH A CHILD TABLE
@@ -405,62 +405,10 @@ const InboxView = (props: DashboardProps) => {
                     {/* UTILS BAR */}
                     <div className="utils-container flex justify-start gap-5 py-1 px-4 sm:px-5">
 
-                        {/* SORT */}
-                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
-
-                            <div className="sort-value">
-                                <Select
-                                    onValueChange={(e) => {
-                                        setCurrentSort(e);
-                                        setRefreshState(true);
-                                    }}
-                                >
-                                    <SelectTrigger className="w-fit border-0 border-r py-0">
-                                        <SelectValue
-                                            defaultValue={useSortData.find((item) => item.sort == currentSort)?.sort}
-                                            placeholder={useSortData.find((item) => item.sort == currentSort)?.name}
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent className="max-h-[300px] w-fit">
-                                        {useSortData.map((item, index) => {
-                                            return (
-                                                <SelectItem key={index} value={item.sort} >{item.name}</SelectItem>
-                                            )
-                                        })}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div className="sort-direction">
-                                <button
-                                    className="sort-direction px-3 py-2 text-[20px]"
-                                    onClick={() => {
-                                        setCurrentSortDirection(
-                                            currentSortDirection === "asc" ? "desc" : "asc"
-                                        ),
-                                            setRefreshState(true);
-                                    }}
-                                >
-                                    <BsSortDownAlt
-                                        title="Descending"
-                                        className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
-                                            }`}
-                                    />
-                                    <BsSortUp
-                                        title="Ascending"
-                                        className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
-                                            }`}
-                                    />
-                                </button>
-                            </div>
-
-                        </div>
-                        {/* END SORT */}
-
                         {/* FILTERS SECTION */}
-                        <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm">
+                        <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-2">
 
-                            <div className="sort-value">
+                            <div className="filter-value">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="outline" className="font-normal">
@@ -587,7 +535,6 @@ const InboxView = (props: DashboardProps) => {
 
                                     </DropdownMenuContent>
                                 </DropdownMenu>
-
                             </div>
 
                             <div className="clear-filters">
@@ -607,6 +554,58 @@ const InboxView = (props: DashboardProps) => {
 
                         </div>
                         {/* END FILTERS SECTION */}
+
+                        {/* SORT */}
+                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-1">
+
+                            <div className="sort-value">
+                                <Select
+                                    onValueChange={(e) => {
+                                        setCurrentSort(e);
+                                        setRefreshState(true);
+                                    }}
+                                >
+                                    <SelectTrigger className="w-fit border-0 border-r py-0">
+                                        <SelectValue
+                                            defaultValue={useSortData.find((item) => item.sort == currentSort)?.sort}
+                                            placeholder={useSortData.find((item) => item.sort == currentSort)?.name}
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent className="max-h-[300px] w-fit">
+                                        {useSortData.map((item, index) => {
+                                            return (
+                                                <SelectItem key={index} value={item.sort} >{item.name}</SelectItem>
+                                            )
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="sort-direction">
+                                <button
+                                    className="sort-direction px-3 py-2 text-[20px]"
+                                    onClick={() => {
+                                        setCurrentSortDirection(
+                                            currentSortDirection === "asc" ? "desc" : "asc"
+                                        ),
+                                            setRefreshState(true);
+                                    }}
+                                >
+                                    <BsSortDownAlt
+                                        title="Descending"
+                                        className={`text-xl ${currentSortDirection === "desc" ? "show" : "hidden"
+                                            }`}
+                                    />
+                                    <BsSortUp
+                                        title="Ascending"
+                                        className={`text-xl ${currentSortDirection === "asc" ? "show" : "hidden"
+                                            }`}
+                                    />
+                                </button>
+                            </div>
+
+                        </div>
+                        {/* END SORT */}
 
                     </div>
                     {/* END UTILS BAR */}
