@@ -61,9 +61,9 @@ const Navbar = () => {
                     {/* END NAVBAR ITEMS */}
 
                     {/* USER PROFILE */}
-                    <div className='user-profile nav-item relative' ref={userProfileDropdownRef}>
+                    <div className='user-profile nav-item relative w-10 h-10 object-cover' ref={userProfileDropdownRef}>
                         <DropdownMenu>
-                            <DropdownMenuTrigger>
+                            <DropdownMenuTrigger className='w-10 h-10 object-cover'>
                                 <img className='w-10 h-10 object-cover border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-full select-none' src={userImage ? userImage : UserProfileImage} alt="User" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className='mr-[10px] z-[9999999]'>
