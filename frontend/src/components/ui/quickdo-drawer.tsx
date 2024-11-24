@@ -177,7 +177,6 @@ const QuickDoDrawer = (props: DrawerProps) => {
                         {/* TODO DESCRIPTION */}
                         <div className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100">
                             <Textarea
-                                autoFocus
                                 className="w-full min-h-[64px]"
                                 value={description}
                                 onChange={(e) => {
