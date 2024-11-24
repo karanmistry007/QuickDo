@@ -194,7 +194,7 @@ const CategoryView = (props: DashboardProps) => {
         <>
 
             {/* DASHBOARD CONTAINER */}
-            <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[calc(72px_+_55px)] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
+            <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
 
                 {/* CREATE CATEGORY */}
                 <div className="create-todo-container">
