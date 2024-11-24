@@ -62,7 +62,7 @@ export const StatusDonutChart = () => {
                 <CardDescription>Status wise QuickDos</CardDescription>
 
                 {/* OPTIONS SECTION */}
-                <div className="options-section absolute top-0 right-0 p-5">
+                <div className="options-section absolute top-0 right-0 p-5 hidden">
 
                     {/* TIMESPAN PICKER */}
                     <div className="timespan-picker">
