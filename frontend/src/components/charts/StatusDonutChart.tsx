@@ -27,32 +27,20 @@ import {
 } from "@/components/ui/select"
 
 const chartData = [
-    { browser: "open", quickdos: 275, fill: "var(--color-open)" },
-    { browser: "completed", quickdos: 200, fill: "var(--color-completed)" },
-    { browser: "cancelled", quickdos: 287, fill: "var(--color-cancelled)" },
+    { status: "Open", quickdo: 215, fill: "#3c50e0" },
+    { status: "Completed", quickdo: 200, fill: "#29CD42" },
+    { status: "Cancelled", quickdo: 287, fill: "#CB2929" },
 ]
 
 const chartConfig = {
-    quickdos: {
-        label: "quickdos",
-    },
-    open: {
-        label: "Open",
-        color: "#3c50e0",
-    },
-    completed: {
-        label: "Completed",
-        color: "#29CD42",
-    },
-    cancelled: {
-        label: "Cancelled",
-        color: "#CB2929",
+    quickdo: {
+        label: "quickdo",
     },
 } satisfies ChartConfig
 
 export const StatusDonutChart = () => {
     const totalquickdos = React.useMemo(() => {
-        return chartData.reduce((acc, curr) => acc + curr.quickdos, 0)
+        return chartData.reduce((acc, curr) => acc + curr.quickdo, 0)
     }, [])
 
     return (
@@ -103,8 +91,8 @@ export const StatusDonutChart = () => {
                         />
                         <Pie
                             data={chartData}
-                            dataKey="quickdos"
-                            nameKey="browser"
+                            dataKey="quickdo"
+                            nameKey="status"
                             innerRadius={60}
                             strokeWidth={5}
                         >
