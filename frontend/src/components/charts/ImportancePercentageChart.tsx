@@ -27,16 +27,12 @@ import {
 
 
 const chartData = [
-    { browser: "important", quickdo: 520,total:800, fill: "#3c50e0" },
+    { important: 520, total: 800, fill: "#3c50e0" },
 ]
 
 const chartConfig = {
-    quickdo: {
-        label: "QuickDo",
-    },
     important: {
-        label: "Important",
-        color: "#3c50e0",
+        label: "QuickDo",
     },
 } satisfies ChartConfig
 
@@ -48,7 +44,7 @@ export const ImportancePercentageChart = () => {
                 <CardDescription>Importance wise QuickDos</CardDescription>
 
                 {/* OPTIONS SECTION */}
-                <div className="options-section absolute top-0 right-0 p-5">
+                <div className="options-section absolute top-0 right-0 p-5 hidden">
 
                     {/* TIMESPAN PICKER */}
                     <div className="timespan-picker">
@@ -96,7 +92,7 @@ export const ImportancePercentageChart = () => {
                             className="first:fill-muted last:fill-background"
                             polarRadius={[86, 74]}
                         />
-                        <RadialBar dataKey="quickdo" background />
+                        <RadialBar dataKey="important" background />
                         <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
                             <Label
                                 content={({ viewBox }) => {
@@ -113,7 +109,7 @@ export const ImportancePercentageChart = () => {
                                                     y={viewBox.cy}
                                                     className="fill-foreground text-2xl font-bold"
                                                 >
-                                                    {chartData[0].quickdo.toLocaleString()}
+                                                    {chartData[0].important.toLocaleString()}
                                                     /
                                                     {chartData[0].total.toLocaleString()}
                                                 </tspan>
@@ -122,7 +118,7 @@ export const ImportancePercentageChart = () => {
                                                     y={(viewBox.cy || 0) + 24}
                                                     className="fill-muted-foreground"
                                                 >
-                                                    QuickDo
+                                                    QuickDos
                                                 </tspan>
                                             </text>
                                         )
