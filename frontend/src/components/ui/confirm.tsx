@@ -1,9 +1,4 @@
-import { IoClose } from "react-icons/io5";
-import { ComfirmBoxProps } from "../../types/Common";
-import { useEffect, useRef } from "react";
-
-import { CopyIcon } from "@radix-ui/react-icons"
-
+import { ConfirmBoxProps } from "../../types/Common";
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -20,7 +15,7 @@ import { BsTrash } from "react-icons/bs";
 
 
 
-const ConfirmBox = (props: ComfirmBoxProps) => {
+const ConfirmBox = (props: ConfirmBoxProps) => {
 
     return (
         <>

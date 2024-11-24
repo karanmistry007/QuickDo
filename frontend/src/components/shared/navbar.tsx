@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import ToDoLogo from '../../assets/Images/Logo.png';
-import UserProfileImage from '../../assets/Images/UserProfile.jpeg';
+import ToDoLogo from '../../assets/images/logo.png';
+import UserProfileImage from '../../assets/images/user_profile.jpeg';
 import { UserProfileItem } from '../../types/Common';
 import Cookies from 'js-cookie';
 import {

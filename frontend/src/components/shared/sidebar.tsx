@@ -1,20 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaAngleRight } from "react-icons/fa6";
 import { TbMenu2 } from "react-icons/tb";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SidebarItem } from "../../types/Common";
 import { PiChartDonutDuotone } from "react-icons/pi";
 import { BiSolidDoughnutChart } from "react-icons/bi";
-import { VscListOrdered } from "react-icons/vsc";
-import { FaListOl } from "react-icons/fa";
-import { LuLayoutGrid } from "react-icons/lu";
-import { BsFillGridFill } from "react-icons/bs";
 import { BsCalendar4Range } from "react-icons/bs";
 import { BsCalendarRangeFill } from "react-icons/bs";
 import { PiKanbanDuotone } from "react-icons/pi";
 import { PiKanbanFill } from "react-icons/pi";
 import { MdOutlineCategory } from "react-icons/md";
 import { MdCategory } from "react-icons/md";
+import { IoHomeOutline } from "react-icons/io5";
+import { IoHome } from "react-icons/io5";
+import { PiCloudSunDuotone } from "react-icons/pi";
+import { PiCloudSunFill } from "react-icons/pi";
+import { IoLayersOutline } from "react-icons/io5";
+import { IoLayers } from "react-icons/io5";
+
+
+
 
 
 //? SIDEBAR ITEMS
@@ -26,16 +31,22 @@ const sidebarItems: SidebarItem[] = [
         activeIcon: BiSolidDoughnutChart,
     },
     {
-        name: "List",
-        link: "/list",
-        icon: VscListOrdered,
-        activeIcon: FaListOl,
+        name: "My Day",
+        link: "/my-day",
+        icon: PiCloudSunDuotone,
+        activeIcon: PiCloudSunFill,
     },
     {
-        name: "Grid",
-        link: "/grid",
-        icon: LuLayoutGrid,
-        activeIcon: BsFillGridFill,
+        name: "Inbox",
+        link: "/inbox",
+        icon: IoHomeOutline,
+        activeIcon: IoHome,
+    },
+    {
+        name: "Group By",
+        link: "/group-by",
+        icon: IoLayersOutline,
+        activeIcon: IoLayers,
     },
     {
         name: "Calendar",
@@ -63,22 +74,6 @@ export default function Sidebar() {
     //? HOOKS
     const location = useLocation();
     const navigate = useNavigate();
-
-    //? SET MOBILE SCREEN
-    const [isMobileScreen, setIsMobileScreen] = useState<boolean>(window.innerWidth < 640 ? true : false);
-
-    useEffect(() => {
-        //? SET SCREEN WIDTH HANDLER
-        const screenWidthHandler = () => {
-            if (window.innerWidth < 640) {
-                setIsMobileScreen(true);
-            } else {
-                setIsMobileScreen(false);
-            }
-        };
-        screenWidthHandler();
-        window.addEventListener("resize", screenWidthHandler);
-    }, [window.screen.width]);
 
     //? SIDEBAR COLLAPSE
     const [sidebarCollapseActive, setSidebarCollapseActive] = useState<boolean>(false);
@@ -145,7 +140,7 @@ export default function Sidebar() {
                                 navigate(item.link);
                             }}
                             title={item.name}
-                            className={`sidebar-item flex items-center gap-2 w-full hover:bg-gray-200 rounded-r-lg  py-1.5 sm:py-2 ${sidebarCollapseActive ? "px-4 sm:px-4" : "px-4 sm:px-4"} ${activeSidebarItem == item.name ? "sidebar-active" : ""}`}
+                            className={`sidebar-item text-nowrap flex items-center gap-2 w-full hover:bg-gray-200 rounded-r-lg  py-1.5 sm:py-2 ${sidebarCollapseActive ? "px-4 sm:px-4" : "px-4 sm:px-4"} ${activeSidebarItem == item.name ? "sidebar-active" : ""}`}
                         >
                             <div className="sidebar-icon">
                                 <item.activeIcon

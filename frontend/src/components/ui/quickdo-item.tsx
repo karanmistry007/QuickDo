@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
-import DropdownMultiSelect from "./DropdownMultiSelect";
+import DropdownMultiSelect from "./dropdown-multiselect";
 import {
-    useGetAllCategories,
+    useAllCategories,
     ListItemProps,
+    Status,
 } from "../../types/Common";
-import QuickDoDrawer from "./QuickDoDrawer";
+import QuickDoDrawer from "./quickdo-drawer";
 import { Calendar } from "@/components/ui/calendar"
 import {
     Popover,
@@ -16,17 +17,30 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "./button";
 import { PiCalendarCheckFill, PiCalendarDotsLight } from "react-icons/pi";
+import { RxCross1 } from "react-icons/rx";
 
-const ListItem = (props: ListItemProps) => {
+const QuickDoItem = (props: ListItemProps) => {
 
     //? HOOKS
-    const [completeTodo, setCompleteTodo] = useState<boolean>(props.todoData.completeTodo);
-    const [importantTodo, setImportantTodo] = useState<boolean>(props.todoData.importantTodo);
-    const [descriptionTodo, setDescriptionTodo] = useState<string>(props.todoData.descriptionTodo);
-    const [selectDueDate, setSelectDueDate] = useState<string>(props.todoData.selectDueDate);
-    const [selectedCategories, setSelectedCategories] = useState<useGetAllCategories[]>(props.todoData.selectedCategories);
+    const [status, setStatus] = useState<Status>(props.todoData.status);
+    const [is_important, setIs_important] = useState<boolean>(props.todoData.is_important);
+    const [description, setDescription] = useState<string>(props.todoData.description);
+    const [date, setdate] = useState<string>(props.todoData.date);
+    const [categories, setCategories] = useState<useAllCategories[]>(props.todoData.categories);
     const [showCategories, setShowCategories] = useState<boolean>(false);
-    const [allCategories, setAllCategories] = useState<useGetAllCategories[]>(props.allCategories);
+    const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories);
+
+
+    //? STATUS HANDLER
+    const handleStatus = (status: Status) => {
+        if (status === "Open") {
+            setStatus("Completed");
+        } else if (status === "Completed") {
+            setStatus("Cancelled");
+        } else {
+            setStatus("Open");
+        }
+    }
 
     //? UPDATE CATEGORIES DATA AS PROP DATA CHANGES
     useEffect(() => {
@@ -35,11 +49,11 @@ const ListItem = (props: ListItemProps) => {
 
     //? UPDATE THE LIST DATA AS MAIN DATA UPDATES
     useEffect(() => {
-        setCompleteTodo(props.todoData.completeTodo);
-        setImportantTodo(props.todoData.importantTodo);
-        setDescriptionTodo(props.todoData.descriptionTodo);
-        setSelectDueDate(props.todoData.selectDueDate);
-        setSelectedCategories(props.todoData.selectedCategories);
+        setStatus(props.todoData.status);
+        setIs_important(props.todoData.is_important);
+        setDescription(props.todoData.description);
+        setdate(props.todoData.date);
+        setCategories(props.todoData.categories);
         setShowCategories(false);
     }, [props.todoData]);
 
@@ -51,80 +65,83 @@ const ListItem = (props: ListItemProps) => {
             creation: props.todoData.creation,
             modified: props.todoData.modified,
             modified_by: props.todoData.modified_by,
-            completeTodo: completeTodo,
-            importantTodo: importantTodo,
-            isSendReminder: props.todoData.isSendReminder,
-            descriptionTodo: descriptionTodo,
-            selectDueDate: selectDueDate,
-            selectedCategories: selectedCategories,
+            status: status,
+            is_important: is_important,
+            send_reminder: props.todoData.send_reminder,
+            description: description,
+            date: date,
+            categories: categories,
         });
     };
 
     //? UPDATE THE SELECTED CATEGORIES HANDLER
-    const handleSelectedCategories = (data: useGetAllCategories[]) => {
-        setSelectedCategories(data);
+    const handleCategories = (data: useAllCategories[]) => {
+        setCategories(data);
     };
 
     //? HANDLE SET DATE
     const handleSetDate = (e: any) => {
         const year = e?.getFullYear();
-        const month = String(e?.getMonth() + 1).padStart(2, '0'); // Add 1 to get the correct month
+        const month = String(e?.getMonth() + 1).padStart(2, '0');
         const day = String(e?.getDate()).padStart(2, '0');
 
         //? FORMAT DATE AS YYYY-MM-DD
         const formattedDate = e ? `${year}-${month}-${day}` : "";
 
-        setSelectDueDate(formattedDate); // Updates the selected date state
+        setdate(formattedDate);
     };
 
     //? SAVE ON STATUS CHANGE
     useEffect(() => {
-        if (completeTodo !== props.todoData.completeTodo) {
+        if (status !== props.todoData.status) {
             handleSaveToDo();
         }
-    }, [completeTodo]);
+    }, [status]);
 
     //? SAVE ON PRIORITY CHANGE
     useEffect(() => {
-        if (importantTodo !== props.todoData.importantTodo) {
+        if (is_important !== props.todoData.is_important) {
             handleSaveToDo();
         }
-    }, [importantTodo]);
+    }, [is_important]);
 
     //? SAVE ON DUE DATE CHANGE
     useEffect(() => {
         const debouncingDueDate = setTimeout(() => {
-            if (selectDueDate !== props.todoData.selectDueDate) {
+            if (date !== props.todoData.date) {
                 handleSaveToDo();
             }
         }, 500);
 
         return () => clearTimeout(debouncingDueDate);
-    }, [selectDueDate]);
+    }, [date]);
 
     //? SAVE ON CATEGORIES CHANGE
     useEffect(() => {
-        if (selectedCategories !== props.todoData.selectedCategories) {
+        if (categories !== props.todoData.categories) {
             handleSaveToDo();
         }
-    }, [selectedCategories]);
+    }, [categories]);
 
     return (
         <>
             {/* LIST ITEMS */}
-            <div className="list-items scale-animation rounded-md border-gray-300 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] my-2 py-2 px-4 sm:py-3 flex justify-between lg:grid sm:gap-y-2 sm:gap-x-5  lg:grid-cols-8 xl:grid-cols-10 xxl:grid-cols-12 items-center">
+            <div className="list-items rounded-md border-gray-200 border shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] my-2 py-2 px-4 sm:py-3 flex justify-between lg:grid sm:gap-y-2 sm:gap-x-5  lg:grid-cols-8 xl:grid-cols-10 xxl:grid-cols-12 items-center">
 
                 {/* EDIT AND CLOSE TASK */}
                 <div className="item flex justify-start items-center gap-1 sm:gap-5 w-[85%] sm:w-[80%] text-center lg:w-auto lg:col-span-3 xl:col-span-5 xxl:col-span-7">
                     <button
-                        className={`complete align-middle hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
+                        className={`complete min-h-[18px] sm:min-h-5 min-w-[18px] sm:min-w-5 align-middle hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
                         title="Complete"
                         onClick={() => {
-                            setCompleteTodo(!completeTodo);
+                            handleStatus(status);
                         }}
                     >
                         <FaCheck
-                            className={`${completeTodo ? "opacity-1" : "opacity-0"}`}
+                            className={`${status === "Completed" ? "show" : "hidden"}`}
+                        />
+                        <RxCross1
+                            className={`${status === "Cancelled" ? "show" : "hidden"}`}
                         />
                     </button>
                     <div className="input w-full">
@@ -133,9 +150,9 @@ const ListItem = (props: ListItemProps) => {
                             className="outline-0 placeholder:text-gray-700 py-1.5 px-2 w-full"
                             name="ToDo"
                             id="ToDo"
-                            value={descriptionTodo}
+                            value={description}
                             onChange={(e) => {
-                                setDescriptionTodo(e.target.value);
+                                setDescription(e.target.value);
                             }}
                             onKeyUp={(e) => {
                                 if (e.key === "Enter") {
@@ -151,7 +168,6 @@ const ListItem = (props: ListItemProps) => {
                 {/* EDIT AND CLOSE TASK */}
 
                 {/* DUE DATE */}
-
                 <div className="item hidden lg:block lg:col-span-2 justify-self-center">
 
                     <Popover>
@@ -161,16 +177,16 @@ const ListItem = (props: ListItemProps) => {
                                 className={"w-auto pl-3 flex gap-1.5 items-center justify-center"}
                             >
                                 <h3 className="font-normal text-base">
-                                    {selectDueDate ? (selectDueDate) : (
+                                    {date ? (date) : (
                                         "Pick Due Date"
                                     )}
                                 </h3>
                                 <div className="due-data cursor-pointer">
                                     <PiCalendarDotsLight
-                                        className={`text-xl mt-0.5 ${selectDueDate ? "hidden" : "show"}`}
+                                        className={`text-xl mt-0.5 ${date ? "hidden" : "show"}`}
                                     />
                                     <PiCalendarCheckFill
-                                        className={`text-xl mt-0.5 ${selectDueDate ? "show" : "hidden"}`}
+                                        className={`text-xl mt-0.5 ${date ? "show" : "hidden"}`}
                                     />
                                 </div>
                             </Button>
@@ -178,25 +194,12 @@ const ListItem = (props: ListItemProps) => {
                         <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
                                 mode="single"
-                                selected={(new Date(selectDueDate))}
+                                selected={(new Date(date))}
                                 onSelect={handleSetDate}
                                 initialFocus
                             />
                         </PopoverContent>
                     </Popover>
-
-                    {/* <div className="due-date">
-                        <input
-                            className="outline-0 cursor-pointer rounded-md px-1 w-[124px]"
-                            type="date"
-                            name="Date"
-                            id="Date"
-                            value={selectDueDate}
-                            onChange={(e) => {
-                                setSelectDueDate(e.target.value);
-                            }}
-                        />
-                    </div> */}
                 </div>
                 {/* END DUE DATE */}
 
@@ -205,14 +208,14 @@ const ListItem = (props: ListItemProps) => {
                     <button
                         className="importance cursor-pointer align-middle"
                         onClick={() => {
-                            setImportantTodo(!importantTodo);
+                            setIs_important(!is_important);
                         }}
                     >
                         <HiOutlineStar
-                            className={`${importantTodo ? "hidden" : "show"} text-2xl`}
+                            className={`${is_important ? "hidden" : "show"} text-2xl`}
                         />
                         <BiSolidStar
-                            className={`${importantTodo ? "show" : "hidden"} text-2xl`}
+                            className={`${is_important ? "show" : "hidden"} text-2xl`}
                         />
                     </button>
                 </div>
@@ -226,8 +229,8 @@ const ListItem = (props: ListItemProps) => {
                         position={"left"}
                         showCategories={showCategories}
                         allCategories={allCategories}
-                        selectedCategories={selectedCategories}
-                        handleSelectedCategories={handleSelectedCategories}
+                        categories={categories}
+                        handleCategories={handleCategories}
                     />
                     {/* END CATEGORIES MULTISELECT */}
 
@@ -249,4 +252,4 @@ const ListItem = (props: ListItemProps) => {
     );
 };
 
-export default ListItem;
+export default QuickDoItem;

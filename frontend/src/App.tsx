@@ -5,15 +5,18 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
-import Navbar from "./components/shared/Navbar";
-import Sidebar from "./components/shared/Sidebar";
-import Dashboard from "./pages/DashboardView";
-import ListView from "./pages/ListView";
+import Navbar from "./components/shared/navbar";
+import Sidebar from "./components/shared/sidebar";
+import Dashboard from "./pages/dashboard-view";
+import MyDayView from "./pages/my-day-view";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
-import CalendarView from "./pages/CalendarView";
+import CalendarView from "./pages/calendar-view";
 import { Toaster } from "sonner"
-import KanbanView from "./pages/KanbanView";
+import KanbanView from "./pages/kanban-view";
+import InboxView from "./pages/inbox-view";
+import GroupByView from "./pages/group-by-view";
+import CategoryView from "./pages/category-view";
 
 
 const App = () => {
@@ -58,24 +61,28 @@ const App = () => {
 							element={<PrivateRoutes element={<Dashboard name="Dashboard" link="/dashboard" />} />}
 						/>
 						<Route
-							path="/list"
-							element={<PrivateRoutes element={<ListView name="List" link="/list" />} />}
+							path="/my-day"
+							element={<PrivateRoutes element={<MyDayView name="My Day" link="/my-day" />} />}
+						/>
+						<Route
+							path="/group-by"
+							element={<PrivateRoutes element={<GroupByView name="Group By" link="/group-by" />} />}
+						/>
+						<Route
+							path="/inbox"
+							element={<PrivateRoutes element={<InboxView name="Inbox" link="/inbox" />} />}
 						/>
 						<Route
 							path="/kanban"
-							element={<PrivateRoutes element={<KanbanView name="Kanban" link="/kanban" />} />}
+							element={<PrivateRoutes element={<KanbanView name="Inbox" link="/kanban" />} />}
 						/>
 						<Route
 							path="/calendar"
 							element={<PrivateRoutes element={<CalendarView name="Calendar" link="/calendar" />} />}
 						/>
 						<Route
-							path="/kanban"
-							element={<PrivateRoutes element={<ListView name="Kanban" link="/kanban" />} />}
-						/>
-						<Route
 							path="/category"
-							element={<PrivateRoutes element={<ListView name="Category" link="/category" />} />}
+							element={<PrivateRoutes element={<CategoryView name="Category" link="/category" />} />}
 						/>
 						{/* END PRIVATE ROUTES */}
 
