@@ -216,7 +216,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                     mode="single"
                                     selected={(new Date(date))}
                                     onSelect={handleSetDate}
-                                    initialFocus
+                                    // initialFocus
                                 />
                             </PopoverContent>
                         </Popover>
