@@ -5,8 +5,8 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
-import Navbar from "./components/shared/navbar";
-import Sidebar from "./components/shared/sidebar";
+import Navbar from "./components/layout/navbar";
+import Sidebar from "./components/layout/sidebar";
 import Dashboard from "./pages/dashboard-view";
 import MyDayView from "./pages/my-day-view";
 import PrivateRoutes from "./routes/PrivateRoutes";

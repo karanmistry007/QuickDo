@@ -41,7 +41,7 @@ const CalendarView = (props: DashboardProps) => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(
-                    `${BASE_URL}//api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
+                    `${BASE_URL}/api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
                     {
                         headers: {
                             Authorization: AUTH_TOKEN,
@@ -202,13 +202,13 @@ const CalendarView = (props: DashboardProps) => {
                         : todoDoc.description;
 
                     //? UPDATE THE FINAL DATA
-                    const finalData = {
+                    const finalData: useAllQuickDoData = {
                         name: todoDoc.name,
                         owner: todoDoc.owner,
                         creation: todoDoc.creation,
                         modified: todoDoc.modified,
                         modified_by: todoDoc.modified_by,
-                        status: todoDoc.status == "Completed" ? true : false,
+                        status: todoDoc.status,
                         is_important: todoDoc.is_important,
                         send_reminder: todoDoc.send_reminder,
                         description: description || "",
