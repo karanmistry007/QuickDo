@@ -7,7 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from 'sonner'
-import QuickDoDrawer from "@/components/ui/quickdo-drawer";
+import QuickDoDrawer from "@/components/layout/quickdo-drawer";
 
 const localizer = dayjsLocalizer(dayjs);
 const DnDCalendar = withDragAndDrop(Calendar);

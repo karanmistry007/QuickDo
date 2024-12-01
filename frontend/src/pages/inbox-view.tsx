@@ -1,33 +1,16 @@
 import { useEffect, useState } from "react";
 import CreateQuickDo from "../components/ui/create-quickdo";
-import QuickDoItem from "../components/ui/quickdo-item";
-import { BsSortUp } from "react-icons/bs";
-import { BsSortDownAlt } from "react-icons/bs";
 import {
     useSortDataItems,
     DashboardProps,
     useStatusFiltersItems,
 } from "../types/Common";
 import { toast } from 'sonner'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { IoClose } from "react-icons/io5";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button";
 import { addQuickDo, deleteQuickDo, fetchQuickDos, updateQuickDo } from "@/utils/quickdo";
 import { fetchCategoryList } from "@/utils/quickdo-category";
+import Filters from "@/components/layout/filters";
+import Sort from "@/components/layout/sort";
+import ListView from "@/components/layout/list-view";
 
 // ? DEFINE STATUS DROPDOWN DATA
 const useStatusFilterData: useStatusFiltersItems[] = [
@@ -188,152 +171,34 @@ const InboxView = (props: DashboardProps) => {
                     <div className="utils-container flex justify-start gap-5 py-1 px-4 sm:px-5">
 
                         {/* FILTERS */}
-                        <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-2">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="outline" className="font-normal">Filters</Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56">
-                                    <DropdownMenuLabel>Filters</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-
-                                    <DropdownMenuGroup>
-                                        {/* STATUS FILTERS */}
-                                        <DropdownMenuSub>
-                                            <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
-                                            <DropdownMenuPortal>
-                                                <DropdownMenuSubContent>
-                                                    {useStatusFilterData.length > 0 && useStatusFilterData.map((data, index) => (
-                                                        <DropdownMenuCheckboxItem
-                                                            key={index}
-                                                            checked={filters.some(filter => filter[0] === "status" && filter[2]?.includes(data.name))}
-                                                            onCheckedChange={() => handleFilters("status", data.name)}
-                                                        >
-                                                            {data.name}
-                                                        </DropdownMenuCheckboxItem>
-                                                    ))}
-                                                </DropdownMenuSubContent>
-                                            </DropdownMenuPortal>
-                                        </DropdownMenuSub>
-
-                                        {/* CATEGORY FILTERS */}
-                                        <DropdownMenuSub>
-                                            <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
-                                            <DropdownMenuPortal>
-                                                <DropdownMenuSubContent>
-                                                    {getAllCategories.length > 0 && getAllCategories.map((data, index) => (
-                                                        <DropdownMenuCheckboxItem
-                                                            key={index}
-                                                            checked={filters.some(filter => filter[0] === "QuickDo Categories" && filter[3]?.includes(data.category))}
-                                                            onCheckedChange={() => handleFilters("category", data.category, "QuickDo Categories")}
-                                                        >
-                                                            {data.category}
-                                                        </DropdownMenuCheckboxItem>
-                                                    ))}
-                                                </DropdownMenuSubContent>
-                                            </DropdownMenuPortal>
-                                        </DropdownMenuSub>
-
-                                        {/* DUE DATE FILTER */}
-                                        <DropdownMenuItem>Due Date</DropdownMenuItem>
-                                    </DropdownMenuGroup>
-
-                                    <DropdownMenuSeparator />
-
-                                    <DropdownMenuGroup>
-                                        {/* IMPORTANCE FILTER */}
-                                        <DropdownMenuCheckboxItem
-                                            checked={filters.some(filter => filter[0] === "is_important" && filter[2]?.includes("1"))}
-                                            onCheckedChange={() => handleFilters("is_important", "1")}
-                                        >
-                                            Importance
-                                        </DropdownMenuCheckboxItem>
-
-                                        {/* REMINDER FILTER */}
-                                        <DropdownMenuCheckboxItem
-                                            checked={filters.some(filter => filter[0] === "send_reminder" && filter[2]?.includes("1"))}
-                                            onCheckedChange={() => handleFilters("send_reminder", "1")}
-                                        >
-                                            Reminder
-                                        </DropdownMenuCheckboxItem>
-                                    </DropdownMenuGroup>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-
-                            {/* CLEAR FILTERS */}
-                            <button
-                                className="clear-filters px-3 py-2 text-[20px]"
-                                onClick={() => {
-                                    handleClearFilters();
-                                    setRefreshState(true);
-                                }}
-                            >
-                                <IoClose title="Clear Filters" className="text-xl" />
-                            </button>
-                        </div>
+                        <Filters
+                            filters={filters}
+                            useStatusFilterData={useStatusFilterData}
+                            getAllCategories={getAllCategories}
+                            handleFilters={handleFilters}
+                            handleClearFilters={handleClearFilters}
+                            setRefreshState={setRefreshState}
+                        />
 
                         {/* SORT */}
-                        <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-1">
-                            <Select onValueChange={(e) => { setCurrentSort(e); setRefreshState(true); }}>
-                                <SelectTrigger className="w-fit border-0 border-r py-0">
-                                    <SelectValue
-                                        defaultValue={useSortData.find(item => item.sort === currentSort)?.sort}
-                                        placeholder={useSortData.find(item => item.sort === currentSort)?.name}
-                                    />
-                                </SelectTrigger>
-                                <SelectContent className="max-h-[300px] w-fit">
-                                    {useSortData.map((item, index) => (
-                                        <SelectItem key={index} value={item.sort}>{item.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-
-                            <button
-                                className="sort-direction px-3 py-2 text-[20px]"
-                                onClick={() => {
-                                    setCurrentSortDirection(currentSortDirection === "asc" ? "desc" : "asc");
-                                    setRefreshState(true);
-                                }}
-                            >
-                                {currentSortDirection === "desc" ? (
-                                    <BsSortDownAlt title="Descending" className="text-xl" />
-                                ) : (
-                                    <BsSortUp title="Ascending" className="text-xl" />
-                                )}
-                            </button>
-                        </div>
+                        <Sort
+                            currentSort={currentSort}
+                            currentSortDirection={currentSortDirection}
+                            useSortData={useSortData}
+                            setCurrentSort={setCurrentSort}
+                            setCurrentSortDirection={setCurrentSortDirection}
+                            setRefreshState={setRefreshState}
+                        />
                     </div>
 
                     {/* LIST VIEW */}
-                    <div className="list-view-container pt-0 p-4 sm:p-5 w-full">
-                        <div className="list-view bg-white flex flex-col rounded-md">
-                            {/* LIST HEADINGS */}
-                            <div className="list-heading font-medium border-b border-gray-300 sm:font-semibold py-2 px-1.5 sm:px-3 flex justify-between lg:grid gap-1 sm:gap-y-2 lg:grid-cols-8 xl:grid-cols-10 xxl:grid-cols-12 items-center">
-                                <div className="heading w-[85%] sm:w-[80%] text-center lg:w-auto lg:col-span-3 xl:col-span-5 xxl:col-span-7">Title</div>
-                                <div className="heading hidden lg:block lg:col-span-2">Due Date</div>
-                                <div className="heading hidden lg:block lg:col-span-1">Importance</div>
-                                <div className="heading hidden lg:block lg:col-span-1">Categories</div>
-                                <div className="heading w-[15%] sm:w-[20%] text-center lg:w-auto lg:col-span-1">More</div>
-                            </div>
-
-                            {/* LIST ITEMS */}
-                            {!initialLoading && (
-                                allTodoData.length > 0 ? allTodoData.map((item, index) => (
-                                    <QuickDoItem
-                                        key={index}
-                                        todoData={item}
-                                        allCategories={getAllCategories}
-                                        handleSaveToDo={handleUpdateQuickDo}
-                                        handleDeleteTodo={handleDeleteTodo}
-                                    />
-                                )) : (
-                                    <div className="text-center my-20 sm:my-20 font-semibold">
-                                        No Open QuickDos Are Available Please Create One!
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </div>
+                    <ListView
+                        allTodoData={allTodoData}
+                        getAllCategories={getAllCategories}
+                        initialLoading={initialLoading}
+                        handleUpdateQuickDo={handleUpdateQuickDo}
+                        handleDeleteTodo={handleDeleteTodo}
+                    />
                 </div>
 
                 {/* LOADING ANIMATION */}
