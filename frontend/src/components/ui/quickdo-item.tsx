@@ -76,7 +76,7 @@ const QuickDoItem = (props: ListItemProps) => {
 
     //? UPDATE THE SELECTED CATEGORIES HANDLER
     const handleCategories = (data: useAllCategories[]) => {
-        setCategories(data);
+        setCategories(data || []);
     };
 
     //? HANDLE SET DATE
@@ -118,7 +118,7 @@ const QuickDoItem = (props: ListItemProps) => {
 
     //? SAVE ON CATEGORIES CHANGE
     useEffect(() => {
-        if (categories !== props.todoData.categories) {
+        if (categories.length !== props.todoData.categories.length) {
             handleSaveToDo();
         }
     }, [categories]);
@@ -160,7 +160,7 @@ const QuickDoItem = (props: ListItemProps) => {
                                 }
                             }}
                             onBlur={() => {
-                                handleSaveToDo();
+                                description.trim() !== props.todoData.description.trim() && handleSaveToDo();
                             }}
                         />
                     </div>

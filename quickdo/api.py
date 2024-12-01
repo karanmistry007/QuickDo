@@ -55,7 +55,16 @@ def get_quickdo_with_categories(
                     ]
 
         # ? FINAL DATA MAPPING
-        final_data = [quickdo for id, quickdo in hash_map.items()]
+        final_data = []
+
+        for name, quickdo in hash_map.items():
+
+            # ?
+            if not quickdo.get("categories"):
+                quickdo["categories"] = []
+
+            # ?
+            final_data.append(quickdo)
 
     except Exception as e:
         return f"Unexpected Error: {str(e)}"

@@ -298,44 +298,12 @@ const InboxView = (props: DashboardProps) => {
 
                 //? IF THE API RETURNS DATA MAP THE DATA IN DESIRED FORMAT
                 if (response.data.message) {
-                    const finalData: useAllQuickDoData[] = [];
-                    response.data.message.map(
-                        (todo: useAllQuickDoData) => {
-                            //? PARSE THE TODO HTML
-                            const parser = new DOMParser();
-                            const description_doc = parser.parseFromString(
-                                todo.description,
-                                "text/html"
-                            );
-                            const description: any = description_doc.querySelector(
-                                ".ql-editor.read-mode p"
-                            )?.textContent
-                                ? description_doc.querySelector(".ql-editor.read-mode p")
-                                    ?.textContent
-                                : todo.description;
 
-                            //? UPDATE THE FINAL DATA
-                            finalData.push({
-                                name: todo.name,
-                                owner: todo.owner,
-                                creation: todo.creation,
-                                modified: todo.modified,
-                                modified_by: todo.modified_by,
-                                status: todo.status,
-                                is_important: todo.is_important,
-                                send_reminder: todo.send_reminder,
-                                description: description || "",
-                                date: todo.date || "",
-                                categories: todo.categories || [],
-                            });
-
-                            //? REFRESH STATE
-                            handleRefreshState(false);
-                        }
-                    );
+                    //? REFRESH STATE
+                    handleRefreshState(false);
 
                     //? SET THE FINAL DATA TO STATE
-                    setAllTodoData(finalData);
+                    setAllTodoData(response.data.message);
 
                     //? SET INITIAL LOADING
                     setInitialLoading(false);
