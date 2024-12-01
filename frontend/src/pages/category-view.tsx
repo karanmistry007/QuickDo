@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CreateCategory from "../components/ui/create-category";
-import CategoryItem from "../components/ui/category-item";
+import CategoryItem from "@/components/layout/category-item";
 import { BsSortUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import {

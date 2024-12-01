@@ -3,7 +3,7 @@ import {
     useAllCategories,
     ListCategoryProps,
 } from "../../types/Common";
-import ConfirmBox from "./confirm";
+import ConfirmBox from "@/components/ui/confirm";
 
 
 const CategoryItem = (props: ListCategoryProps) => {

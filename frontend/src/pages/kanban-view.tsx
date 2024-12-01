@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import QuickDoCard from '../components/ui/quickdo-card'
+import QuickDoCard from '@/components/layout/quickdo-card'
 import { Status, statuses, Task } from '../utils/data-tasks'
 import axios from 'axios';
 import { DashboardProps, useAllCategories, useAllQuickDoData } from '@/types/Common';
@@ -120,7 +120,7 @@ const KanbanView = (props: DashboardProps) => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(
-                    `${BASE_URL}//api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
+                    `${BASE_URL}/api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
                     {
                         headers: {
                             Authorization: AUTH_TOKEN,

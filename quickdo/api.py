@@ -21,10 +21,10 @@ def get_quickdo_with_categories(
 
     try:
         # ? PARENT QUICKDO LIST
-        quickdo_list = frappe.get_list(
+        quickdo_list = frappe.get_all(
             doctype=doctype,
-            filters=frappe.parse_json(filters),
-            fields=frappe.parse_json(fields),
+            filters=frappe.parse_json(filters) if filters else {},
+            fields=frappe.parse_json(fields) if fields else ["name"],
             order_by=order_by,
         )
 
@@ -36,26 +36,23 @@ def get_quickdo_with_categories(
         )
 
         # ? HASH MAP FOR PARENT CHILD MAPPING
-        hash_map = {quickdo.name: quickdo for quickdo in quickdo_list}
+        hash_map = {}
+
+        # ? Map categories directly to their parent
+        for category in categories_list:
+            if category.parent not in hash_map:
+                hash_map[category.parent] = {"categories": []}
+            hash_map[category.parent]["categories"].append(
+                {"category": category.category}
+            )
 
         # ? MAP THE CHILD RECORDS WITH PARENTS
-        for category in categories_list:
-
-            # ? IF PARENT EXISTS IN HASH MAP
-            if category.parent in hash_map:
-
-                # ? IF CATEGORIES LIST EXISTS IN HASH MAP
-                if hash_map.get(category.parent).get("categories"):
-                    hash_map[category.parent]["categories"].append(
-                        {"category": category.category}
-                    )
-                else:
-                    hash_map[category.parent]["categories"] = [
-                        {"category": category.category}
-                    ]
-
-        # ? FINAL DATA MAPPING
-        final_data = [quickdo for id, quickdo in hash_map.items()]
+        for quickdo in quickdo_list:
+            quickdo_data = quickdo
+            quickdo_data["categories"] = hash_map.get(quickdo.name, {}).get(
+                "categories", []
+            )
+            final_data.append(quickdo_data)
 
     except Exception as e:
         return f"Unexpected Error: {str(e)}"

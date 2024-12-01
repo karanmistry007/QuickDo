@@ -39,7 +39,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export const StatusDonutChart = () => {
-    const totalquickdos = React.useMemo(() => {
+    const totalQuickdos = React.useMemo(() => {
         return chartData.reduce((acc, curr) => acc + curr.quickdo, 0)
     }, [])
 
@@ -111,7 +111,7 @@ export const StatusDonutChart = () => {
                                                     y={viewBox.cy}
                                                     className="fill-foreground text-3xl font-bold"
                                                 >
-                                                    {totalquickdos.toLocaleString()}
+                                                    {totalQuickdos.toLocaleString()}
                                                 </tspan>
                                                 <tspan
                                                     x={viewBox.cx}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CreateQuickDo from "../components/ui/create-quickdo";
-import QuickDoItem from "../components/ui/quickdo-item";
+import QuickDoItem from "../components/layout/quickdo-item";
 import { BsSortUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import {
@@ -358,7 +358,7 @@ const ListView = (props: DashboardProps) => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(
-                    `${BASE_URL}//api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
+                    `${BASE_URL}/api/method/frappe.client.get_list?doctype=QuickDo Category&fields=["category"]`,
                     {
                         headers: {
                             Authorization: AUTH_TOKEN,
