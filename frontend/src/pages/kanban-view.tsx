@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import QuickDoCard from '../components/ui/quickdo-card'
+import QuickDoCard from '@/components/layout/quickdo-card'
 import { Status, statuses, Task } from '../utils/data-tasks'
 import axios from 'axios';
 import { DashboardProps, useAllCategories, useAllQuickDoData } from '@/types/Common';

@@ -11,10 +11,10 @@ import { PiBellRingingFill } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
-import ConfirmBox from "./confirm";
+import ConfirmBox from "@/components/ui/confirm";
 import { useAllCategories, DrawerProps, Status } from "../../types/Common";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
-import { Button } from "./button";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
 import { IoInformationCircle } from "react-icons/io5";
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -22,7 +22,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Textarea } from "./textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { RxCross1 } from "react-icons/rx";
 
 
@@ -138,7 +138,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
     return (
         <>
             <Drawer
-                direction={`${isMobileScreen?"bottom":"right"}`}
+                direction={`${isMobileScreen ? "bottom" : "right"}`}
                 onClose={() => { handleSaveToDo() }}
                 open={autoOpenDrawer || undefined}
             >
@@ -216,7 +216,7 @@ const QuickDoDrawer = (props: DrawerProps) => {
                                     mode="single"
                                     selected={(new Date(date))}
                                     onSelect={handleSetDate}
-                                    // initialFocus
+                                // initialFocus
                                 />
                             </PopoverContent>
                         </Popover>

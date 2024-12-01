@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
-import DropdownMultiSelect from "./dropdown-multiselect";
+import DropdownMultiSelect from "../ui/dropdown-multiselect";
 import {
     useAllCategories,
     ListItemProps,
@@ -15,7 +15,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Button } from "./button";
+import { Button } from "../ui/button";
 import { PiCalendarCheckFill, PiCalendarDotsLight } from "react-icons/pi";
 import { RxCross1 } from "react-icons/rx";
 

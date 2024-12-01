@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Textarea } from "@/components/ui/textarea"
 import { useAllCategories, useAllQuickDoData } from '@/types/Common'
-import QuickDoDrawer from './quickdo-drawer'
+import QuickDoDrawer from '@/components/layout/quickdo-drawer'
 
 const QuickDoCard = (props: {
     task: useAllQuickDoData;
