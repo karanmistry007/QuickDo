@@ -660,7 +660,7 @@ const GroupByView = (props: DashboardProps) => {
                                     <CollapsibleTrigger asChild>
                                         <Button variant="outline" className="w-full justify-start hover:bg-inherit border-0 shadow-none gap-2 text-base">
                                             <IoChevronDownOutline className={`${isCollapseOpen ? "" : "-rotate-90"} duration-150 text-lg`} />
-                                            Open
+                                            Open ({openQuickDoData.length})
                                         </Button>
                                     </CollapsibleTrigger>
                                 </div>
@@ -695,7 +695,7 @@ const GroupByView = (props: DashboardProps) => {
                                     <CollapsibleTrigger asChild>
                                         <Button variant="outline" className="w-full justify-start hover:bg-inherit border-0 shadow-none gap-2 text-base">
                                             <IoChevronDownOutline className={`${isCollapseCompleted ? "" : "-rotate-90"} duration-150 text-lg`} />
-                                            Completed
+                                            Completed ({completedQuickDoData.length})
                                         </Button>
                                     </CollapsibleTrigger>
                                 </div>
@@ -730,7 +730,7 @@ const GroupByView = (props: DashboardProps) => {
                                     <CollapsibleTrigger asChild>
                                         <Button variant="outline" className="w-full justify-start hover:bg-inherit border-0 shadow-none gap-2 text-base">
                                             <IoChevronDownOutline className={`${isCollapseCancelled ? "" : "-rotate-90"} duration-150 text-lg`} />
-                                            Cancelled
+                                            Cancelled ({cancelledQuickDoData.length})
                                         </Button>
                                     </CollapsibleTrigger>
                                 </div>
