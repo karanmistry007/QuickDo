@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import CreateQuickDo from "../components/ui/create-quickdo";
+import CreateQuickDo from "../../components/ui/create-quickdo";
 import {
     useSortDataItems,
     DashboardProps,
     useStatusFiltersItems,
-} from "../types/Common";
+} from "../../types/Common";
 import { toast } from 'sonner'
 import { addQuickDo, deleteQuickDo, fetchQuickDos, updateQuickDo } from "@/utils/quickdo";
 import { fetchCategoryList } from "@/utils/quickdo-category";
 import Filters from "@/components/layout/filters";
 import Sort from "@/components/layout/sort";
 import QuickdoList from "@/components/layout/quickdo-list";
+import Navbar from "@/components/layout/navbar";
+import Sidebar from "@/components/layout/sidebar";
 
 // ? DEFINE STATUS DROPDOWN DATA
 const useStatusFilterData: useStatusFiltersItems[] = [
@@ -156,6 +158,13 @@ const InboxView = (props: DashboardProps) => {
 
     return (
         <>
+
+            {/* NAVBAR */}
+            <Navbar />
+
+            {/* SIDEBAR */}
+            <Sidebar />
+
             {/* DASHBOARD CONTAINER */}
             <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
 

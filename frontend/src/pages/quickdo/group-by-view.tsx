@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CreateQuickDo from "../components/ui/create-quickdo";
-import QuickDoItem from "../components/layout/quickdo-item";
+import CreateQuickDo from "@/components/ui/create-quickdo";
+import QuickDoItem from "@/components/layout/quickdo-item";
 import { BsSortUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import {
@@ -10,7 +10,7 @@ import {
     useSortDataItems,
     DashboardProps,
     useStatusFiltersItems,
-} from "../types/Common";
+} from "@/types/Common";
 import { toast } from 'sonner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -34,6 +34,8 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Navbar from "@/components/layout/navbar";
+import Sidebar from "@/components/layout/sidebar";
 
 
 // ? DEFINE STATUS DROPDOWN DATA
@@ -410,6 +412,13 @@ const GroupByView = (props: DashboardProps) => {
 
     return (
         <>
+
+            {/* NAVBAR */}
+            <Navbar />
+
+            {/* SIDEBAR */}
+            <Sidebar />
+
             {/* DASHBOARD CONTAINER */}
             <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
                 {/* CREATE TODO */}

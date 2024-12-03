@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from 'sonner'
 import QuickDoDrawer from "@/components/layout/quickdo-drawer";
+import Navbar from "@/components/layout/navbar";
+import Sidebar from "@/components/layout/sidebar";
 
 const localizer = dayjsLocalizer(dayjs);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -372,6 +374,13 @@ const CalendarView = (props: DashboardProps) => {
     };
     return (
         <>
+
+            {/* NAVBAR */}
+            <Navbar />
+
+            {/* SIDEBAR */}
+            <Sidebar />
+
             {/* DASHBOARD CONTAINER */}
             <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
                 <div className="calendar m-10">

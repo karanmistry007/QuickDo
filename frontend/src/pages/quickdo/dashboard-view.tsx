@@ -1,5 +1,5 @@
 import NumberCard from "@/components/charts/NumberCard";
-import { DashboardProps } from "../types/Common"
+import { DashboardProps } from "@/types/Common"
 
 
 import { MdOutlineUpcoming } from "react-icons/md";
@@ -11,11 +11,20 @@ import { DueDateLineChart } from "@/components/charts/DueDateLineChart";
 import { CategoryBarChart } from "@/components/charts/CategoryBarChart";
 import { StatusDonutChart } from "@/components/charts/StatusDonutChart";
 import { ImportancePercentageChart } from "@/components/charts/ImportancePercentageChart";
+import Navbar from "@/components/layout/navbar";
+import Sidebar from "@/components/layout/sidebar";
 
 
 const Dashboard = (props: DashboardProps) => {
     return (
         <>
+
+            {/* NAVBAR */}
+            <Navbar />
+
+            {/* SIDEBAR */}
+            <Sidebar />
+
             {/* DASHBOARD CONTAINER  */}
             <div className="dashboard-container  sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_80px)] overflow-y-scroll">
 

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import QuickDoCard from '@/components/layout/quickdo-card'
-import { Status, statuses, Task } from '../utils/data-tasks'
+import { Status, statuses, Task } from '@/utils/data-tasks'
 import axios from 'axios';
 import { DashboardProps, useAllCategories, useAllQuickDoData } from '@/types/Common';
 import { toast } from 'sonner'
+import Navbar from '@/components/layout/navbar';
+import Sidebar from '@/components/layout/sidebar';
 
 
 const KanbanView = (props: DashboardProps) => {
@@ -256,6 +258,13 @@ const KanbanView = (props: DashboardProps) => {
 
     return (
         <>
+
+            {/* NAVBAR */}
+            <Navbar />
+
+            {/* SIDEBAR */}
+            <Sidebar />
+
             {/* DASHBOARD CONTAINER  */}
             {!initialLoading && (
 
