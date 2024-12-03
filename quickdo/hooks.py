@@ -254,9 +254,10 @@ website_route_rules = [
     {"from_route": "/quickdo/<path:app_path>", "to_route": "quickdo"},
 ]
 
-# fixtures = [
-#     {"dt":"QuickDo Category","filters":[]},
-#     {"dt":"Navbar Settings"},
-#     {"dt":"Website Settings"},
-#     {"dt": "Kanban Board", "filters": [["reference_doctype", "in", ["QuickDo"]]]},
-# ]
+fixtures = [
+    {"dt": "Role", "filters": [["name", "in", ["QuickDo User"]]]},
+    #     {"dt":"QuickDo Category","filters":[]},
+    #     {"dt":"Navbar Settings"},
+    #     {"dt":"Website Settings"},
+    #     {"dt": "Kanban Board", "filters": [["reference_doctype", "in", ["QuickDo"]]]},
+]

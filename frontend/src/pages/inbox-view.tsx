@@ -10,7 +10,7 @@ import { addQuickDo, deleteQuickDo, fetchQuickDos, updateQuickDo } from "@/utils
 import { fetchCategoryList } from "@/utils/quickdo-category";
 import Filters from "@/components/layout/filters";
 import Sort from "@/components/layout/sort";
-import ListView from "@/components/layout/list-view";
+import QuickdoList from "@/components/layout/quickdo-list";
 
 // ? DEFINE STATUS DROPDOWN DATA
 const useStatusFilterData: useStatusFiltersItems[] = [
@@ -192,7 +192,7 @@ const InboxView = (props: DashboardProps) => {
                     </div>
 
                     {/* LIST VIEW */}
-                    <ListView
+                    <QuickdoList
                         allTodoData={allTodoData}
                         getAllCategories={getAllCategories}
                         initialLoading={initialLoading}
