@@ -16,6 +16,7 @@ import InboxView from "@/pages/quickdo/inbox-view";
 import GroupByView from "@/pages/quickdo/group-by-view";
 import CategoryView from "@/pages/category/category-view";
 import Login from "@/pages/auth/login";
+import SignUp from "@/pages/auth/sign-up";
 
 
 const App = () => {
@@ -48,6 +49,10 @@ const App = () => {
 						<Route
 							path="/auth/login"
 							element={<Login />}
+						/>
+						<Route
+							path="/auth/sign-up"
+							element={<SignUp />}
 						/>
 						<Route
 							path="/auth/logout"

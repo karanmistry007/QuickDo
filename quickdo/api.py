@@ -666,14 +666,14 @@ def register_user(full_name, email, password, redirect_to="/quickdo"):
             if user.enabled:
                 return {
                     "success": False,
-                    "message": f"User is already registered!: {email}",
+                    "message": f"User is already registered with {email}",
                 }
 
             # ? IF THE USE IS DISABLED
             else:
                 return {
                     "success": False,
-                    "message": f"User is disabled!: {email}",
+                    "message": f"User is disabled with {email}",
                 }
 
         # ? IF THE USE DOES NOT EXISTS
@@ -692,9 +692,9 @@ def register_user(full_name, email, password, redirect_to="/quickdo"):
             user.flags.ignore_password_policy = True
             user.insert()
 
-            # ! FOR NOW AS A SYSTEM MANAGER
+            # ! FOR NOW AS A QUICKDO USER
             # ? SET DEFAULT ROLES TO THE USER
-            default_role = "System Manager"
+            default_role = "QuickDo User"
             if default_role:
                 user.add_roles(default_role)
 
@@ -716,5 +716,5 @@ def register_user(full_name, email, password, redirect_to="/quickdo"):
     else:
         return {
             "success": True,
-            "message": f"User has been registered successfully!: {email}",
+            "message": f"User has been registered successfully {full_name}",
         }
