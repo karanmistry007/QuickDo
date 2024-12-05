@@ -35,11 +35,7 @@ const Sort: React.FC<SortProps> = ({ currentSort, currentSortDirection, useSortD
                     setRefreshState(true);
                 }}
             >
-                {currentSortDirection === "desc" ? (
-                    <BsSortDownAlt title="Descending" className="text-xl" />
-                ) : (
-                    <BsSortUp title="Ascending" className="text-xl" />
-                )}
+                <BsSortDownAlt title="Ascending" className={`text-xl transition-transform duration-300 ${currentSortDirection === "desc" ? "rotate-0" : "rotate-180"}`} />
             </button>
         </div>
     );

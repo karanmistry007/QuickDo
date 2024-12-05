@@ -254,7 +254,10 @@ website_route_rules = [
     {"from_route": "/quickdo/<path:app_path>", "to_route": "quickdo"},
 ]
 
+# ? FIXTURES
 # fixtures = [
+# {"dt": "Role", "filters": [["name", "in", ["QuickDo User"]]]},
+# {"dt": "Custom DocPerm", "filters": [["role", "in", ["QuickDo User"]]]},
 #     {"dt":"QuickDo Category","filters":[]},
 #     {"dt":"Navbar Settings"},
 #     {"dt":"Website Settings"},

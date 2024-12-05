@@ -5,18 +5,18 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
-import Navbar from "./components/layout/navbar";
-import Sidebar from "./components/layout/sidebar";
-import Dashboard from "./pages/dashboard-view";
-import MyDayView from "./pages/my-day-view";
+import Dashboard from "@/pages/quickdo/dashboard-view";
+import MyDayView from "@/pages/quickdo/my-day-view";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import Logout from './auth/Logout';
-import CalendarView from "./pages/calendar-view";
+import CalendarView from "@/pages/quickdo/calendar-view";
 import { Toaster } from "sonner"
-import KanbanView from "./pages/kanban-view";
-import InboxView from "./pages/inbox-view";
-import GroupByView from "./pages/group-by-view";
-import CategoryView from "./pages/category-view";
+import KanbanView from "@/pages/quickdo/kanban-view";
+import InboxView from "@/pages/quickdo/inbox-view";
+import GroupByView from "@/pages/quickdo/group-by-view";
+import CategoryView from "@/pages/category/category-view";
+import Login from "@/pages/auth/login";
+import SignUp from "@/pages/auth/sign-up";
 
 
 const App = () => {
@@ -39,15 +39,20 @@ const App = () => {
 				enableSocket={false}
 			>
 				<Router basename="/quickdo">
-					<Navbar />
-					<Sidebar />
-
 					<Routes>
 
 						{/* PUBLIC ROUTES */}
 						<Route
 							path="/"
 							element={<Navigate to="/dashboard" replace />}
+						/>
+						<Route
+							path="/auth/login"
+							element={<Login />}
+						/>
+						<Route
+							path="/auth/sign-up"
+							element={<SignUp />}
 						/>
 						<Route
 							path="/auth/logout"

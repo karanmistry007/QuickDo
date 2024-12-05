@@ -89,7 +89,7 @@ export default function Sidebar() {
         <>
             {/* SIDEBAR */}
             <div
-                className={`sidebar fixed left-0 top-[72px] sm:top-[60px] bg-white pt-4 sm:py-0 z-[99] border-t h-auto sm:h-[calc(100dvh_-_60px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[200px] sidebar-left-to-right" : "w-full sm:w-fit sidebar-right-to-left"} transition-all duration-300`}
+                className={`sidebar fixed left-0 top-[72px] sm:top-[60px] bg-white pt-4 sm:py-0 z-[99] border-t h-auto sm:h-[calc(100dvh_-_60px)] shadow-md sm:shadow-[0px_10px_25px_-5px_rgba(0,0,0,0.25)] sm:pr-1 ${sidebarCollapseActive ? "w-full sm:max-w-[200px] sidebar-left-to-right" : "w-full sm:w-fit sidebar-right-to-left"} transition-all duration-300 overflow-hidden`}
                 onMouseEnter={() => {
                     setSidebarCollapseActive(true);
                 }}

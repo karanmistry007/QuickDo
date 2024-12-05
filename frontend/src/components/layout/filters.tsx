@@ -110,7 +110,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, useStatusFilterData, getAllC
                     setRefreshState(true);
                 }}
             >
-                <IoClose title="Clear Filters" className={`text-xl transition-transform duration-300 ${filters.length === 0 ? "rotate-45" : "rotate-0"}`} />
+                <IoClose title="Clear Filters" className={`text-xl transition-transform duration-300 ${filters.length === 0 ? "rotate-45" : "rotate-180"}`} />
             </button>
         </div>
     );
