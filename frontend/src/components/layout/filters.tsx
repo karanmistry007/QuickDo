@@ -60,7 +60,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, useStatusFilterData, getAllC
                         <DropdownMenuSub>
                             <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
+                                <DropdownMenuSubContent className="categories-items max-h-[240px] overflow-y-auto">
                                     {getAllCategories.length > 0 && getAllCategories.map((data, index) => (
                                         <DropdownMenuCheckboxItem
                                             key={index}
