@@ -58,12 +58,15 @@ const Filters: React.FC<FiltersProps> = ({ filters, useStatusFilterData, getAllC
 
                         {/* CATEGORY FILTERS */}
                         <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
+                            <DropdownMenuSubTrigger>
+                                Category
+                            </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
-                                <DropdownMenuSubContent className="categories-items max-h-[240px] overflow-y-auto">
+                                <DropdownMenuSubContent className="categories-items max-h-[240px] w-[200px] overflow-x-hidden whitespace-nowrap text-ellipsis overflow-y-auto">
                                     {getAllCategories.length > 0 && getAllCategories.map((data, index) => (
                                         <DropdownMenuCheckboxItem
                                             key={index}
+                                            title={data.category}
                                             checked={filters.some(filter => filter[0] === "QuickDo Categories" && filter[3]?.includes(data.category))}
                                             onCheckedChange={() => handleFilters("category", data.category, "QuickDo Categories")}
                                         >

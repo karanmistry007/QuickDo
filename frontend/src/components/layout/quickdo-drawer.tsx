@@ -13,37 +13,45 @@ import { HiOutlineStar } from "react-icons/hi2";
 import { BiSolidStar } from "react-icons/bi";
 import ConfirmBox from "@/components/ui/confirm";
 import { useAllCategories, DrawerProps, Status } from "../../types/Common";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { IoInformationCircle } from "react-icons/io5";
-import { Calendar } from "@/components/ui/calendar"
+import { IoClose, IoInformationCircle } from "react-icons/io5";
+import { Calendar } from "@/components/ui/calendar";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { RxCross1 } from "react-icons/rx";
-
 
 const QuickDoDrawer = (props: DrawerProps) => {
 
     //? HOOKS
     const [status, setStatus] = useState<Status>(props.todoData.status);
-    const [is_important, setIs_important] = useState<boolean>(props.todoData.is_important);
-    const [send_reminder, setSend_reminder] = useState<boolean>(props.todoData.send_reminder);
+    const [isImportant, setIsImportant] = useState<boolean>(props.todoData.is_important);
+    const [sendReminder, setSendReminder] = useState<boolean>(props.todoData.send_reminder);
     const [description, setDescription] = useState<string>(props.todoData.description);
     const [date, setdate] = useState<string>(props.todoData.date);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [categories, setCategories] = useState<useAllCategories[]>(props.todoData.categories);
     const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories);
     const [autoOpenDrawer, setAutoOpenDrawer] = useState<boolean>(props.autoOpenDrawer || false);
+    const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
 
     //? SET MOBILE SCREEN
     const [isMobileScreen, setIsMobileScreen] = useState<boolean>(window.innerWidth < 640 ? true : false);
 
+    //? SET SCREEN WIDTH HANDLER
     useEffect(() => {
-        //? SET SCREEN WIDTH HANDLER
         const screenWidthHandler = () => {
             if (window.innerWidth < 640) {
                 setIsMobileScreen(true);
@@ -54,7 +62,6 @@ const QuickDoDrawer = (props: DrawerProps) => {
         screenWidthHandler();
         window.addEventListener("resize", screenWidthHandler);
     }, [window.screen.width]);
-
 
     //? DELETE TODO HANDLER
     const handleDeleteTodo = () => {
@@ -70,19 +77,16 @@ const QuickDoDrawer = (props: DrawerProps) => {
         } else {
             setStatus("Open");
         }
-    }
-
+    };
 
     // ? UPDATE DATA AS PROPS CHANGES
     useEffect(() => {
-
         setStatus(props.todoData.status);
-        setIs_important(props.todoData.is_important);
-        setSend_reminder(props.todoData.send_reminder);
+        setIsImportant(props.todoData.is_important);
+        setSendReminder(props.todoData.send_reminder);
         setDescription(props.todoData.description);
         setdate(props.todoData.date);
         setCategories(props.todoData.categories);
-
     }, [props.todoData]);
 
     //? UPDATE CATEGORIES AS PROPS UPDATES
@@ -93,35 +97,47 @@ const QuickDoDrawer = (props: DrawerProps) => {
     //? UPDATE AUTO OPEN DRAWER AS PER THE PARENT
     useEffect(() => {
         setAutoOpenDrawer(props.autoOpenDrawer || false);
-    }, [props.autoOpenDrawer])
+    }, [props.autoOpenDrawer]);
+
+    //? HANDLE CLEAR CATEGORY
+    const handleClearCategory = () => {
+        setCategories([]);
+        setIsDataChanged(true);
+    }
 
     //? HANDLE SET DATE
     const handleSetDate = (e: any) => {
         const year = e?.getFullYear();
-        const month = String(e?.getMonth() + 1).padStart(2, '0');
-        const day = String(e?.getDate()).padStart(2, '0');
+        const month = String(e?.getMonth() + 1).padStart(2, "0");
+        const day = String(e?.getDate()).padStart(2, "0");
 
         //? FORMAT DATE AS YYYY-MM-DD
         const formattedDate = e ? `${year}-${month}-${day}` : "";
 
         setdate(formattedDate);
+        setIsDataChanged(true);
     };
 
     //? UPDATE TODO
     const handleSaveToDo = () => {
-        props.handleSaveToDo({
-            name: props.todoData.name,
-            owner: props.todoData.owner,
-            creation: props.todoData.creation,
-            modified: props.todoData.modified,
-            modified_by: props.todoData.modified_by,
-            status: status,
-            is_important: is_important,
-            send_reminder: send_reminder,
-            description: description,
-            date: date,
-            categories: categories,
-        });
+
+        // ? UPDATE OLY OF THE DATA IS CHANGED
+        if (isDataChanged) {
+            props.handleSaveToDo({
+                name: props.todoData.name,
+                owner: props.todoData.owner,
+                creation: props.todoData.creation,
+                modified: props.todoData.modified,
+                modified_by: props.todoData.modified_by,
+                status: status,
+                is_important: isImportant,
+                send_reminder: sendReminder,
+                description: description,
+                date: date,
+                categories: categories,
+            });
+            setIsDataChanged(false);
+        }
     };
 
     //? CATEGORIES MULTISELECT HANDLER
@@ -133,162 +149,183 @@ const QuickDoDrawer = (props: DrawerProps) => {
                 return [...prevCategories, { category }];
             }
         });
+        setIsDataChanged(true);
     };
 
     return (
         <>
+
+            {/* DRAWER */}
             <Drawer
                 direction={`${isMobileScreen ? "bottom" : "right"}`}
-                onClose={() => { handleSaveToDo() }}
+                onClose={() => {
+                    handleSaveToDo();
+                }}
                 open={autoOpenDrawer || undefined}
             >
-                <DrawerTrigger asChild className={`${autoOpenDrawer && "hidden"}`}>
+
+                {/* DRAWER TRIGGER */}
+                <DrawerTrigger
+                    asChild
+                    className={`${autoOpenDrawer && "hidden"}`}
+                    title="Drawer"
+                >
                     <Button variant="link" className="p-0 h-auto">
                         <IoInformationCircle className="text-2xl ml-auto sm:m-auto lg:m-0" />
                     </Button>
                 </DrawerTrigger>
-                <DrawerContent className="right-0 left-auto px-5  w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto">
 
+                {/* DRAWER CONTENT */}
+                <DrawerContent className="right-0 left-auto px-5  w-[100dvw] h-[100dvh] sm:w-[70dvw] md:w-[50dvw] lg:w-[40dvw] xl:w-[30dvw] ml-auto">
+                    {/* DRAWER HEADER */}
                     <DrawerHeader className="text-left p-0 mt-5">
                         <DrawerTitle className="flex justify-between items-center">
-
                             <DrawerDescription className="hidden">
                                 Drawer Description
                             </DrawerDescription>
-
-                            <DrawerClose asChild>
+                            <DrawerClose
+                                asChild
+                                title="Save QuickDo"
+                            >
                                 <Button variant="outline" className="text-xl rounded-full p-2">
                                     <FaAngleRight />
                                 </Button>
                             </DrawerClose>
 
+                            {/* DELETE CONFIRM BOX */}
                             <ConfirmBox
                                 confirmTitle={"Delete QuickDo"}
                                 confirmMessage={"Are you sure you want to delete QuickDo?"}
                                 handleSuccess={handleDeleteTodo}
                             />
-
-
                         </DrawerTitle>
                     </DrawerHeader>
 
+                    {/* MAIN CONTENT */}
                     <div className="drawer-content flex flex-col justify-center gap-5 mt-5">
 
                         {/* TODO DESCRIPTION */}
-                        <div className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100">
+                        <div
+                            title="Description"
+                            className="todo-description bg-white border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100"
+                        >
                             <Textarea
                                 className="w-full min-h-[64px]"
                                 value={description}
                                 onChange={(e) => {
                                     setDescription(e.target.value);
+                                    setIsDataChanged(true);
                                 }}
                             ></Textarea>
                         </div>
-                        {/* END TODO DESCRIPTION */}
 
-                        {/* TODO DUE DATE */}
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <div className="todo-due-data flex items-center bg-white py-0.5 px-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md cursor-pointer select-none hover:bg-gray-100">
-                                    <div className="due-data cursor-pointer">
-                                        <PiCalendarDotsLight
-                                            className={`text-2xl ${date ? "hidden" : "show"}`}
-                                        />
-                                        <PiCalendarCheckFill
-                                            className={`text-2xl ${date ? "show" : "hidden"}`}
-                                        />
+                        {/* FORM CONTAINER */}
+                        <div className="form-container grid grid-cols-2 gap-5">
+
+                            {/* TODO DUE DATE */}
+                            <Popover>
+                                <PopoverTrigger
+                                    asChild
+                                    title="Due Date"
+                                >
+                                    <div className="todo-due-data flex items-center bg-white py-0.5 px-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md cursor-pointer select-none hover:bg-gray-100">
+                                        <div className="due-data cursor-pointer">
+                                            <PiCalendarDotsLight
+                                                className={`text-2xl ${date ? "hidden" : "show"}`}
+                                            />
+                                            <PiCalendarCheckFill
+                                                className={`text-2xl ${date ? "show" : "hidden"}`}
+                                            />
+                                        </div>
+
+                                        <Button variant={"transparent"} className={"w-auto pl-3"}>
+                                            <h3 className="font-normal text-base">
+                                                {date ? date : "Pick Due Date"}
+                                            </h3>
+                                        </Button>
                                     </div>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={new Date(date)}
+                                        onSelect={handleSetDate}
+                                    // initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
 
-                                    <Button
-                                        variant={"transparent"}
-                                        className={"w-auto pl-3"}
-                                    >
-                                        <h3 className="font-normal text-base">
-                                            {date ? (date) : (
-                                                "Pick Due Date"
-                                            )}
-                                        </h3>
-                                    </Button>
-                                </div>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar
-                                    mode="single"
-                                    selected={(new Date(date))}
-                                    onSelect={handleSetDate}
-                                // initialFocus
-                                />
-                            </PopoverContent>
-                        </Popover>
-                        {/* END TODO DUE DATE */}
-
-                        {/* COMPLETE TODO */}
-                        <div
-                            className="todo-complete flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100"
-                            onClick={() => {
-                                handleStatus(status);
-                            }}
-                            title="Complete"
-                        >
-                            <button
-                                className={`min-h-[18px] sm:min-h-5 min-w-[18px] sm:min-w-5 hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
+                            {/* STATUS TODO */}
+                            <div
+                                className="todo-status flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 gap-2 cursor-pointer select-none border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md hover:bg-gray-100"
+                                onClick={() => {
+                                    handleStatus(status);
+                                    setIsDataChanged(true);
+                                }}
+                                title="Status"
                             >
-                                <FaCheck
-                                    className={`${status === "Completed" ? "show" : "hidden"}`}
-                                />
-                                <RxCross1
-                                    className={`${status === "Cancelled" ? "show" : "hidden"}`}
-                                />
-                            </button>
-                            <div className="text">
-                                <h3>Complete ToDo</h3>
+                                <button
+                                    className={`min-h-[18px] sm:min-h-5 min-w-[18px] sm:min-w-5 hover:bg-gray-100-todo-button bg-transparent rounded-full p-0.5 w-fit text-xs sm:text-sm border border-gray-600 cursor-pointer`}
+                                >
+                                    <FaCheck
+                                        className={`${status === "Completed" ? "show" : "hidden"}`}
+                                    />
+                                    <RxCross1
+                                        className={`${status === "Cancelled" ? "show" : "hidden"}`}
+                                    />
+                                </button>
+                                <div className="text">
+                                    <h3>Status QuickDo</h3>
+                                </div>
+                            </div>
+
+                            {/* TODO IMPORTANCE */}
+                            <div
+                                className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
+                                onClick={() => {
+                                    setIsImportant(!isImportant);
+                                    setIsDataChanged(true);
+                                }}
+                                title="Importance"
+                            >
+                                <button className="importance cursor-pointer">
+                                    <HiOutlineStar
+                                        className={`${isImportant ? "hidden" : "show"} text-2xl`}
+                                    />
+                                    <BiSolidStar
+                                        className={`${isImportant ? "show" : "hidden"} text-2xl`}
+                                    />
+                                </button>
+                                <h3>Importance</h3>
+                            </div>
+
+                            {/* TODO REMINDER */}
+                            <div
+                                className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
+                                onClick={() => {
+                                    setSendReminder(!sendReminder);
+                                    setIsDataChanged(true);
+                                }}
+                                title="Reminder"
+                            >
+                                <button className="send-reminder text-2xl">
+                                    <PiBellRingingLight
+                                        className={`${sendReminder ? "hidden" : "show"}`}
+                                    />
+                                    <PiBellRingingFill
+                                        className={`${sendReminder ? "show" : "hidden"}`}
+                                    />
+                                </button>
+                                <h3>Reminder</h3>
                             </div>
                         </div>
-                        {/* END COMPLETE TODO */}
-
-                        {/* TODO IMPORTANCE */}
-                        <div
-                            className="todo-importance flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
-                            onClick={() => {
-                                setIs_important(!is_important);
-                            }}
-                        >
-                            <button className="importance cursor-pointer">
-                                <HiOutlineStar
-                                    className={`${is_important ? "hidden" : "show"} text-2xl`}
-                                />
-                                <BiSolidStar
-                                    className={`${is_important ? "show" : "hidden"} text-2xl`}
-                                />
-                            </button>
-                            <h3>Importance</h3>
-                        </div>
-                        {/* END TODO IMPORTANCE */}
-
-                        {/* TODO REMINDER */}
-                        <div
-                            className="todo-reminder flex items-center bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none hover:bg-gray-100"
-                            onClick={() => {
-                                setSend_reminder(!send_reminder);
-                            }}
-                            title="Reminder"
-                        >
-                            <button className="send-reminder text-2xl">
-                                <PiBellRingingLight
-                                    className={`${send_reminder ? "hidden" : "show"}`}
-                                />
-                                <PiBellRingingFill
-                                    className={`${send_reminder ? "show" : "hidden"}`}
-                                />
-                            </button>
-                            <h3>Reminder</h3>
-                        </div>
-                        {/* END TODO REMINDER */}
 
                         {/* TODO CATEGORIES */}
                         <div className="todo-categories bg-white py-1.5 px-2 sm:py-2 sm:px-3 border border-[#e2e2e2] shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] rounded-md gap-2 cursor-pointer select-none relative">
+
+                            {/* CATEGORIES TOOLBAR */}
                             <div
-                                className="todo-categories flex item-center gap-2 border-b border-gray-200 pb-2"
+                                className="categories-toolbar pb-2 flex justify-between  border-b border-gray-200 "
                                 onClick={() => {
                                     setShowCategories(!showCategories);
                                 }}
@@ -296,62 +333,70 @@ const QuickDoDrawer = (props: DrawerProps) => {
                             >
 
                                 {/* CATEGORIES ICON */}
-                                <button className="categories text-2xl">
-                                    <PiListBullets
-                                        className={`${categories && categories.length == 0 ? "show" : "hidden"
-                                            }`}
-                                    />
-                                    <PiListChecks
-                                        className={`${categories && categories.length == 0 ? "hidden" : "show"
-                                            }`}
-                                    />
+                                <div className="todo-categories flex item-center gap-2">
+                                    <button className="categories text-2xl">
+                                        <PiListBullets
+                                            className={`${categories && categories.length == 0 ? "show" : "hidden"
+                                                }`}
+                                        />
+                                        <PiListChecks
+                                            className={`${categories && categories.length == 0 ? "hidden" : "show"
+                                                }`}
+                                        />
+                                    </button>
+                                    <h3>Categories</h3>
+                                </div>
+
+                                {/* CLEAR CATEGORIES */}
+                                <button
+                                    title="Clear Categories"
+                                    onClick={handleClearCategory}
+                                >
+                                    <IoClose className="text-2xl" />
                                 </button>
-                                {/* END CATEGORIES ICON */}
-                                <h3>Categories</h3>
                             </div>
 
                             {/* CATEGORIES ITEMS DROPDOWN*/}
                             <div
-                                className={`categories-items bg-white p-1 rounded-md grid grid-cols-2 gap-1 justify-center max-h-[400px] overflow-y-auto`}
+                                className={`categories-items max-h-[40dvh] overflow-y-auto overflow-x-hidden whitespace-nowrap text-ellipsis bg-white p-1 rounded-md grid grid-cols-2 gap-1 justify-center`}
                             >
-                                {allCategories && allCategories.map((data, index) => (
-                                    <button
-                                        key={data.category + index}
-                                        className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${categories && categories.some(
-                                            (item) => item["category"] === data.category
-                                        )
-                                            ? "bg-slate-100"
-                                            : ""
-                                            }`}
-                                        onClick={() => handleCategoryMultiSelect(data.category)}
-                                    >
-                                        <div
-                                            className={`save-todo-button bg-transparent rounded-full p-0.5 w-fit text-[10px] border border-gray-600 cursor-pointer`}
-                                        >
-                                            <FaCheck
-                                                className={`${categories && categories.some(
+                                {allCategories &&
+                                    allCategories.map((data, index) => (
+                                        <button
+                                            key={data.category + index}
+                                            title={data.category}
+                                            className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-1 hover:bg-gray-100 rounded-md ${categories &&
+                                                categories.some(
                                                     (item) => item["category"] === data.category
                                                 )
-                                                    ? "opacity-1"
-                                                    : "opacity-0"
-                                                    }`}
-                                            />
-                                        </div>
-                                        <div className="category-text">{data.category}</div>
-                                    </button>
-                                ))}
+                                                ? "bg-slate-100"
+                                                : ""
+                                                }`}
+                                            onClick={() => handleCategoryMultiSelect(data.category)}
+                                        >
+                                            <div
+                                                className={`save-todo-button bg-transparent rounded-full p-0.5 w-fit text-[10px] border border-gray-600 cursor-pointer`}
+                                            >
+                                                <FaCheck
+                                                    className={`${categories &&
+                                                        categories.some(
+                                                            (item) => item["category"] === data.category
+                                                        )
+                                                        ? "opacity-1"
+                                                        : "opacity-0"
+                                                        }`}
+                                                />
+                                            </div>
+                                            <div className="category-text w-[160px] text-left overflow-x-hidden whitespace-nowrap text-ellipsis">
+                                                {data.category}
+                                            </div>
+                                        </button>
+                                    ))}
                             </div>
-                            {/* END CATEGORIES ITEMS DROPDOWN */}
-
                         </div>
-                        {/* END TODO CATEGORIES */}
-
                     </div>
-
-
-                </DrawerContent >
-            </Drawer >
-
+                </DrawerContent>
+            </Drawer>
         </>
     );
 };

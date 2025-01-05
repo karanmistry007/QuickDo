@@ -34,9 +34,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
     };
 
     //? HANDLE CLEAR CATEGORY
-    const handleClearCategory = () => {
-        setCategories([]);
-    };
+    const handleClearCategory = () => setCategories([]);;
 
     //? EFFECT ON SELECTED CATEGORIES CHANGE
     useEffect(() => {
@@ -68,7 +66,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                     <DropdownMenuContent className="mr-[10px] z-[9999999] space-y-1">
                         {/* DROPDOWN TOOLBAR */}
                         <button
-                            title="Clear Selection"
+                            title="Clear Categories"
                             className="category w-full cursor-pointer flex select-none justify-center items-center gap-1 px-2 py-0.5 hover:bg-gray-100 rounded-md"
                             onClick={handleClearCategory}
                         >
@@ -81,7 +79,8 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                             {allCategories.map((data, index) => (
                                 <button
                                     key={`${data.category}-${index}`}
-                                    className={`category w-full cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-0.5 hover:bg-gray-100 rounded-md ${categories.some((item) => item.category === data.category)
+                                    title={data.category}
+                                    className={`category cursor-pointer flex select-none justify-start items-center gap-1.5 px-2 py-0.5 hover:bg-gray-100 rounded-md ${categories.some((item) => item.category === data.category)
                                         ? "bg-slate-100"
                                         : ""
                                         }`}
@@ -99,7 +98,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                                                 }`}
                                         />
                                     </div>
-                                    <div className="category-text">{data.category}</div>
+                                    <div className="category-text w-[160px] text-left overflow-x-hidden whitespace-nowrap text-ellipsis">{data.category}</div>
                                 </button>
                             ))}
                         </div>

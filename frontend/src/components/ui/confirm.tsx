@@ -21,7 +21,10 @@ const ConfirmBox = (props: ConfirmBoxProps) => {
         <>
             {/* CONFIRM BOX */}
             <Dialog>
-                <DialogTrigger asChild>
+                <DialogTrigger
+                    asChild
+                    title={props.confirmTitle}
+                >
                     <Button variant="outline" className="text-xl rounded-full p-2">
                         <BsTrash />
                     </Button>
