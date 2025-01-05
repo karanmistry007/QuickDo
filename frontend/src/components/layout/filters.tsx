@@ -20,12 +20,13 @@ interface FiltersProps {
     filters: any[];
     useStatusFilterData: any[];
     getAllCategories: any[];
+    defaultFilter: any[];
     handleFilters: (type: string, value: string, label?: string) => void;
     handleClearFilters: () => void;
     setRefreshState: (state: boolean) => void;
 }
 
-const Filters: React.FC<FiltersProps> = ({ filters, useStatusFilterData, getAllCategories, handleFilters, handleClearFilters, setRefreshState }) => {
+const Filters: React.FC<FiltersProps> = ({ filters, useStatusFilterData, getAllCategories, handleFilters, handleClearFilters, setRefreshState, defaultFilter = null }) => {
 
     return (
         <div className="filters-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-2">
@@ -113,7 +114,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, useStatusFilterData, getAllC
                     setRefreshState(true);
                 }}
             >
-                <IoClose title="Clear Filters" className={`text-xl transition-transform duration-300 ${filters.length === 0 ? "rotate-45" : "rotate-180"}`} />
+                <IoClose title="Clear Filters" className={`text-xl transition-transform duration-300 ${defaultFilter ? filters.length == defaultFilter.length ? "rotate-45" : "rotate-180" : filters.length === 0 ? "rotate-45" : "rotate-180"}`} />
             </button>
         </div>
     );

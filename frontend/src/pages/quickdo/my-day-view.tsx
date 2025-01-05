@@ -36,7 +36,7 @@ const MyDayView = (props: DashboardProps) => {
 
     // ? HOOKS
     const jsDate = new Date();
-    const todayDate = jsDate.toISOString().split('T')[0];
+    const todayDate = jsDate.toLocaleDateString('en-CA');
     const defaultFilter = [["date", "in", [todayDate, ""]]];
     const [currentSort, setCurrentSort] = useState("creation");
     const [currentSortDirection, setCurrentSortDirection] = useState("desc");
@@ -190,6 +190,7 @@ const MyDayView = (props: DashboardProps) => {
                             handleFilters={handleFilters}
                             handleClearFilters={handleClearFilters}
                             setRefreshState={setRefreshState}
+                            defaultFilter={defaultFilter}
                         />
 
                         {/* SORT */}
