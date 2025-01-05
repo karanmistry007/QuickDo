@@ -34,9 +34,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
     };
 
     //? HANDLE CLEAR CATEGORY
-    const handleClearCategory = () => {
-        setCategories([]);
-    };
+    const handleClearCategory = () => setCategories([]);;
 
     //? EFFECT ON SELECTED CATEGORIES CHANGE
     useEffect(() => {
@@ -77,11 +75,12 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                         {/* END DROPDOWN TOOLBAR */}
 
                         {/* DROPDOWN CATEGORIES */}
-                        <div className="dropdown-category-item-container categories-items max-h-[240px] overflow-y-auto space-y-1">
+                        <div className="dropdown-category-item-container categories-items max-h-[240px] overflow-y-auto overflow-x-hidden whitespace-nowrap text-ellipsis space-y-1">
                             {allCategories.map((data, index) => (
                                 <button
                                     key={`${data.category}-${index}`}
-                                    className={`category w-full cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-0.5 hover:bg-gray-100 rounded-md ${categories.some((item) => item.category === data.category)
+                                    title={data.category}
+                                    className={`category cursor-pointer flex select-none justify-start items-center gap-1 px-2 py-0.5 hover:bg-gray-100 rounded-md ${categories.some((item) => item.category === data.category)
                                         ? "bg-slate-100"
                                         : ""
                                         }`}
@@ -99,7 +98,7 @@ const DropdownMultiSelect = (props: DropdownMultiSelectProps) => {
                                                 }`}
                                         />
                                     </div>
-                                    <div className="category-text">{data.category}</div>
+                                    <div className="category-text w-[160px] overflow-x-hidden whitespace-nowrap text-ellipsis">{data.category}</div>
                                 </button>
                             ))}
                         </div>
