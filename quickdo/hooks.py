@@ -20,7 +20,7 @@ app_home = "/app/quickdos"
 add_to_apps_screen = [
     {
         "name": "quickdo",
-        "logo": "/assets/quickdo/logo.png",
+        "logo": "/assets/quickdo/favicon.png",
         "title": "QuickDo",
         "route": "/app/quickdos",
         # "has_permission": "quickdo.api.permission.has_app_permission",
