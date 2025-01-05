@@ -274,3 +274,8 @@ input:-webkit-autofill:active {
 		opacity: 1;
 	}
 }
+
+/* CATEGORY ITEM ANIMATION */
+.category-item {
+	animation: quickdo-item-animation 0.2s ease-in-out;
+}

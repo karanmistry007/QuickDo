@@ -41,7 +41,7 @@ const CategoryItem = (props: ListCategoryProps) => {
     return (
         <>
             {/* LIST ITEMS */}
-            <div className="list-items rounded-md border-gray-200 border shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] my-2 py-2 px-4 sm:py-3 flex justify-between lg:grid sm:gap-y-2 sm:gap-x-5  lg:grid-cols-8 xl:grid-cols-10 xxl:grid-cols-12 items-center">
+            <div className="list-items category-item rounded-md border-gray-200 border shadow-[0px_0px_15px_0px_rgba(0,0,0,0.1)] my-2 py-2 px-4 sm:py-3 flex justify-between lg:grid sm:gap-y-2 sm:gap-x-5  lg:grid-cols-8 xl:grid-cols-10 xxl:grid-cols-12 items-center">
 
                 {/* EDIT AND CLOSE CATEGORY */}
                 <div className="item flex justify-start items-center gap-1 sm:gap-5 w-full lg:w-auto lg:col-span-7 xl:col-span-9 xxl:col-span-11">

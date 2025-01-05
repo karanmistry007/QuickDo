@@ -142,7 +142,7 @@ def get_total_upcoming_quickdo():
 
 
 #! api/method/quickdo.api.get_upcoming_important_quickdo
-# ? UPCOMING QUICKDO
+# ? UPCOMING IMPORTANT QUICKDO
 @frappe.whitelist()
 def get_upcoming_important_quickdo():
     try:
@@ -364,9 +364,7 @@ def get_status_wise_quickdo():
         return {
             "success": True,
             "message": "Total Completed QuickDos Are Loaded Successfully!",
-            "data": {
-                "count": final_data,
-            },
+            "data": final_data,
         }
 
 
@@ -419,9 +417,7 @@ def get_important_wise_quickdo():
         return {
             "success": True,
             "message": "Total Completed QuickDos Are Loaded Successfully!",
-            "data": {
-                "count": final_data,
-            },
+            "data": final_data,
         }
 
 

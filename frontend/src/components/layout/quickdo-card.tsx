@@ -26,7 +26,7 @@ const QuickDoCard = (props: {
                 onDragStart={(e) => {
                     e.dataTransfer.setData("name", props.task.name || "")
                 }}
-                className="rounded-lg m-5 bg-gray-50 w-[calc(100%_-_40px)]"
+                className="quickdo-kanban-card rounded-lg m-5 bg-gray-50 w-[calc(100%_-_40px)]"
             >
                 <Card className="p-2 m-0 min-h-[100px]">
                     {isEditingDescription ? (
