@@ -26,11 +26,11 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-const chartData = [
-    { status: "Open", quickdo: 215, fill: "#3c50e0" },
-    { status: "Completed", quickdo: 200, fill: "#29CD42" },
-    { status: "Cancelled", quickdo: 287, fill: "#CB2929" },
-]
+// const data = [
+//     { status: "Open", quickdo: 215, fill: "#3c50e0" },
+//     { status: "Completed", quickdo: 200, fill: "#29CD42" },
+//     { status: "Cancelled", quickdo: 287, fill: "#CB2929" },
+// ]
 
 const chartConfig = {
     quickdo: {
@@ -38,9 +38,9 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export const StatusDonutChart = () => {
+export const StatusDonutChart = ({ data }: any) => {
     const totalQuickdos = React.useMemo(() => {
-        return chartData.reduce((acc, curr) => acc + curr.quickdo, 0)
+        return data.reduce((acc: any, curr: any) => acc + curr.quickdo, 0)
     }, [])
 
     return (
@@ -90,7 +90,7 @@ export const StatusDonutChart = () => {
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie
-                            data={chartData}
+                            data={data}
                             dataKey="quickdo"
                             nameKey="status"
                             innerRadius={60}

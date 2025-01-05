@@ -27,14 +27,14 @@ import {
 } from "@/components/ui/select"
 
 
-const chartData = [
-    { month: "January", quickdo: 186 },
-    { month: "February", quickdo: 305 },
-    { month: "March", quickdo: 237 },
-    { month: "April", quickdo: 73 },
-    { month: "May", quickdo: 209 },
-    { month: "June", quickdo: 214 },
-]
+// const data = [
+//     { label: "January", value: 186 },
+//     { label: "February", value: 305 },
+//     { label: "March", value: 237 },
+//     { label: "April", value: 73 },
+//     { label: "May", value: 209 },
+//     { label: "June", value: 214 },
+// ]
 
 const chartConfig = {
     quickdo: {
@@ -43,7 +43,7 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export const CreationLineChart = () => {
+export const CreationLineChart = ({ data }: any) => {
     return (
         <>
             <Card>
@@ -89,7 +89,7 @@ export const CreationLineChart = () => {
                     <ChartContainer config={chartConfig}>
                         <LineChart
                             accessibilityLayer
-                            data={chartData}
+                            data={data}
                             margin={{
                                 left: 10,
                                 right: 10,
@@ -97,7 +97,7 @@ export const CreationLineChart = () => {
                         >
                             <CartesianGrid vertical={false} />
                             <XAxis
-                                dataKey="month"
+                                dataKey="label"
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
@@ -108,7 +108,7 @@ export const CreationLineChart = () => {
                                 content={<ChartTooltipContent />}
                             />
                             <Line
-                                dataKey="quickdo"
+                                dataKey="value"
                                 type="natural"
                                 stroke="var(--color-quickdo)"
                                 strokeWidth={2}

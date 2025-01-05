@@ -24,14 +24,14 @@ import {
 } from "@/components/ui/select"
 
 
-const chartData = [
-    { category: "Development", quickdo: 305 },
-    { category: "Deployment", quickdo: 186 },
-    { category: "Social", quickdo: 237 },
-    { category: "Health", quickdo: 73 },
-    { category: "Shopping", quickdo: 209 },
-    { category: "GitHub", quickdo: 214 },
-]
+// const data = [
+//     { category: "Development", quickdo: 305 },
+//     { category: "Deployment", quickdo: 186 },
+//     { category: "Social", quickdo: 237 },
+//     { category: "Health", quickdo: 73 },
+//     { category: "Shopping", quickdo: 209 },
+//     { category: "GitHub", quickdo: 214 },
+// ]
 
 const chartConfig = {
     quickdo: {
@@ -40,7 +40,7 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export const CategoryBarChart = () => {
+export const CategoryBarChart = ({ data }: any) => {
     return (
         <Card>
             <CardHeader className="relative">
@@ -74,15 +74,13 @@ export const CategoryBarChart = () => {
                     </div>
                     {/* END TIMESPAN PICKER */}
 
-
-
                 </div>
                 {/* END OPTIONS SECTION */}
 
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
-                    <BarChart accessibilityLayer data={chartData}>
+                    <BarChart accessibilityLayer data={data} className="overflow-x-auto max-w-full">
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="category"

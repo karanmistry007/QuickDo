@@ -24,11 +24,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useEffect, useState } from "react"
 
 
-const chartData = [
-    { important: 520, total: 800, fill: "#3c50e0" },
-]
+// const chartData = [
+//     { important: 520, total: 800, fill: "#3c50e0" },
+// ]
 
 const chartConfig = {
     important: {
@@ -36,7 +37,18 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export const ImportancePercentageChart = () => {
+export const ImportancePercentageChart = ({ data }: any) => {
+
+    // ? HOOKS
+    // ? SET DEFAULT DATA 
+    const [chartData, setChartData] = useState(data && data.length > 0 ? data : [{ important: 0, total: 0, fill: "#3c50e0" }]);
+    useEffect(() => {
+        if (data.length > 0) {
+            setChartData(data)
+        }
+    }, [data])
+
+
     return (
         <Card className="">
             <CardHeader className="relative">
