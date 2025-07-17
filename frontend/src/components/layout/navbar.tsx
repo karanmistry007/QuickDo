@@ -36,7 +36,7 @@ const Navbar = () => {
     return (
         <>
             {/* NAVBAR */}
-            <header className='p-4 fixed top-0 left-0 sm:static bg-white sm:px-4 sm:py-2.5 shadow-[0px_0px_25px_-5px_rgba(0,0,0,0.25)] z-[999]'>
+            <header className='p-4 border-b border-gray-300 fixed top-0 left-0 sm:static bg-white sm:px-4 sm:py-2.5 shadow-[0px_0px_12px_-5px_rgba(0,0,0,0.25)] z-[999]'>
                 <nav className="nav-item-container flex gap-2.5 sm:gap-4 justify-between items-center">
 
                     {/* LOGO */}
