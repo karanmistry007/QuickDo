@@ -1,6 +1,11 @@
 import { IconType } from "react-icons";
 
 // ! COMMON
+declare global {
+    interface Window {
+        csrf_token: string;
+    }
+}
 export type Status = 'Open' | 'Completed' | 'Cancelled';
 // export type Priority = 'Low' | 'Medium' | 'High';
 
