@@ -256,10 +256,7 @@ website_route_rules = [
 
 # ? FIXTURES
 # fixtures = [
-# {"dt": "Role", "filters": [["name", "in", ["QuickDo User"]]]},
-# {"dt": "Custom DocPerm", "filters": [["role", "in", ["QuickDo User"]]]},
-#     {"dt":"QuickDo Category","filters":[]},
-#     {"dt":"Navbar Settings"},
-#     {"dt":"Website Settings"},
+#     {"dt": "Role", "filters": [["name", "in", ["QuickDo User"]]]},
+#     {"dt": "QuickDo Category", "filters": []},
 #     {"dt": "Kanban Board", "filters": [["reference_doctype", "in", ["QuickDo"]]]},
 # ]
