@@ -382,7 +382,7 @@ const CalendarView = (props: DashboardProps) => {
             <Sidebar />
 
             {/* DASHBOARD CONTAINER */}
-            <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_60px)] overflow-y-scroll">
+            <div className="dashboard-container sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_61px)] overflow-y-scroll">
                 <div className="calendar m-10">
                     <DnDCalendar
                         // @ts-ignore

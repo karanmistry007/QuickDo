@@ -268,7 +268,7 @@ const KanbanView = (props: DashboardProps) => {
             {/* DASHBOARD CONTAINER  */}
             {!initialLoading && (
 
-                <div className="dashboard-container  sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_60px)] overflow-y-scroll">
+                <div className="dashboard-container  sm:ml-[60px] w-full sm:w-[calc(100dvw_-_60px)] h-auto mt-[134px] sm:mt-0 sm:h-[calc(100dvh_-_61px)] overflow-y-scroll">
                     <div className="flex divide-x p-10">
                         {columns.map((column, index) => (
                             <div

@@ -7,6 +7,7 @@ const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN || null;
 // ? GENERATE THE HEADERS FOR AUTHORIZATION ONCE
 const getHeaders = () => ({
     Authorization: AUTH_TOKEN, // ? ADD AUTHORIZATION HEADER
+    "X-Frappe-CSRF-Token": window.csrf_token,  // ?ADD CSRF TOKEN FROM WINDOW OBJECT
 });
 
 // ? SIGN UP
