@@ -18,13 +18,13 @@ app_home = "/app/quickdos"
 # ? ADD QUICKDO APP TO FRAPPE APPS PAGE
 # Each item in the list will be shown as an app in the apps page
 add_to_apps_screen = [
-    {
-        "name": "quickdo",
-        "logo": "/assets/quickdo/favicon.png",
-        "title": "QuickDo",
-        "route": "/app/quickdos",
-        # "has_permission": "quickdo.api.permission.has_app_permission",
-    }
+	{
+		"name": "quickdo",
+		"logo": "/assets/quickdo/favicon.png",
+		"title": "QuickDo",
+		"route": "/app/quickdos",
+		# "has_permission": "quickdo.api.permission.has_app_permission",
+	}
 ]
 
 # Includes in <head>
@@ -251,7 +251,7 @@ add_to_apps_screen = [
 
 # ? SET WEBSITE DYNAMIC ROUTES FOR QUICKDO DASHBOARD
 website_route_rules = [
-    {"from_route": "/quickdo/<path:app_path>", "to_route": "quickdo"},
+	{"from_route": "/quickdo/<path:app_path>", "to_route": "quickdo"},
 ]
 
 # ? FIXTURES
