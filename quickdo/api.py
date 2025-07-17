@@ -676,7 +676,7 @@ def register_user(full_name, email, password, redirect_to="/quickdo"):
 			# ! FOR NOW AS A QUICKDO USER
 			# ? SET DEFAULT ROLES TO THE USER
 			default_role = "QuickDo User"
-			if default_role:
+			if isinstance(default_role, str) and default_role.strip():
 				user.add_roles(default_role)
 
 			# ? SET THE DEFAULT REDIRECT PATH AFTER LOGIN
