@@ -7,8 +7,10 @@ app_license = "agpl-3.0"
 app_icon = "fa fa-th"
 app_color = "#e74c3c"
 source_link = "https://github.com/karanmistry007/QuickDo.git"
-app_logo_url = "/assets/quickdo/logo.png"
 app_home = "/app/quickdos"
+
+# ? IT ADDS THE DEFAULT LOGO AS QUICKDO LOGO
+# app_logo_url = "/assets/quickdo/logo.png"
 
 # Apps
 # ------------------
