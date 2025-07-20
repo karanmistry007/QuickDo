@@ -77,25 +77,19 @@ const Filters: React.FC<FiltersProps> = ({
         handleFilters("date", formattedDate, "single")
 
         // ? Close dropdown after selection
-        setTimeout(() => {
-            setDropdownOpen(false)
-        }, 150)
+        setDropdownOpen(false)
     }
 
     // ? HANDLE IMPORTANCE FILTER WITH DROPDOWN CLOSE
     const handleImportanceFilter = () => {
         handleFilters("is_important", "1", "single")
-        setTimeout(() => {
-            setDropdownOpen(false)
-        }, 150)
+        setDropdownOpen(false)
     }
 
     // ? HANDLE REMINDER FILTER WITH DROPDOWN CLOSE
     const handleReminderFilter = () => {
         handleFilters("send_reminder", "1", "single")
-        setTimeout(() => {
-            setDropdownOpen(false)
-        }, 150)
+        setDropdownOpen(false)
     }
 
     return (
@@ -183,13 +177,12 @@ const Filters: React.FC<FiltersProps> = ({
                                 </div>
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
-                                <DropdownMenuSubContent className="w-auto p-0">
+                                <DropdownMenuSubContent>
                                     <Calendar
                                         mode="single"
                                         selected={getSelectedDate(filters)}
                                         onSelect={handleDateSelect}
                                         initialFocus
-                                        className="rounded-md border-0"
                                     />
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
