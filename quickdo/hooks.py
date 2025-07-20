@@ -25,7 +25,7 @@ add_to_apps_screen = [
 		"logo": "/assets/quickdo/favicon.png",
 		"title": "QuickDo",
 		"route": "/app/quickdos",
-		# "has_permission": "quickdo.api.permission.has_app_permission",
+		"has_permission": "quickdo.api.has_app_permission",
 	}
 ]
 
