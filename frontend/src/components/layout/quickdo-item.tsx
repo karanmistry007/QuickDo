@@ -29,6 +29,7 @@ const QuickDoItem = (props: ListItemProps) => {
     const [categories, setCategories] = useState<useAllCategories[]>(props.todoData.categories);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [allCategories, setAllCategories] = useState<useAllCategories[]>(props.allCategories);
+    const [datePopupOpen, setDatePopupOpen] = useState<boolean>(false);
 
 
     //? STATUS HANDLER
@@ -170,7 +171,7 @@ const QuickDoItem = (props: ListItemProps) => {
                 {/* DUE DATE */}
                 <div className="item hidden lg:block lg:col-span-2 justify-self-center">
 
-                    <Popover>
+                    <Popover open={datePopupOpen} onOpenChange={setDatePopupOpen}>
                         <PopoverTrigger asChild>
                             <Button
                                 variant={"transparent"}
@@ -195,7 +196,10 @@ const QuickDoItem = (props: ListItemProps) => {
                             <Calendar
                                 mode="single"
                                 selected={(new Date(date))}
-                                onSelect={handleSetDate}
+                                onSelect={(e) => {
+                                    handleSetDate(e);
+                                    setDatePopupOpen(false);
+                                }}
                                 initialFocus
                             />
                         </PopoverContent>
