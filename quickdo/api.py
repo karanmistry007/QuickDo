@@ -699,3 +699,18 @@ def register_user(full_name, email, password, redirect_to="/quickdo"):
 			"success": True,
 			"message": f"User has been registered successfully {full_name}",
 		}
+
+
+# ! api/method/quickdo.api.has_app_permission
+# ? CHECK IF THE USER HAS PERMISSION TO ACCESS QUICKDO APP
+def has_app_permission():
+	"""Check if the user has permission to access the app."""
+	if frappe.session.user == "Administrator":
+		return True
+
+	roles = frappe.get_roles()
+	quickdo_roles = ["QuickDo User", "System Manager"]
+	if any(role in roles for role in quickdo_roles):
+		return True
+
+	return False
