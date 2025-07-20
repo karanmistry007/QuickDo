@@ -1,17 +1,29 @@
 import React from "react";
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@/components/ui/select";
 import { BsSortDownAlt, BsSortUp } from "react-icons/bs";
+import { useSortDataItems } from "@/types/Common";
 
 interface SortProps {
     currentSort: string;
     currentSortDirection: string;
-    useSortData: { name: string; sort: string }[];
+    // useSortData: { name: string; sort: string }[];
     setCurrentSort: (sort: string) => void;
     setCurrentSortDirection: (direction: string) => void;
     setRefreshState: (state: boolean) => void;
 }
 
-const Sort: React.FC<SortProps> = ({ currentSort, currentSortDirection, useSortData, setCurrentSort, setCurrentSortDirection, setRefreshState }) => {
+// ? DEFINE SORTING DATA
+const useSortData: useSortDataItems[] = [
+    { name: "Created", sort: "creation" },
+    { name: "Modified", sort: "modified" },
+    { name: "Importance", sort: "is_important" },
+    { name: "Due Date", sort: "date" },
+    { name: "Reminder", sort: "send_reminder" },
+    { name: "Status", sort: "status" },
+    { name: "Description", sort: "description" },
+]
+
+const Sort: React.FC<SortProps> = ({ currentSort, currentSortDirection, setCurrentSort, setCurrentSortDirection, setRefreshState }) => {
     return (
         <div className="sort-quickdo flex border-neutral-200 border rounded-md w-fit shadow-sm sm:order-1">
             <Select onValueChange={(e) => { setCurrentSort(e); setRefreshState(true); }}>

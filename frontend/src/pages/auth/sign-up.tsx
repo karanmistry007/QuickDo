@@ -59,6 +59,7 @@ const SignUp = () => {
     // ? HOOKS
     const [isSmallScreen, setIsSmallScreen] = useState<boolean>(window.innerWidth < 1024)
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
     const navigate = useNavigate()
 
     // ? FRAPPE LOGIN HOOK
@@ -255,16 +256,16 @@ const SignUp = () => {
                                                 <div className="relative">
                                                     <Input
                                                         className="placeholder:text-black lg:placeholder:text-inherit border-black lg:border-inherit"
-                                                        type={showPassword ? "text" : "password"}
+                                                        type={showConfirmPassword ? "text" : "password"}
                                                         placeholder="••••••••"
                                                         {...field}
                                                     />
                                                     {/* Eye Icon */}
                                                     <span
                                                         className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500"
-                                                        onClick={() => setShowPassword((prev) => !prev)}
+                                                        onClick={() => setShowConfirmPassword((prev) => !prev)}
                                                     >
-                                                        {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                                                        {showConfirmPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                                                     </span>
                                                 </div>
                                             </FormControl>

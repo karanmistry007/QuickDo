@@ -39,7 +39,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export const StatusDonutChart = ({ data }: any) => {
-    console.log(data)
     const totalQuickdos = data.reduce((acc: any, curr: any) => acc + curr.quickdo, 0)
 
     return (

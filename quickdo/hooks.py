@@ -7,8 +7,10 @@ app_license = "agpl-3.0"
 app_icon = "fa fa-th"
 app_color = "#e74c3c"
 source_link = "https://github.com/karanmistry007/QuickDo.git"
-app_logo_url = "/assets/quickdo/logo.png"
 app_home = "/app/quickdos"
+
+# ? IT ADDS THE DEFAULT LOGO AS QUICKDO LOGO
+# app_logo_url = "/assets/quickdo/logo.png"
 
 # Apps
 # ------------------
@@ -23,7 +25,7 @@ add_to_apps_screen = [
 		"logo": "/assets/quickdo/favicon.png",
 		"title": "QuickDo",
 		"route": "/app/quickdos",
-		# "has_permission": "quickdo.api.permission.has_app_permission",
+		"has_permission": "quickdo.api.has_app_permission",
 	}
 ]
 

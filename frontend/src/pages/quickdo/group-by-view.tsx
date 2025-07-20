@@ -3,9 +3,7 @@ import CreateQuickDo from "@/components/ui/create-quickdo";
 import QuickDoItem from "@/components/layout/quickdo-item";
 import {
     useAllQuickDoData,
-    useSortDataItems,
     DashboardProps,
-    useStatusFiltersItems,
 } from "@/types/Common";
 import { toast } from 'sonner'
 import {
@@ -21,24 +19,12 @@ import Filters from "@/components/layout/filters";
 import Sort from "@/components/layout/sort";
 import Navbar from "@/components/layout/navbar";
 import Sidebar from "@/components/layout/sidebar";
+import {
+    useStatusFilterData,
+    createFilterHandler,
+    createClearFiltersHandler,
+} from "@/utils/filter-utils"
 
-// ? DEFINE STATUS DROPDOWN DATA
-const useStatusFilterData: useStatusFiltersItems[] = [
-    { name: "Open" },
-    { name: "Completed" },
-    { name: "Cancelled" },
-]
-
-// ? DEFINE SORTING DATA
-const useSortData: useSortDataItems[] = [
-    { name: "Created", sort: "creation" },
-    { name: "Modified", sort: "modified" },
-    { name: "Importance", sort: "is_important" },
-    { name: "Due Date", sort: "date" },
-    { name: "Reminder", sort: "send_reminder" },
-    { name: "Status", sort: "status" },
-    { name: "Description", sort: "description" },
-];
 
 const GroupByView = (props: DashboardProps) => {
 
@@ -59,50 +45,11 @@ const GroupByView = (props: DashboardProps) => {
     const [completedQuickDoData, setCompletedQuickDoData] = useState<useAllQuickDoData[]>([]);
     const [cancelledQuickDoData, setCancelledQuickDoData] = useState<useAllQuickDoData[]>([]);
 
-
-    // ? HANDLE FILTERS DATA
-    const handleFilters = (key: string, value: string, child_table = "") => {
-        setFilters((prevFilters) => {
-            // ? FIND THE INDEX OF EXISTING FILTER BASED ON KEY OR CHILD TABLE
-            const index = prevFilters.findIndex(
-                (filter: any) => filter[0] === (child_table || key)
-            );
-
-            const updatedFilters = [...prevFilters];
-            const fieldIndex = child_table ? 3 : 2; // ? DETERMINE FIELD BASED ON CHILD TABLE
-
-            if (index !== -1) {
-                const values = updatedFilters[index][fieldIndex] || [];
-
-                // ? REMOVE VALUE IF IT EXISTS
-                if (values.includes(value)) {
-                    updatedFilters[index][fieldIndex] = values.filter(
-                        (item: string) => item !== value
-                    );
-
-                    // ? REMOVE FILTER COMPLETELY IF EMPTY
-                    if (updatedFilters[index][fieldIndex].length === 0) {
-                        updatedFilters.splice(index, 1);
-                    }
-                } else {
-                    // ? ADD VALUE IF NOT EXISTS
-                    updatedFilters[index][fieldIndex] = [...values, value];
-                }
-            } else {
-                // ? ADD NEW FILTER IF NOT EXISTS
-                updatedFilters.push(
-                    child_table
-                        ? [child_table, key, "in", [value]]
-                        : [key, "in", [value]]
-                );
-            }
-
-            return updatedFilters;
-        });
-    };
+    // ? DYNAMIC HANDLE FILTERS FUNCTION
+    const handleFilters = createFilterHandler(setFilters);
 
     // ? HANDLE CLEAR FILTERS
-    const handleClearFilters = () => setFilters([]);
+    const handleClearFilters = createClearFiltersHandler(setFilters);
 
     // ? USE EFFECT ON FILTERS AND SORT CHANGES
     useEffect(() => {
@@ -219,7 +166,6 @@ const GroupByView = (props: DashboardProps) => {
                         <Sort
                             currentSort={currentSort}
                             currentSortDirection={currentSortDirection}
-                            useSortData={useSortData}
                             setCurrentSort={setCurrentSort}
                             setCurrentSortDirection={setCurrentSortDirection}
                             setRefreshState={setRefreshState}
