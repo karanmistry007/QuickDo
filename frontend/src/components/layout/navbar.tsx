@@ -18,8 +18,10 @@ import {
 const userProfileItems: UserProfileItem[] = [
     { name: "Frappe Dashboard", link: "/app/quickdos" },
     { name: "Apps", link: "/apps/" },
-    { name: "My Profile", link: "/app/user-profile" },
-    { name: "My Settings", link: "/app/user" },
+    // TODO : CREATE A USER PROFILE PAGE IN REACT
+    { name: "My Profile", link: "/me" },
+    // TODO : CREATE A USER SETTINGS PAGE IN REACT WITH BACKEND
+    // { name: "My Settings", link: "/app/user" },
     { name: "Logout", link: "/quickdo/auth/logout" },
 ];
 
