@@ -158,6 +158,7 @@ export type DrawerProps = {
     handleSaveToDo: (data: useAllQuickDoData) => void;
     handleDeleteTodo: (data: string) => void;
     autoOpenDrawer?: boolean;
+    onCloseRequest?: () => void;
 };
 
 //? CONFIRM BOX PROPS
