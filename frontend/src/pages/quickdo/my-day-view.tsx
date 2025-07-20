@@ -24,7 +24,7 @@ const MyDayView = (props: DashboardProps) => {
     const jsDate = new Date()
     // ? Use getFormattedDate for consistency with filter-utils
     const todayDate = getFormattedDate(jsDate)
-    const defaultFilter = [["date", "=", todayDate]]
+    const defaultFilter = [["date", "in", [todayDate,""]]]
     const [currentSort, setCurrentSort] = useState("creation")
     const [currentSortDirection, setCurrentSortDirection] = useState("desc")
     const [filters, setFilters] = useState<any[]>(defaultFilter)
