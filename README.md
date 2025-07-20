@@ -101,5 +101,3 @@ pre-commit install
 QuickDo is licensed under the **AGPL-3.0**.
 
 🚀 **Start managing your tasks faster and smarter with QuickDo today!**
-
-Let me know if you need this tailored further!
